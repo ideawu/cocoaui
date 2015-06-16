@@ -1,0 +1,32 @@
+/*
+ Copyright (c) 2014 ideawu. All rights reserved.
+ Use of this source code is governed by a license that can be
+ found in the LICENSE file.
+ 
+ @author:  ideawu
+ @website: http://www.cocoaui.com/
+ */
+
+#ifndef IKit_PrefixHeader_pch
+#define IKit_PrefixHeader_pch
+
+
+#ifdef DEBUG
+#	define VERSION "1.1(for development only)"
+#	define log_trace(...) NSLog(__VA_ARGS__)
+#	define log_debug(...) NSLog(__VA_ARGS__)
+#	define log_info(...) NSLog(__VA_ARGS__)
+#else
+#	define VERSION "1.1(for production)"
+#if 1
+#	define log_trace(...)
+#	define log_debug(...)
+#else
+#	define log_trace(...) NSLog(__VA_ARGS__)
+#	define log_debug(...) NSLog(__VA_ARGS__)
+#endif
+#	define log_info(...) NSLog(__VA_ARGS__)
+#endif
+
+
+#endif
