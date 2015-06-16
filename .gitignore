@@ -1,5 +1,8 @@
 .DS_Store
 *.swp
 *.xcuserstate
+IKit/IKit.xcodeproj/project.xcworkspace/xcshareddata/IKit.xccheckout
+IKit/IKit.xcodeproj/project.xcworkspace/xcuserdata/
+IKit/IKit.xcodeproj/xcuserdata/wuzuyang.xcuserdatad
 UserInterfaceState.xcuserstate
 
