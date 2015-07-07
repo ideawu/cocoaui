@@ -24,7 +24,7 @@
 @interface IStyleSheet : NSObject
 
 - (void)parseCss:(NSString *)css;
-- (void)parseCssFile:(NSString *)filename;
+- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl;
 
 - (NSString *)getStyleById:(NSString *)_id;
 - (NSString *)getStyleByTagName:(NSString *)tag;

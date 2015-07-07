@@ -16,6 +16,7 @@
 #import "IButton.h"
 #import "IImage.h"
 #import "IStyleSheet.h"
+#import "Text.h"
 
 #define DTHTML 0
 
@@ -163,6 +164,13 @@ typedef enum{
 	_attributeDict = attributeDict;
 
 	if([_tag isEqualToString:@"style"]){
+		NSString *src = [attributeDict objectForKey:@"href"];
+		if(src){
+			if(!_styleSheet){
+				_styleSheet = [[IStyleSheet alloc] init];
+			}
+			[_styleSheet parseCssResource:src baseUrl:_baseUrl];
+		}
 		return;
 	}
 	if([_tag isEqualToString:@"script"]){
@@ -271,12 +279,36 @@ typedef enum{
 	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
 
 	if(view){
-		if(_styleSheet){
-			NSString *css = [_styleSheet getStyleByTagName:tagName];
-			[view.style set:css];
+		[self applyCssForView:view tagName:tagName attributes:attributeDict];
+		
+		if(currentView){
+			if([currentView class] == [IView class]){
+				[currentView addSubview:view];
+			}else{
+				IView *parent = currentView.parent;
+				if(!parent){
+					parent = [[IView alloc] init];
+					[parent addSubview:currentView];
+					//[parse_stack addObject:parent];
+					[_rootViews addObject:parent];
+				}
+				[parent addSubview:view];
+			}
 		}
+		currentView = view;
+		[parse_stack addObject:view];
+	}else{
+		[parse_stack addObject:@""];
 	}
-	if(view && attributeDict){
+	
+}
+	
+- (void)applyCssForView:(IView *)view tagName:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
+	if(_styleSheet){
+		NSString *css = [_styleSheet getStyleByTagName:tagName];
+		[view.style set:css];
+	}
+	if(attributeDict){
 		if(_styleSheet){
 			NSString *class_ = [attributeDict objectForKey:@"class"];
 			if(class_ != nil){
@@ -299,31 +331,9 @@ typedef enum{
 				[view.style set:css];
 			}
 		}
-
+		
 		[view.style set:[attributeDict objectForKey:@"style"]];
 	}
-
-	if(view){
-		if(currentView){
-			if([currentView class] == [IView class]){
-				[currentView addSubview:view];
-			}else{
-				IView *parent = currentView.parent;
-				if(!parent){
-					parent = [[IView alloc] init];
-					[parent addSubview:currentView];
-					//[parse_stack addObject:parent];
-					[_rootViews addObject:parent];
-				}
-				[parent addSubview:view];
-			}
-		}
-		currentView = view;
-		[parse_stack addObject:view];
-	}else{
-		[parse_stack addObject:@""];
-	}
-	
 }
 
 #if DTHTML

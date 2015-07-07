@@ -8,6 +8,7 @@
  */
 
 #import "IStyleSheet.h"
+#import "IStyleUtil.h"
 
 @interface IStyleSheet(){
 	NSMutableDictionary *_idStyle;
@@ -27,13 +28,45 @@
 	return self;
 }
 
-- (void)parseCssFile:(NSString *)filename{
-	NSError *err;
-	NSString *str = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:&err];
-	if(!err){
-		[self parseCss:str];
+- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl{
+	if(!src){
+		return;
 	}
+	if(![IStyleUtil isHttpUrl:src]){
+		if(baseUrl){
+			src = [baseUrl stringByAppendingString:src];
+		}else{
+			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
+		}
+	}
+	
+	static NSMutableDictionary *cache = nil;
+	if(cache == nil){
+		cache = [[NSMutableDictionary alloc] init];
+	}
+	if([cache objectForKey:src] != nil){
+		log_debug(@"load css resource from cache: %@", src);
+		return;
+	}
+	[cache setObject:src forKey:src];
+	log_debug(@"load css resource: %@", src);
+	
+	NSString *text = nil;
+	NSError *err;
+	if([IStyleUtil isHttpUrl:src]){
+		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+		[request setHTTPMethod:@"GET"];
+		[request setURL:[NSURL URLWithString:src]];
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
+		if(data){
+			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		}
+	}else{
+		text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
+	}
+	[self parseCss:text];
 }
+
 
 - (NSString *)getStyleById:(NSString *)_id{
 	return [_idStyle objectForKey:_id];
@@ -110,13 +143,26 @@
 		if(key.length == 0){
 			continue;
 		}
+		NSString *old_val;
 		if([key characterAtIndex:0] == '.'){
 			key = [key substringFromIndex:1];
+			old_val = [_classStyle objectForKey:key];
+			if(old_val){
+				val = [old_val stringByAppendingString:val];
+			}
 			[_classStyle setObject:val forKey:key];
 		}else if([key characterAtIndex:0] == '#'){
 			key = [key substringFromIndex:1];
+			old_val = [_idStyle objectForKey:key];
+			if(old_val){
+				val = [old_val stringByAppendingString:val];
+			}
 			[_idStyle setObject:val forKey:key];
 		}else{
+			old_val = [_tagStyle objectForKey:key];
+			if(old_val){
+				val = [old_val stringByAppendingString:val];
+			}
 			[_tagStyle setObject:val forKey:key.lowercaseString];
 		}
 	}

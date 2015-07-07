@@ -1,0 +1,4 @@
+* 1.2.0
+	* New features:
+		- Support css file import in XML(2015-07-07)
+	* Bug fixes:

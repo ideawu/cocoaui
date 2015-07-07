@@ -10,6 +10,7 @@
 #import "IImage.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
+#import "IStyleUtil.h"
 
 @interface IImage (){
 	NSString *_src;
@@ -40,7 +41,7 @@
 - (void)setSrc:(NSString *)src{
 	_src = src;
 	// load image from network
-	if([src rangeOfString:@"http://"].location == 0 || [src rangeOfString:@"https://"].location == 0){
+	if([IStyleUtil isHttpUrl:src]){
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 		[request setHTTPMethod:@"GET"];
 		[request setURL:[NSURL URLWithString:src]];
