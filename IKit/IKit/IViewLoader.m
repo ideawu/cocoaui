@@ -152,6 +152,27 @@ typedef enum{
 	return view;
 }
 
+- (BOOL)parseCSS:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
+	BOOL ret = NO;
+	NSString *src = nil;
+	if([_tag isEqualToString:@"style"]){
+		ret = YES;
+		src = [attributeDict objectForKey:@"src"];
+	}else if([_tag isEqualToString:@"link"]){
+		ret = YES;
+		NSString *type = [attributeDict objectForKey:@"type"];
+		if([type isEqualToString:@"text/css"]){
+			src = [attributeDict objectForKey:@"href"];
+		}
+	}
+	if(src){
+		if(!_styleSheet){
+			_styleSheet = [[IStyleSheet alloc] init];
+		}
+		[_styleSheet parseCssResource:src baseUrl:_baseUrl];
+	}
+	return ret;
+}
 
 #if DTHTML
 - (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
@@ -163,14 +184,7 @@ typedef enum{
 	_tag = tagName;
 	_attributeDict = attributeDict;
 
-	if([_tag isEqualToString:@"style"]){
-		NSString *src = [attributeDict objectForKey:@"href"];
-		if(src){
-			if(!_styleSheet){
-				_styleSheet = [[IStyleSheet alloc] init];
-			}
-			[_styleSheet parseCssResource:src baseUrl:_baseUrl];
-		}
+	if([self parseCSS:tagName attributes:attributeDict]){
 		return;
 	}
 	if([_tag isEqualToString:@"script"]){
