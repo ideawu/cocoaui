@@ -11,10 +11,13 @@
 #import "IStyleUtil.h"
 
 @interface IStyleSheet(){
-	NSMutableDictionary *_idStyle;
-	NSMutableDictionary *_tagStyle;
-	NSMutableDictionary *_classStyle;
+//	NSMutableDictionary *_idStyle;
+//	NSMutableDictionary *_tagStyle;
+//	NSMutableDictionary *_classStyle;
 }
+@property (atomic) NSMutableDictionary *idStyle;
+@property (atomic) NSMutableDictionary *tagStyle;
+@property (atomic) NSMutableDictionary *classStyle;
 
 @end
 
@@ -44,27 +47,31 @@
 	if(cache == nil){
 		cache = [[NSMutableDictionary alloc] init];
 	}
-	if([cache objectForKey:src] != nil){
+	IStyleSheet *sheet = [cache objectForKey:src];
+	if(sheet){
 		log_debug(@"load css resource from cache: %@", src);
-		return;
-	}
-	[cache setObject:src forKey:src];
-	log_debug(@"load css resource: %@", src);
-	
-	NSString *text = nil;
-	NSError *err;
-	if([IStyleUtil isHttpUrl:src]){
-		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-		[request setHTTPMethod:@"GET"];
-		[request setURL:[NSURL URLWithString:src]];
-		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
-		if(data){
-			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		}
 	}else{
-		text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
+		log_debug(@"load css resource: %@", src);
+		sheet = [[IStyleSheet alloc] init];
+		NSString *text = nil;
+		NSError *err;
+		if([IStyleUtil isHttpUrl:src]){
+			NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+			[request setHTTPMethod:@"GET"];
+			[request setURL:[NSURL URLWithString:src]];
+			NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
+			if(data){
+				text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			}
+		}else{
+			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
+		}
+		[sheet parseCss:text];
+		[cache setObject:sheet forKey:src];
 	}
-	[self parseCss:text];
+	[self.idStyle addEntriesFromDictionary:sheet.idStyle];
+	[self.tagStyle addEntriesFromDictionary:sheet.tagStyle];
+	[self.classStyle addEntriesFromDictionary:sheet.classStyle];
 }
 
 
