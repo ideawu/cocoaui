@@ -17,6 +17,7 @@
 #import "IImage.h"
 #import "IStyleSheet.h"
 #import "Text.h"
+#import "IStyleInternal.h"
 
 #define DTHTML 0
 
@@ -62,6 +63,7 @@ typedef enum{
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
 	[request setURL:[NSURL URLWithString:url]];
+	[request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error){
 		NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		IViewLoader *viewLoader = [[IViewLoader alloc] init];
@@ -267,6 +269,13 @@ typedef enum{
 	}else if([tagName isEqualToString:@"hr"]){
 		view = [[IView alloc] init];
 		[view.style set:@"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;"];
+	}else if([tagName isEqualToString:@"br"]){
+		static NSString *br_s = nil;
+		if(!br_s){
+			br_s = [NSString stringWithFormat:@"clear: both; width: 100%%; height: %f;", [IStyle normalFontSize]];
+		}
+		view = [[IView alloc] init];
+		[view.style set:br_s];
 	}else if([tagName isEqualToString:@"li"]){
 		view = [[ILabel alloc] init];
 		[view.style set:@"clear: both; margin: 4 0; width: 100%;"];
