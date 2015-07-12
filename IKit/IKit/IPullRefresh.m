@@ -11,11 +11,6 @@
 #import "IView.h"
 #import "IRefreshControl.h"
 
-typedef enum{
-	IRefreshTriggerPull,
-	IRefreshTriggerScroll,
-}IRefreshTriggerMode;
-
 @interface IPullRefresh (){
 	//BOOL isDragging;
 	UIScrollView *_scrollView;
@@ -24,7 +19,6 @@ typedef enum{
 	UIEdgeInsets inset;
 	BOOL allowRefresh;
 }
-@property (nonatomic) IRefreshTriggerMode triggerMode;
 @end
 
 @implementation IPullRefresh
@@ -34,7 +28,8 @@ typedef enum{
 	_scrollView = scrollView;
 	_headerVisibleRateToRefresh = 1;
 	_footerVisibleRateToRefresh = 1;
-	_triggerMode = IRefreshTriggerScroll;
+	_headerTriggerMode = IRefreshTriggerPull;
+	_footerTriggerMode = IRefreshTriggerScroll;
 	allowRefresh = YES;
 	return self;
 }
@@ -87,13 +82,8 @@ typedef enum{
 
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView{
 	//log_trace(@"scroll.offset.y = %f", scrollView.contentOffset.y);
-	if(!scrollView.tracking){ // 不需要维护 isDragging 属性
-		if(_triggerMode == IRefreshTriggerPull){
-			return;
-		}
-	}
 
-	{
+	if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
 		CGFloat rate = [self headerVisibleRate];
 		//NSLog(@"header = %f", rate);
 		if(rate > _headerVisibleRateToRefresh){
@@ -113,7 +103,7 @@ typedef enum{
 		}
 	}
 	
-	{
+	if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
 		CGFloat rate = [self footerVisibleRate];
 		//NSLog(@"footer = %f", rate);
 		if(rate > _footerVisibleRateToRefresh){

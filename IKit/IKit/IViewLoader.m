@@ -154,7 +154,7 @@ typedef enum{
 	return view;
 }
 
-- (BOOL)parseCSS:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
+- (BOOL)parseIfIsCSS:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
 	BOOL ret = NO;
 	NSString *src = nil;
 	if([_tag isEqualToString:@"style"]){
@@ -186,7 +186,7 @@ typedef enum{
 	_tag = tagName;
 	_attributeDict = attributeDict;
 
-	if([self parseCSS:tagName attributes:attributeDict]){
+	if([self parseIfIsCSS:tagName attributes:attributeDict]){
 		return;
 	}
 	if([_tag isEqualToString:@"script"]){

@@ -13,6 +13,12 @@
 #import <UIKit/UIKit.h>
 #import "IView.h"
 
+typedef enum{
+	IRefreshTriggerPull,
+	IRefreshTriggerScroll,
+}IRefreshTriggerMode;
+
+
 @protocol IPullRefreshDelegate;
 
 @interface IPullRefresh : NSObject <UIScrollViewDelegate>
@@ -20,6 +26,11 @@
 @property (nonatomic, weak) id delegate;
 @property (nonatomic) IView *headerView;
 @property (nonatomic) IView *footerView;
+
+// default: IRefreshTriggerPull
+@property (nonatomic) IRefreshTriggerMode headerTriggerMode;
+// default: IRefreshTriggerScroll
+@property (nonatomic) IRefreshTriggerMode footerTriggerMode;
 
 /**
  * The visible portion of headerView to trigger a IRefreshBegin event, default is 1.0

@@ -15,9 +15,9 @@
 //	NSMutableDictionary *_tagStyle;
 //	NSMutableDictionary *_classStyle;
 }
-@property (atomic) NSMutableDictionary *idStyle;
-@property (atomic) NSMutableDictionary *tagStyle;
-@property (atomic) NSMutableDictionary *classStyle;
+@property (nonatomic) NSMutableDictionary *idStyle;
+@property (nonatomic) NSMutableDictionary *tagStyle;
+@property (nonatomic) NSMutableDictionary *classStyle;
 
 @end
 
