@@ -26,21 +26,8 @@
 	UIView *contentView;
 }
 @property (nonatomic) BOOL need_layout;
+@property (nonatomic) UIView *backgroundView;
 @end
-
-/* background-image:
- 
- # Repeated
- 
- UIImage *img = [UIImage imageNamed:@"bg.png"];
- row.backgroundColor = [UIColor colorWithPatternImage:img];
- 
- # Stretched
- 
- UIImage *img = [UIImage imageNamed:@"bg.png"];
- row.layer.contents = (id)img.CGImage;
-*/
-
 
 @implementation IView
 
@@ -205,21 +192,6 @@
 	return ((!_subs || _subs.count == 0) && contentView);
 }
 
-- (void)drawRect:(CGRect)rect{
-	//NSLog(@"%@ %s %@", self.name, __FUNCTION__, NSStringFromCGRect(rect));
-	//[super drawRect:rect]; // no need
-	
-	self.clipsToBounds = _style.overflowHidden;
-	self.layer.backgroundColor = [_style.backgroundColor CGColor];
-
-	if(_style.borderRadius > 0){
-		self.layer.cornerRadius = _style.borderRadius;
-	}
-	if(maskView){
-		[maskView setNeedsDisplay];
-	}
-}
-
 - (void)updateMaskView{
 	if(_style.borderDrawType == IStyleBorderDrawNone){
 		if(maskView){
@@ -250,6 +222,23 @@
 
 	[self updateMaskView];
 	[self setNeedsDisplay];
+
+	if(_backgroundView){
+		[_backgroundView removeFromSuperview];
+	}
+	if(_style.backgroundImage){
+		if(_style.backgroundRepeat){
+			_backgroundView = [[UIView alloc] init];
+			_backgroundView.backgroundColor = [UIColor colorWithPatternImage:_style.backgroundImage];
+		}else{
+			_backgroundView = [[UIImageView alloc] initWithImage:_style.backgroundImage];
+		}
+		[super addSubview:_backgroundView];
+		[super sendSubviewToBack:_backgroundView];
+		CGRect frame = self.frame;
+		frame.origin = CGPointZero;
+		_backgroundView.frame = frame;
+	}
 }
 
 - (void)setNeedsLayout{
@@ -266,7 +255,22 @@
 	}
 }
 
+- (void)drawRect:(CGRect)rect{
+	NSLog(@"%@ %s %@", self.name, __FUNCTION__, NSStringFromCGRect(rect));
+	//[super drawRect:rect]; // no need
+
+	self.clipsToBounds = _style.overflowHidden;
+	self.layer.backgroundColor = [_style.backgroundColor CGColor];
+	if(_style.borderRadius > 0){
+		self.layer.cornerRadius = _style.borderRadius;
+	}
+	if(maskView){
+		[maskView setNeedsDisplay];
+	}
+}
+
 - (void)layoutSubviews{
+	log_debug(@"%@ %s", self.name, __func__);
 	if(!_need_layout){
 		return;
 	}
@@ -283,7 +287,7 @@
 	if(self.isRootView && self.cell != nil){
 		self.cell.height = _style.outerHeight;
 	}
-	// 显示背景图
+	// 显示背景图, 必须要重新设置, 不然改变尺寸时背景不变动
 	if(self.layer.contents){
 		self.layer.contents = self.layer.contents;
 	}
@@ -350,7 +354,7 @@
 	log_debug(@"%@ %s end %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
 }
 
-//#pragma mark - Events
+#pragma mark - Events
 
 - (void)bindEvent:(IEventType)event handler:(void (^)(IEventType event, IView *view))handler{
 	[self addEvent:event handler:handler];

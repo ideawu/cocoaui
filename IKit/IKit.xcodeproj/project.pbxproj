@@ -73,10 +73,6 @@
 		08F60E421A5914AD00102F2B /* ILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F60E411A5914AD00102F2B /* ILabel.m */; };
 		08F60E451A5914DA00102F2B /* IButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F60E441A5914DA00102F2B /* IButton.m */; };
 		08F60E511A598F7200102F2B /* IInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F60E501A598F7200102F2B /* IInput.m */; };
-		08FD76A11A846DFB00FB249C /* coupon_bg_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769B1A846DFB00FB249C /* coupon_bg_bottom.png */; };
-		08FD76A21A846DFB00FB249C /* coupon_bg_bottom_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769C1A846DFB00FB249C /* coupon_bg_bottom_border.png */; };
-		08FD76A31A846DFB00FB249C /* coupon_bg_top_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769D1A846DFB00FB249C /* coupon_bg_top_normal.png */; };
-		08FD76A41A846DFB00FB249C /* coupon_divider_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769E1A846DFB00FB249C /* coupon_divider_normal.png */; };
 		08FD76A51A846DFB00FB249C /* coupon_ic_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769F1A846DFB00FB249C /* coupon_ic_down.png */; };
 		08FD76A61A846DFB00FB249C /* coupon_ic_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD76A01A846DFB00FB249C /* coupon_ic_up.png */; };
 		311609141AC0372A003C5EF2 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29061AA5A996001C8647 /* libIObj.a */; };
@@ -96,6 +92,16 @@
 		31CA29541AA5B311001C8647 /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29041AA5A996001C8647 /* libIKit.a */; };
 		31CA29551AA5B311001C8647 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29061AA5A996001C8647 /* libIObj.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		319E68471B58F47D00ADCC14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08A34A041A53EC3800C1B7F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08A34A0B1A53EC3800C1B7F8;
+			remoteInfo = IKit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		08A34A0A1A53EC3800C1B7F8 /* CopyFiles */ = {
@@ -211,10 +217,6 @@
 		08F60E441A5914DA00102F2B /* IButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IButton.m; sourceTree = "<group>"; };
 		08F60E4F1A598F7200102F2B /* IInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IInput.h; sourceTree = "<group>"; };
 		08F60E501A598F7200102F2B /* IInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IInput.m; sourceTree = "<group>"; };
-		08FD769B1A846DFB00FB249C /* coupon_bg_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_bg_bottom.png; sourceTree = "<group>"; };
-		08FD769C1A846DFB00FB249C /* coupon_bg_bottom_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_bg_bottom_border.png; sourceTree = "<group>"; };
-		08FD769D1A846DFB00FB249C /* coupon_bg_top_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_bg_top_normal.png; sourceTree = "<group>"; };
-		08FD769E1A846DFB00FB249C /* coupon_divider_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_divider_normal.png; sourceTree = "<group>"; };
 		08FD769F1A846DFB00FB249C /* coupon_ic_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_ic_down.png; sourceTree = "<group>"; };
 		08FD76A01A846DFB00FB249C /* coupon_ic_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coupon_ic_up.png; sourceTree = "<group>"; };
 		3116095F1AC2F5D6003C5EF2 /* IStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStyleSheet.h; sourceTree = "<group>"; };
@@ -400,10 +402,6 @@
 		08FD769A1A846DFB00FB249C /* images */ = {
 			isa = PBXGroup;
 			children = (
-				08FD769B1A846DFB00FB249C /* coupon_bg_bottom.png */,
-				08FD769C1A846DFB00FB249C /* coupon_bg_bottom_border.png */,
-				08FD769D1A846DFB00FB249C /* coupon_bg_top_normal.png */,
-				08FD769E1A846DFB00FB249C /* coupon_divider_normal.png */,
 				08FD769F1A846DFB00FB249C /* coupon_ic_down.png */,
 				08FD76A01A846DFB00FB249C /* coupon_ic_up.png */,
 			);
@@ -441,6 +439,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				319E68481B58F47D00ADCC14 /* PBXTargetDependency */,
 			);
 			name = Test;
 			productName = Test;
@@ -538,14 +537,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08FD76A11A846DFB00FB249C /* coupon_bg_bottom.png in Resources */,
 				08A34A581A53F36300C1B7F8 /* LaunchScreen.xib in Resources */,
-				08FD76A31A846DFB00FB249C /* coupon_bg_top_normal.png in Resources */,
 				08FD76A51A846DFB00FB249C /* coupon_ic_down.png in Resources */,
 				08A34A551A53F36300C1B7F8 /* Images.xcassets in Resources */,
-				08FD76A41A846DFB00FB249C /* coupon_divider_normal.png in Resources */,
 				08FD76A61A846DFB00FB249C /* coupon_ic_up.png in Resources */,
-				08FD76A21A846DFB00FB249C /* coupon_bg_bottom_border.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,6 +638,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		319E68481B58F47D00ADCC14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08A34A0B1A53EC3800C1B7F8 /* IKit */;
+			targetProxy = 319E68471B58F47D00ADCC14 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		08A34A561A53F36300C1B7F8 /* LaunchScreen.xib */ = {
@@ -789,7 +792,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../Build/Products/Debug-iphonesimulator/include",
+					"../build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -810,7 +813,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../Build/Products/Debug-iphonesimulator/include",
+					"../build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

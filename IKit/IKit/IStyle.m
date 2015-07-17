@@ -10,6 +10,7 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IKitUtil.h"
+#import "IStyleUtil.h"
 
 @implementation IStyleBorder
 
@@ -304,6 +305,10 @@
 }
 
 - (void)set:(NSString *)css{
+	[self set:css baseUrl:nil];
+}
+
+- (void)set:(NSString *)css baseUrl:(NSString *)baseUrl{
 	if(!css){
 		return;
 	}
@@ -499,11 +504,7 @@
 			[self applyFont];
 		}else if([k isEqualToString:@"background"]){
 			needsDisplay = YES;
-			if([v isEqualToString:@"none"]){
-				_backgroundColor = [UIColor clearColor];
-			}else{
-				_backgroundColor = [IKit colorFromHex:v];
-			}
+			[self parseBackground:v baseUrl:baseUrl];
 			//log_trace(@"background: %@", self.backgroundColor);
 		}else if([k isEqualToString:@"left"]){
 			needsLayout = YES;
@@ -521,6 +522,59 @@
 	}
 	if(needsLayout && _view){
 		[_view setNeedsLayout];
+	}
+}
+
+- (void)parseBackground:(NSString *)v baseUrl:(NSString *)baseUrl{
+	NSMutableArray *ps = [NSMutableArray arrayWithArray:
+						  [v componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+	[ps removeObject:@""];
+	
+	NSString *src = nil;
+	for(NSString *p in ps){
+		if([p characterAtIndex:0] == '#'){
+			_backgroundColor = [IKit colorFromHex:p];
+		}else if([p rangeOfString:@"url("].location != NSNotFound){
+			src = [p substringFromIndex:4];
+			static NSMutableCharacterSet *cs = nil;
+			if(!cs){
+				cs = [[NSMutableCharacterSet alloc] init];
+				[cs addCharactersInString:@"\")"];
+			}
+			src = [src stringByTrimmingCharactersInSet:cs];
+		}else if([p isEqualToString:@"none"]){
+			_backgroundColor = [UIColor clearColor];
+		}else if([p isEqualToString:@"repeat"]){
+			_backgroundRepeat = YES;
+		}else if([p isEqualToString:@"no-repeat"]){
+			_backgroundRepeat = NO;
+		}
+	}
+	if(src){
+		if(![IStyleUtil isHttpUrl:src]){
+			if(baseUrl){
+				src = [baseUrl stringByAppendingString:src];
+			}else{
+				src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
+			}
+		}
+		if(src){
+			log_debug(@"load background image: %@", src);
+			if([IStyleUtil isHttpUrl:src]){
+				NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+				[request setHTTPMethod:@"GET"];
+				[request setURL:[NSURL URLWithString:src]];
+				NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+				if(data){
+					_backgroundImage = [UIImage imageWithData:data];
+				}
+			}else{
+				_backgroundImage = [UIImage imageNamed:src];
+			}
+		}
+	}
+	if(_backgroundImage){
+		//[_view setNeedsLayout]; // why do we need this?
 	}
 }
 

@@ -329,7 +329,7 @@ typedef enum{
 - (void)applyCssForView:(IView *)view tagName:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
 	if(_styleSheet){
 		NSString *css = [_styleSheet getStyleByTagName:tagName];
-		[view.style set:css];
+		[view.style set:css baseUrl:_baseUrl];
 	}
 	if(attributeDict){
 		if(_styleSheet){
@@ -340,7 +340,7 @@ typedef enum{
 				[ps removeObject:@""];
 				for(NSString *clz in ps){
 					NSString *css = [_styleSheet getStyleByClass:clz];
-					[view.style set:css];
+					[view.style set:css baseUrl:_baseUrl];
 				}
 			}
 		}
@@ -351,11 +351,11 @@ typedef enum{
 			[_viewsById setObject:view forKey:id_];
 			if(_styleSheet){
 				NSString *css = [_styleSheet getStyleById:id_];
-				[view.style set:css];
+				[view.style set:css baseUrl:_baseUrl];
 			}
 		}
 		
-		[view.style set:[attributeDict objectForKey:@"style"]];
+		[view.style set:[attributeDict objectForKey:@"style"] baseUrl:_baseUrl];
 	}
 }
 

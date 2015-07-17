@@ -29,9 +29,11 @@
 		NSLog(@"%d", event);
 		if(event == IEventHighlight){
 			[view.style set:@"background: #ffe;"];
+			//[view.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
 		}
 		if(event == IEventUnhighlight){
 			[view.style set:@"background: #fff;"];
+			//[view.style set:@"padding: 8; background: #0fff url(coupon_ic_up.png)"];
 		}
 		if(event == IEventClick){
 			IButton *ib = (IButton *)view;
@@ -78,16 +80,36 @@
 		//[self addIViewRow:view];
 		//[self reload];
 	}
-	if(1){
-		[IView loadUrl:@"http://127.0.0.1/a.xml" callback:^(IView *view) {
-			NSLog(@"reload");
-			[self addIViewRow:view];
-			[self reload];
+
+#if 0
+	{
+		NSString *xml = @"<div><div id=\"pan\" style=\"background: url(coupon_ic_up.png); width: 100%; margin: 10; height: 100;\"><span style=\"float: center; valign: middle;\">Drag me</span></div></div>";
+		IView *view = [IView viewFromXml:xml];
+		IView *pan = [view getViewById:@"pan"];
+		[self addIViewRow:view];
+		[view addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
+			NSLog(@"%d", event);
+			if(event == IEventHighlight){
+				[pan setNeedsDisplay];
+				[pan.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
+			}
+			if(event == IEventUnhighlight){
+				[pan.style set:@"padding: 8; background: #0fff url(coupon_ic_up.png)"];
+			}
 		}];
-		
-		//IView *view = [IView namedView:@"register.html"];
-		//[self addIViewRow:view];
+		return;
 	}
+#endif
+	
+#if 0
+	[IView loadUrl:@"http://127.0.0.1/cocoaui.xml" callback:^(IView *view) {
+		NSLog(@"reload");
+		[self addIViewRow:view];
+		[self reload];
+	}];
+	return;
+#endif
+
 	/*
 	{
 		http_get_raw(@"http://www.cocoaui.com/", nil, ^(NSData *data) {

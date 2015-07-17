@@ -130,10 +130,15 @@ typedef enum{
 @property (nonatomic, readonly) NSString *fontFamily;
 
 @property (nonatomic, readonly) UIColor *backgroundColor;
+@property (nonatomic, readonly) UIImage *backgroundImage;
+@property (nonatomic, readonly) BOOL backgroundRepeat;
 
 + (CGFloat)smallFontSize;
 + (CGFloat)normalFontSize;
 + (CGFloat)largeFontSize;
+
+- (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;
+
 
 - (void)copyFrom:(IStyle *)style;
 

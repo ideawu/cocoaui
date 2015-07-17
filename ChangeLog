@@ -1,5 +1,6 @@
 * 1.2.0
 	* New features:
+		- IView supports background image(2015-07-17)
 		- IButton supports IEventHighlight|IEventUnhighlight(2015-07-17)
 		- Support css file import in XML(2015-07-07)
 	* Bug fixes:
