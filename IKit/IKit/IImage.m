@@ -45,10 +45,13 @@
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 		[request setHTTPMethod:@"GET"];
 		[request setURL:[NSURL URLWithString:src]];
-		[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error){
-			UIImage *image = [UIImage imageWithData:data];
-			[self setImage:image];
-		}];
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+		if(data){
+			UIImage *img = [UIImage imageWithData:data];
+			if(img){
+				[self setImage:img];
+			}
+		}
 	}else{
 		[self setImage:[UIImage imageNamed:src]];
 	}
