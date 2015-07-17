@@ -212,17 +212,7 @@
 	}
 }
 
-- (void)updateFrame{
-	//NSLog(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
-	if(self.isPrimativeView){
-		contentView.frame = CGRectMake(0, 0, _style.w, _style.h);
-	}
-	self.frame = _style.rect;
-	self.hidden = _style.hidden;
-
-	[self updateMaskView];
-	[self setNeedsDisplay];
-
+- (void)updateBackgroundView{
 	if(_backgroundView){
 		[_backgroundView removeFromSuperview];
 	}
@@ -239,6 +229,19 @@
 		frame.origin = CGPointZero;
 		_backgroundView.frame = frame;
 	}
+}
+
+- (void)updateFrame{
+	//NSLog(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
+	if(self.isPrimativeView){
+		contentView.frame = CGRectMake(0, 0, _style.w, _style.h);
+	}
+	self.frame = _style.rect;
+	self.hidden = _style.hidden;
+
+	[self updateMaskView];
+	[self updateBackgroundView];
+	[self setNeedsDisplay];
 }
 
 - (void)setNeedsLayout{
@@ -267,6 +270,7 @@
 	if(maskView){
 		[maskView setNeedsDisplay];
 	}
+	[self updateBackgroundView];
 }
 
 - (void)layoutSubviews{

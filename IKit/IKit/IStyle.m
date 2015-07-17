@@ -544,6 +544,8 @@
 			src = [src stringByTrimmingCharactersInSet:cs];
 		}else if([p isEqualToString:@"none"]){
 			_backgroundColor = [UIColor clearColor];
+			_backgroundImage = nil;
+			_backgroundRepeat = NO;
 		}else if([p isEqualToString:@"repeat"]){
 			_backgroundRepeat = YES;
 		}else if([p isEqualToString:@"no-repeat"]){
@@ -572,9 +574,6 @@
 				_backgroundImage = [UIImage imageNamed:src];
 			}
 		}
-	}
-	if(_backgroundImage){
-		//[_view setNeedsLayout]; // why do we need this?
 	}
 }
 
