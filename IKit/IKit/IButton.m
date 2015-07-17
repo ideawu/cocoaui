@@ -103,13 +103,24 @@
 }
 
 - (void)onClick{
-	[self fireEvent:IEventClick];
+	[self fireUnhighlightEvent];
+	[self fireClickEvent];
 }
 
 - (void)addEvent:(IEventType)event handler:(void (^)(IEventType event, IView *view))handler{
 	[super addEvent:event handler:handler];
-	[_button removeTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
-	[_button addTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
+	if(event & IEventClick){
+		[_button removeTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
+		[_button addTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
+	}
+	if(event & IEventHighlight){
+		[_button removeTarget:self action:@selector(fireHighlightEvent) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
+		[_button addTarget:self action:@selector(fireHighlightEvent) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
+	}
+	if(event & IEventUnhighlight){
+		[_button removeTarget:self action:@selector(fireUnhighlightEvent) forControlEvents:UIControlEventTouchDragExit];
+		[_button addTarget:self action:@selector(fireUnhighlightEvent) forControlEvents:UIControlEventTouchDragExit];
+	}
 }
 
 @end

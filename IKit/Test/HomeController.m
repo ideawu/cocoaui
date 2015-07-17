@@ -21,8 +21,23 @@
 - (void)add_btn:(NSString *)text{
 	IButton *btn = [IButton buttonWithText:text];
 	[btn.style set:@"margin-bottom: 0; width: 100%; height: 40; background: #fff; border-bottom: 1px solid #ddd;"];
-	[btn.button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+	//[btn.button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
 	[self addIViewRow:btn];
+	
+	__weak typeof(self) me = self;
+	[btn addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
+		NSLog(@"%d", event);
+		if(event == IEventHighlight){
+			[view.style set:@"background: #ffe;"];
+		}
+		if(event == IEventUnhighlight){
+			[view.style set:@"background: #fff;"];
+		}
+		if(event == IEventClick){
+			IButton *ib = (IButton *)view;
+			[me click:ib.button];
+		}
+	}];
 }
 
 - (void)viewDidLoad {

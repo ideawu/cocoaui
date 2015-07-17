@@ -1,4 +1,5 @@
 * 1.2.0
 	* New features:
+		- IButton supports IEventHighlight|IEventUnhighlight(2015-07-17)
 		- Support css file import in XML(2015-07-07)
 	* Bug fixes:

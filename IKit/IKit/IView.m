@@ -386,8 +386,16 @@
 	return NO;
 }
 
+- (void)fireHighlightEvent{
+	[self fireEvent:IEventHighlight];
+}
+
 - (void)fireUnhighlightEvent{
 	[self fireEvent:IEventUnhighlight];
+}
+
+- (void)fireClickEvent{
+	[self fireEvent:IEventClick];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

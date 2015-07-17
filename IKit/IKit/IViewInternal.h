@@ -46,6 +46,10 @@
 - (void)layout;
 - (void)updateFrame;
 
+- (void)fireHighlightEvent;
+- (void)fireUnhighlightEvent;
+- (void)fireClickEvent;
+
 @end
 
 #endif
