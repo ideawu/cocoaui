@@ -484,9 +484,22 @@
 - (void)layoutHeaderFooterRefreshControl{
 	//log_trace(@"%s", __func__);
 	if(_headerRefreshControl){
-		CGRect frame = _headerRefreshControl.frame;
-		if(frame.origin.y != -frame.size.height){
-			[_headerRefreshControl.style set:[NSString stringWithFormat:@"top: %f", -frame.size.height]];
+		if(_headerRefreshControl.state == IRefreshBegin){
+			CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			CGRect frame = _headerRefreshControl.frame;
+			if(y < 0){
+				frame.origin.y = 0;
+			}else{
+				frame.origin.y = y;
+			}
+			frame.origin.y -= _headerRefreshControl.frame.size.height;
+			_headerRefreshControl.frame = frame;
+		}else{
+			CGRect frame = _headerRefreshControl.frame;
+			if(frame.origin.y != -frame.size.height){
+				CGFloat top = -_headerRefreshControl.frame.size.height;
+				[_headerRefreshControl.style set:[NSString stringWithFormat:@"top: %f", top]];
+			}
 		}
 	}
 	
@@ -523,6 +536,11 @@
 - (void)endRefresh:(IRefreshControl *)refreshControl{
 	if(_pullRefresh){
 		[_pullRefresh endRefresh:refreshControl];
+		[UIView animateWithDuration:0.2 animations:^(){
+			[self layoutHeaderFooterView];
+			[self layoutHeaderFooterRefreshControl];
+		} completion:^(BOOL finished){
+		}];
 	}
 }
 
