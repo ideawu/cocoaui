@@ -83,6 +83,19 @@
 
 #if 0
 	{
+		NSString *s = @"padding: 2; border: 1 solid #333; margin: 3;";
+		IView *view = [[IView alloc] init];
+		[view addSubview:[ILabel labelWithText:@"aaabbbaaaa"] style:s];
+		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
+		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
+		[view addSubview:[ILabel labelWithText:@"中国人在的要国为中国人在的要国为中国人在的要国为"] style:s];
+		[view addSubview:[ILabel labelWithText:@"aaabbbaaawww"] style:s];
+		[self addIViewRow:view];
+	}
+#endif
+
+#if 0
+	{
 		NSString *xml = @"<div><div id=\"pan\" style=\"background: url(coupon_ic_up.png); width: 100%; margin: 10; height: 100;\"><span style=\"float: center; valign: middle;\">Drag me</span></div></div>";
 		IView *view = [IView viewFromXml:xml];
 		IView *pan = [view getViewById:@"pan"];

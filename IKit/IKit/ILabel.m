@@ -88,7 +88,12 @@
 	
 	{
 		CGRect frame = _label.frame;
-		frame.size.width = self.style.w;
+		// 如果 label 是 auto-width, 那么这里的宽度应该是父容器的宽度
+		if(self.style.resizeWidth){
+			frame.size.width = self.parent.style.innerWidth;
+		}else{
+			frame.size.width = self.style.w;
+		}
 		_label.frame = frame;
 		[_label sizeToFit];
 		/*
