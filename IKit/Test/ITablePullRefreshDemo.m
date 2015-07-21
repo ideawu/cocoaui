@@ -32,7 +32,7 @@
 	}
 	[self initHeaderFooter];
 
-	self.pullRefresh.footerVisibleRateToRefresh = -6;
+	self.pullRefresh.footerVisibleRateToRefresh = -2;
 
 	[self loadData:20];
 	
@@ -71,8 +71,8 @@
 	if(state == IRefreshBegin){
 		// refresh
 		if(view == self.headerRefreshControl){
-			[self clear];
-			[self loadData:20];
+			[self performSelector:@selector(reloadData) withObject:nil afterDelay:2.0];
+			return;
 		}
 		// load more
 		if(view == self.footerRefreshControl){
@@ -81,6 +81,13 @@
 		[self reload];
 		[self endRefresh:view];
 	}
+}
+
+- (void)reloadData{
+	[self clear];
+	[self loadData:20];
+	[self reload];
+	[self endRefresh:self.headerRefreshControl];
 }
 
 @end
