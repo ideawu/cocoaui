@@ -16,9 +16,9 @@
 
 @property (nonatomic, readonly) IView *indicatorView;
 @property (nonatomic, readonly) IView *contentView;
+@property (nonatomic) IRefreshState state;
 
 - (void)setStateTextForNone:(NSString *)none maybe:(NSString *)maybe begin:(NSString *)begin;
-- (void)setState:(IRefreshState)state;
 
 @end
 

@@ -18,6 +18,7 @@
 	ILabel *_label;
 	IView *_indicatorWrapper;
 	UIActivityIndicatorView *_indicator;
+	IRefreshState _state;
 }
 
 @end
@@ -61,7 +62,12 @@
 	[_label setText:_noneText];
 }
 
+- (IRefreshState)state{
+	return _state;
+}
+
 - (void)setState:(IRefreshState)state{
+	_state = state;
 	if(state == IRefreshNone){
 		[_label setText:_noneText];
 		[_indicator stopAnimating];
