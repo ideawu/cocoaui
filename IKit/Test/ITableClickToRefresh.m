@@ -57,6 +57,7 @@
 
 	if(!self.headerRefreshControl){
 		IRefreshControl *header = [[IRefreshControl alloc] init];
+		[header.style set:@"background: #333;"];
 		self.headerRefreshControl = header;
 	}
 	if(!self.footerRefreshControl){

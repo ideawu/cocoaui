@@ -36,6 +36,8 @@
 	
 	CGRect _contentFrame;
 	NSMutableArray *_cellSelectionEvents;
+	
+	UIView *_headerRefreshWrapper;
 }
 @end
 
@@ -64,6 +66,10 @@
 
 	[_scrollView addSubview:_contentView];
 	_cellSelectionEvents = [[NSMutableArray alloc] init];
+	
+	_headerRefreshWrapper = [[UIView alloc] init];
+	[_scrollView addSubview:_headerRefreshWrapper];
+	
 	return self;
 }
 
@@ -378,12 +384,11 @@
 	//NSLog(@"%s", __func__);
 	if(_headerView){
 		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
-		CGRect frame = _headerView.frame;
 		if(y < 0){
-			frame.origin.y = 0;
-		}else{
-			frame.origin.y = y;
+			y = 0;
 		}
+		CGRect frame = _headerView.frame;
+		frame.origin.y = y;
 		_headerView.frame = frame;
 	}
 	if(_footerView){
@@ -442,8 +447,13 @@
 	[self initPullRefresh];
 	
 	if(_headerRefreshControl != nil){
-		[_scrollView addSubview:_headerRefreshControl];
+		[_headerRefreshWrapper addSubview:_headerRefreshControl];
 		if(_scrollView.superview){
+			// layoutSubviews 之前, 必须有宽度
+			CGRect frame = _headerRefreshWrapper.frame;
+			frame.size.width = _scrollView.frame.size.width;
+			_headerRefreshWrapper.frame = frame;
+			
 			[_headerRefreshControl layoutSubviews];
 			[self layoutHeaderFooterRefreshControl];
 		}
@@ -484,23 +494,13 @@
 - (void)layoutHeaderFooterRefreshControl{
 	//log_trace(@"%s", __func__);
 	if(_headerRefreshControl){
-		if(_headerRefreshControl.state == IRefreshBegin){
-			CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
-			CGRect frame = _headerRefreshControl.frame;
-			if(y < 0){
-				frame.origin.y = 0;
-			}else{
-				frame.origin.y = y;
-			}
-			frame.origin.y -= _headerRefreshControl.frame.size.height;
-			_headerRefreshControl.frame = frame;
-		}else{
-			CGRect frame = _headerRefreshControl.frame;
-			if(frame.origin.y != -frame.size.height){
-				CGFloat top = -_headerRefreshControl.frame.size.height;
-				[_headerRefreshControl.style set:[NSString stringWithFormat:@"top: %f", top]];
-			}
+		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+		if(y < 0){
+			y = 0;
 		}
+		CGRect frame = _headerRefreshControl.frame;
+		frame.origin.y = y - _headerRefreshControl.frame.size.height;
+		_headerRefreshWrapper.frame = frame;
 	}
 	
 	if(_footerRefreshControl){
@@ -537,8 +537,8 @@
 	if(_pullRefresh){
 		[_pullRefresh endRefresh:refreshControl];
 		[UIView animateWithDuration:0.2 animations:^(){
-			[self layoutHeaderFooterView];
 			[self layoutHeaderFooterRefreshControl];
+			[self layoutHeaderFooterView];
 		} completion:^(BOOL finished){
 		}];
 	}
