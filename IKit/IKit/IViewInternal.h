@@ -26,7 +26,7 @@
 #else
 @property (nonatomic, weak) IView *parent;
 #endif
-@property (nonatomic, readonly) NSArray *subs;
+@property (nonatomic, readonly) NSMutableArray *subs;
 
 @property (nonatomic, weak) IRow *row;
 @property (nonatomic, weak) ICell *cell;

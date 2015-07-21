@@ -153,6 +153,12 @@
 	[self addSubview:view style:nil];
 }
 
+- (void)removeFromSuperview{
+	[super removeFromSuperview];
+	[_parent.subs removeObject:self];
+	_parent = nil;
+}
+
 - (UIViewController *)viewController{
 	UIResponder *responder = self;
 	while (responder){
