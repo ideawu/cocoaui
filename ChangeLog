@@ -1,5 +1,6 @@
 * 1.2.0
 	* New features:
+		- Fix Ilabel auto width issue when it is in small area(2015-07-21)
 		- IView supports background image(2015-07-17)
 		- IButton supports IEventHighlight|IEventUnhighlight(2015-07-17)
 		- Support css file import in XML(2015-07-07)
