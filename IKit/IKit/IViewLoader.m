@@ -14,6 +14,7 @@
 #import "ILabel.h"
 #import "IInput.h"
 #import "IButton.h"
+#import "ISwitch.h"
 #import "IImage.h"
 #import "IStyleSheet.h"
 #import "Text.h"
@@ -251,6 +252,8 @@ typedef enum{
 		view = input;
 	}else if([tagName isEqualToString:@"button"]){
 		view = [[IButton alloc] init];
+	}else if([tagName isEqualToString:@"switch"]){
+		view = [[ISwitch alloc] init];
 	}else if([tagName isEqualToString:@"h1"]){
 		view = [[ILabel alloc] init];
 		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;"];

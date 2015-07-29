@@ -92,6 +92,8 @@
 		31CA29541AA5B311001C8647 /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29041AA5A996001C8647 /* libIKit.a */; };
 		31CA29551AA5B311001C8647 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29061AA5A996001C8647 /* libIObj.a */; };
 		31D2C75E1B689DA4009C1C97 /* ITablePullRefreshItem.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */; };
+		31D2C7611B68CD1E009C1C97 /* ISwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C7601B68CD1E009C1C97 /* ISwitch.m */; };
+		31D2C7621B68CFD8009C1C97 /* ISwitch.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31D2C75F1B68CD1E009C1C97 /* ISwitch.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +113,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				31D2C7621B68CFD8009C1C97 /* ISwitch.h in CopyFiles */,
 				311609901AC510E5003C5EF2 /* IStyleUtil.h in CopyFiles */,
 				083F63C01A9C7C6100C5F9A7 /* IKitUtil.h in CopyFiles */,
 				0854926F1A826EE200F0563C /* ITable.h in CopyFiles */,
@@ -236,6 +239,8 @@
 		31CA29061AA5A996001C8647 /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIObj.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		31CA29071AA5A996001C8647 /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestIObj; sourceTree = BUILT_PRODUCTS_DIR; };
 		31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITablePullRefreshItem.xml; sourceTree = "<group>"; };
+		31D2C75F1B68CD1E009C1C97 /* ISwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISwitch.h; sourceTree = "<group>"; };
+		31D2C7601B68CD1E009C1C97 /* ISwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISwitch.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +334,8 @@
 				08F60E441A5914DA00102F2B /* IButton.m */,
 				08F60E4F1A598F7200102F2B /* IInput.h */,
 				08F60E501A598F7200102F2B /* IInput.m */,
+				31D2C75F1B68CD1E009C1C97 /* ISwitch.h */,
+				31D2C7601B68CD1E009C1C97 /* ISwitch.m */,
 				08C254CC1A650B4B0095EC77 /* IImage.h */,
 				08C254CD1A650B4B0095EC77 /* IImage.m */,
 				0875F0CF1A6919C700870619 /* IRefreshControl.h */,
@@ -591,6 +598,7 @@
 				08F60E421A5914AD00102F2B /* ILabel.m in Sources */,
 				08F60E511A598F7200102F2B /* IInput.m in Sources */,
 				08EAD7121A6AF54B00A0822A /* IPullRefresh.m in Sources */,
+				31D2C7611B68CD1E009C1C97 /* ISwitch.m in Sources */,
 				08A49C661A766E4C00748605 /* IPopover.m in Sources */,
 				08C254CE1A650B4B0095EC77 /* IImage.m in Sources */,
 				0854925B1A7F79E500F0563C /* MaskUIView.m in Sources */,
