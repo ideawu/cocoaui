@@ -270,6 +270,18 @@ typedef enum{
 	_sval = val;
 }
 
+- (void)setIntval:(int64_t)val{
+	[self intval:val];
+}
+
+- (void)setDoubleval:(double)val{
+	[self doubleval:val];
+}
+
+- (void)setStrval:(NSString *)val{
+	[self strval:val];
+}
+
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len{
 	if([self is_object]){
 		if(!_dict){

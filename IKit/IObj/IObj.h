@@ -52,6 +52,9 @@
 - (void)doubleval:(double)val;
 - (void)strval:(NSString *)val;
 
+- (void)setIntval:(int64_t)val;
+- (void)setDoubleval:(double)val;
+- (void)setStrval:(NSString *)val;
 
 @end
 
