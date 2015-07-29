@@ -265,7 +265,7 @@
 }
 
 - (void)drawRect:(CGRect)rect{
-	log_debug(@"%@ %s %@", self.name, __FUNCTION__, NSStringFromCGRect(rect));
+	//log_debug(@"%@ %s %@", self.name, __FUNCTION__, NSStringFromCGRect(rect));
 	//[super drawRect:rect]; // no need
 
 	self.clipsToBounds = _style.overflowHidden;
