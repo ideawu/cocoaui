@@ -83,42 +83,46 @@
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView{
 	//log_trace(@"scroll.offset.y = %f", scrollView.contentOffset.y);
 
-	if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
-		CGFloat rate = [self headerVisibleRate];
-		//NSLog(@"header = %f", rate);
-		if(rate > _headerVisibleRateToRefresh){
-			if(headerRefreshState == IRefreshNone){
-				[self setView:_headerView state:IRefreshMaybe];
-			}
-			if(!scrollView.tracking){
-				if(headerRefreshState == IRefreshMaybe){
-					[self setView:_headerView state:IRefreshBegin];
+	if(_headerView){
+		if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
+			CGFloat rate = [self headerVisibleRate];
+			//NSLog(@"header = %f", rate);
+			if(rate > _headerVisibleRateToRefresh){
+				if(headerRefreshState == IRefreshNone){
+					[self setView:_headerView state:IRefreshMaybe];
 				}
-			}
-		//}else if(rate > 0){
-		}else{
-			if(headerRefreshState == IRefreshMaybe){
-				[self setView:_headerView state:IRefreshNone];
+				if(!scrollView.tracking){
+					if(headerRefreshState == IRefreshMaybe){
+						[self setView:_headerView state:IRefreshBegin];
+					}
+				}
+			//}else if(rate > 0){
+			}else{
+				if(headerRefreshState == IRefreshMaybe){
+					[self setView:_headerView state:IRefreshNone];
+				}
 			}
 		}
 	}
 	
-	if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
-		CGFloat rate = [self footerVisibleRate];
-		//NSLog(@"footer = %f", rate);
-		if(rate > _footerVisibleRateToRefresh){
-			if(footerRefreshState == IRefreshNone){
-				[self setView:_footerView state:IRefreshMaybe];
-			}
-			if(!scrollView.tracking){
-				if(footerRefreshState == IRefreshMaybe){
-					[self setView:_footerView state:IRefreshBegin];
+	if(_footerView){
+		if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
+			CGFloat rate = [self footerVisibleRate];
+			//NSLog(@"footer = %f", rate);
+			if(rate > _footerVisibleRateToRefresh){
+				if(footerRefreshState == IRefreshNone){
+					[self setView:_footerView state:IRefreshMaybe];
 				}
-			}
-		//}else if(rate > 0){
-		}else{
-			if(footerRefreshState == IRefreshMaybe){
-				[self setView:_footerView state:IRefreshNone];
+				if(!scrollView.tracking){
+					if(footerRefreshState == IRefreshMaybe){
+						[self setView:_footerView state:IRefreshBegin];
+					}
+				}
+			//}else if(rate > 0){
+			}else{
+				if(footerRefreshState == IRefreshMaybe){
+					[self setView:_footerView state:IRefreshNone];
+				}
 			}
 		}
 	}
