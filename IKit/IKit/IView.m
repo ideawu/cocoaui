@@ -290,9 +290,9 @@
 			return;
 		}
 	}
-	log_debug(@"%d %s begin %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%d %s begin %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
 	[self layout];
-	log_debug(@"%d %s end %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%d %s end %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
 	
 	if(self.isRootView && self.cell != nil){
 		self.cell.height = _style.outerHeight;
