@@ -150,6 +150,52 @@
 	[_cells addObject:cell];
 }
 
+- (void)insertCell:(ICell *)cell atIndex:(NSUInteger)index{
+	_contentFrame.size.height += cell.height;
+	cell.table = self;
+	[_cells insertObject:cell atIndex:index];
+	
+	ICell *prev = nil;
+	for(NSUInteger i=index; i<_cells.count; i++){
+		ICell *cell = [_cells objectAtIndex:i];
+		if(!prev){
+			cell.y = 0;
+		}else{
+			cell.y = prev.y + prev.height;
+		}
+		prev = cell;
+	}
+	
+	if(index <= _visibleCellIndexMin){
+		CGPoint offset = _scrollView.contentOffset;
+		offset.y += cell.height;
+		_scrollView.contentOffset = offset;
+	}
+}
+
+- (void)prependIViewRow:(IView *)view{
+	[self prependIViewRow:view defaultHeight:90];
+}
+
+- (void)prependIViewRow:(IView *)view defaultHeight:(CGFloat)height{
+	ICell *cell = [[ICell alloc] init];
+	cell.contentView = view;
+	cell.height = height;
+	[self insertCell:cell atIndex:0];
+}
+
+- (void)prependDataRow:(id)data forTag:(NSString *)tag{
+	[self prependDataRow:data forTag:tag defaultHeight:90];
+}
+
+- (void)prependDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height{
+	ICell *cell = [[ICell alloc] init];
+	cell.tag = tag;
+	cell.data = data;
+	cell.height = height;
+	[self insertCell:cell atIndex:0];
+}
+
 - (void)clear{
 	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
 		ICell *cell = [_cells objectAtIndex:i];
@@ -202,7 +248,7 @@
 	}
 	if(cell.tag){
 		NSMutableArray *views = [_tagViews objectForKey:cell.tag];
-		if(views.count < 2 && cell.view){
+		if(views.count < 3 && cell.view){
 			[views addObject:cell.view];
 			//log_debug(@"enqueue cell for tag: %@, count: %d", cell.tag, (int)views.count);
 		}
@@ -332,10 +378,16 @@
 	NSUInteger low = MIN(minIndex, _visibleCellIndexMin);
 	NSUInteger high = MAX(maxIndex, _visibleCellIndexMax);
 	for(NSUInteger index=low; index<=high; index++){
+		ICell *cell = [_cells objectAtIndex:index];
 		if(index < minIndex || index > maxIndex){
-			[self removeVisibleCellAtIndex:index];
-		}else if(index < _visibleCellIndexMin || index > _visibleCellIndexMax){
-			[self addVisibleCellAtIndex:index];
+			if(cell.view.superview){
+				[self removeVisibleCellAtIndex:index];
+			}
+		//}else if(index < _visibleCellIndexMin || index > _visibleCellIndexMax){
+		}else{
+			if(!cell.view.superview){
+				[self addVisibleCellAtIndex:index];
+			}
 		}
 	}
 	_visibleCellIndexMin = minIndex;

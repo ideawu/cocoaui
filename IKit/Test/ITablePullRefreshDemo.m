@@ -8,11 +8,61 @@
  */
 
 #import "ITablePullRefreshDemo.h"
+#import "IObj.h"
+
+@interface ITablePullRefreshItem : IView{
+}
+@property ILabel *num;
+@property IButton *btn_1;
+@property IButton *btn_2;
+@end
+@implementation ITablePullRefreshItem
+- (id)init{
+	self = [super init];
+	IView *view = [IView namedView:@"ITablePullRefreshItem"];
+	[self addSubview:view];
+	
+	_num = (ILabel *)[view getViewById:@"seq"];
+	_btn_1 = (IButton *)[view getViewById:@"btn_1"];
+	_btn_2 = (IButton *)[view getViewById:@"btn_2"];
+	
+	__weak typeof(self) me = self;
+	[_btn_1 addEvent:IEventClick handler:^(IEventType event, IView *view) {
+		NSString *s = me.num.text;
+		if(s.length > 2){
+			s = [s substringToIndex:s.length - 2];
+			me.num.text = s;
+
+			IObj *obj = (IObj *)me.data;
+			obj.strval = s;
+		}
+	}];
+	[_btn_2 addEvent:IEventClick handler:^(IEventType event, IView *view) {
+		NSString *s = me.num.text;
+		s = [s stringByAppendingFormat:@"\na"];
+		me.num.text = s;
+		
+		IObj *obj = (IObj *)me.data;
+		obj.strval = s;
+	}];
+	
+	return self;
+}
+
+- (void)setData:(id)data{
+	[super setData:data];
+	IObj *obj = (IObj *)self.data;
+	_num.text = obj.strval;
+}
+@end
+
+
+////////////////////////////////////////////////
+
 
 @interface ITablePullRefreshDemo (){
 	int _seq;
 }
-
 @end
 
 @implementation ITablePullRefreshDemo
@@ -31,10 +81,11 @@
 		self.headerView = headerRow;
 	}
 	[self initHeaderFooter];
+	[self registerViewClass:[ITablePullRefreshItem class] forTag:@"item"];
 
-	self.pullRefresh.footerVisibleRateToRefresh = -2;
+	//self.pullRefresh.footerVisibleRateToRefresh = -1;
 
-	[self loadData:20];
+	[self loadData:2];
 	
 	return self;
 }
@@ -42,12 +93,9 @@
 - (void)loadData:(int)count{
 	static int seq = 0;
 	for(int i=0; i<count; i++){
-		ITableRow *row = [[ITableRow alloc] initWithNumberOfColumns:3];
-		[row.style set:@"height: 50; padding-top: 10; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
-		[row column:0 setText:[NSString stringWithFormat:@"%d", seq]];
-		[row column:1 setText:[NSString stringWithFormat:@"name-%d", seq]];
-		[row column:2 setText:[NSString stringWithFormat:@"%d", rand()%50+1]];
-		[self addIViewRow:row];
+		NSString *s = [NSString stringWithFormat:@"%d", seq];
+		IObj *obj = [IObj stringObj:s];
+		[self addDataRow:obj forTag:@"item"];
 		seq ++;
 	}
 }
@@ -72,12 +120,12 @@
 	if(state == IRefreshBegin){
 		// refresh
 		if(view == self.headerRefreshControl){
-			[self performSelector:@selector(reloadData) withObject:nil afterDelay:2.0];
+			[self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
 			return;
 		}
 		// load more
 		if(view == self.footerRefreshControl){
-			[self loadData:33];
+			[self loadData:5];
 		}
 		[self reload];
 		[self endRefresh:view];
@@ -85,8 +133,18 @@
 }
 
 - (void)reloadData{
-	[self clear];
-	[self loadData:20];
+	//[self clear];
+	//[self loadData:20];
+	
+	static int seq = 1000;
+	for(int i=0; i<5; i++){
+		NSString *s = [NSString stringWithFormat:@"%d", seq];
+		IObj *obj = [IObj stringObj:s];
+		[self prependDataRow:obj forTag:@"item"];
+		seq ++;
+	}
+	
+	
 	[self reload];
 	[self endRefresh:self.headerRefreshControl];
 }

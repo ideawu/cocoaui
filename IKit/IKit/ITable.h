@@ -28,17 +28,24 @@
 - (void)clear;
 - (void)reload;
 
+- (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
+
 - (void)addIViewRow:(IView *)view;
 - (void)addIViewRow:(IView *)view defaultHeight:(CGFloat)height;
 - (void)addDataRow:(id)data forTag:(NSString *)tag;
 - (void)addDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height;
+
+- (void)prependIViewRow:(IView *)view;
+- (void)prependIViewRow:(IView *)view defaultHeight:(CGFloat)height;
+- (void)prependDataRow:(id)data forTag:(NSString *)tag;
+- (void)prependDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height;
+
 - (void)addDivider:(NSString *)css;
 - (void)addDivider:(NSString *)css height:(CGFloat)height;
-// deprecated, use addDivider instead
+
+// @deprecated, use addDivider instead
 - (void)addSeparator:(NSString *)css;
 - (void)addSeparator:(NSString *)css height:(CGFloat)height;
-
-- (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
 
 - (void)onHighlight:(IView *)view;
 - (void)onUnhighlight:(IView *)view;
