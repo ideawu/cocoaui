@@ -11,6 +11,9 @@
 #import "IStyleInternal.h"
 #import "IKitUtil.h"
 #import "IStyleUtil.h"
+#import "IStyleSheet.h"
+#import "IViewInternal.h"
+#import "IViewLoader.h"
 
 @implementation IStyleBorder
 
@@ -301,6 +304,20 @@
 			return NSTextAlignmentJustified;
 		default:
 			return NSTextAlignmentLeft;
+	}
+}
+
+- (void)setClass:(NSString *)clz{
+	IView *view = _view;
+	while(view){
+		if(view.viewLoader){
+			NSString *css = [view.viewLoader.styleSheet getStyleByClass:clz];
+			if(css){
+				[self set:css];
+			}
+			return;
+		}
+		view = view.parent;
 	}
 }
 

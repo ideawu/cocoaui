@@ -98,11 +98,14 @@ typedef enum{
 		[_viewsById removeObjectForKey:ret.vid];
 	}
 	
-	_styleSheet = nil;
 	currentView = nil;
 	parse_stack = nil;
 	_text = nil;
 	return ret;
+}
+
+- (IStyleSheet *)styleSheet{
+	return _styleSheet;
 }
 
 - (void)loadXml:(NSString *)str{
@@ -126,6 +129,7 @@ typedef enum{
 	//log_trace(@"%@", str);
 	state = ParseInit;
 	currentView = nil;
+	_styleSheet = nil;
 	
 	_ignore = NO;
 	_rootViews = [[NSMutableArray alloc] init];

@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @class IView;
+@class IStyleSheet;
 
 @interface IViewLoader : NSObject
 
@@ -17,6 +18,7 @@
 
 @property (nonatomic, readonly) NSArray *rootViews;
 @property (nonatomic, readonly) IView *view;
+@property (nonatomic, readonly) IStyleSheet *styleSheet;
 
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
 

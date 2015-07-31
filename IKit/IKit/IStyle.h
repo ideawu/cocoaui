@@ -56,6 +56,11 @@
  */
 - (void)set:(NSString *)css;
 
+/**
+ * set css from style sheet by clz
+ */
+- (void)setClass:(NSString *)clz;
+
 @end
 
 #endif
