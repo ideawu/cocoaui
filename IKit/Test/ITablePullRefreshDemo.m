@@ -86,7 +86,6 @@
 	self.navigationItem.title = @"ITablePullRefreshDemo";
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
-	/*
 	{
 		ITableRow *headerRow = [[ITableRow alloc] initWithNumberOfColumns:3];
 		[headerRow.style set:@"height: 30; font-weight: bold; text-align: center; background: #6cf;"];
@@ -96,7 +95,7 @@
 		self.headerView = headerRow;
 	}
 	[self initHeaderFooter];
-	 */
+
 	[self registerViewClass:[ITablePullRefreshItem class] forTag:@"item"];
 
 	//self.pullRefresh.footerVisibleRateToRefresh = -1;
