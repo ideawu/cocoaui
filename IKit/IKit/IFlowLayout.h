@@ -15,16 +15,8 @@
 @interface IFlowLayout : NSObject{
 }
 
-@property (nonatomic) CGFloat x;
-@property (nonatomic) CGFloat y;
-@property (nonatomic) CGFloat w;
-@property (nonatomic) CGFloat h;
-@property (nonatomic) CGFloat realWidth;
-@property (nonatomic) CGFloat realHeight;
++ (id)layoutWithView:(IView *)view;
 
-+ (id)layoutWithStyle:(IStyle *)style;
-
-- (void)place:(IView *)view;
-- (void)reset;
+- (void)layout;
 
 @end

@@ -99,6 +99,7 @@
 }
 
 - (void)addIViewRow:(IView *)view defaultHeight:(CGFloat)height{
+	view.style.ratioWidth = 1.0;
 	ICell *cell = [[ICell alloc] init];
 	cell.contentView = view;
 	[self addCell:cell defaultHeight:height];

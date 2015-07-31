@@ -15,6 +15,9 @@
 @property ILabel *num;
 @property IButton *btn_1;
 @property IButton *btn_2;
+@property IButton *btn_3;
+@property IButton *btn_4;
+@property IView *div;
 @end
 @implementation ITablePullRefreshItem
 - (id)init{
@@ -25,6 +28,9 @@
 	_num = (ILabel *)[view getViewById:@"seq"];
 	_btn_1 = (IButton *)[view getViewById:@"btn_1"];
 	_btn_2 = (IButton *)[view getViewById:@"btn_2"];
+	_btn_3 = (IButton *)[view getViewById:@"btn_3"];
+	_btn_4 = (IButton *)[view getViewById:@"btn_4"];
+	_div = (IView *)[view getViewById:@"div"];
 	
 	__weak typeof(self) me = self;
 	[_btn_1 addEvent:IEventClick handler:^(IEventType event, IView *view) {
@@ -45,6 +51,13 @@
 		IObj *obj = (IObj *)me.data;
 		obj.strval = s;
 	}];
+
+	[_btn_3 addEvent:IEventClick handler:^(IEventType event, IView *view) {
+		me.div.style.width -= 20;
+	}];
+	[_btn_4 addEvent:IEventClick handler:^(IEventType event, IView *view) {
+		me.div.style.width += 20;
+	}];
 	
 	return self;
 }
@@ -54,6 +67,7 @@
 	IObj *obj = (IObj *)self.data;
 	_num.text = obj.strval;
 }
+
 @end
 
 
@@ -72,6 +86,7 @@
 	self.navigationItem.title = @"ITablePullRefreshDemo";
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
+	/*
 	{
 		ITableRow *headerRow = [[ITableRow alloc] initWithNumberOfColumns:3];
 		[headerRow.style set:@"height: 30; font-weight: bold; text-align: center; background: #6cf;"];
@@ -81,11 +96,12 @@
 		self.headerView = headerRow;
 	}
 	[self initHeaderFooter];
+	 */
 	[self registerViewClass:[ITablePullRefreshItem class] forTag:@"item"];
 
 	//self.pullRefresh.footerVisibleRateToRefresh = -1;
 
-	[self loadData:2];
+	[self loadData:1];
 	
 	return self;
 }

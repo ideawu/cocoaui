@@ -188,6 +188,7 @@
 - (void)setSize:(CGSize)size{
 	[self setWidth:size.width];
 	[self setHeight:size.height];
+	[_view setNeedsLayout];
 }
 
 - (CGFloat)width{
@@ -198,6 +199,7 @@
 	_w = w;
 	_ratioWidth = 0;
 	_resizeType &= ~IStyleResizeWidth;
+	[_view setNeedsLayout];
 }
 
 - (CGFloat)height{
@@ -208,6 +210,7 @@
 	_h = h;
 	_ratioHeight = 0;
 	_resizeType &= ~IStyleResizeHeight;
+	[_view setNeedsLayout];
 }
 
 - (void)setRatioWidth:(CGFloat)rw{
@@ -231,21 +234,21 @@
 }
 
 - (CGFloat)innerWidth{
-	return _w - (_padding.left + _padding.right);
+	return _w - (_padding.left + _padding.right + _borderLeft.width + _borderRight.width);
 }
 
 - (void)setInnerWidth:(CGFloat)w{
 	_ratioWidth = 0;
-	_w = w + _padding.left + _padding.right;
+	_w = w + _padding.left + _padding.right + _borderLeft.width + _borderRight.width;
 }
 
 - (CGFloat)innerHeight{
-	return _h - (_padding.top + _padding.bottom);
+	return _h - (_padding.top + _padding.bottom + _borderTop.width + _borderBottom.width);
 }
 
 - (void)setInnerHeight:(CGFloat)h{
 	_ratioHeight = 0;
-	_h = h + _padding.top + _padding.bottom;
+	_h = h + _padding.top + _padding.bottom + _borderTop.width + _borderBottom.width;
 }
 
 - (CGFloat)outerWidth{

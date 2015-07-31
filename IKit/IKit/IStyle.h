@@ -23,11 +23,11 @@
 /**
  * The width, including border, padding, content
  */
-@property (nonatomic, readonly) CGFloat width;
+@property (nonatomic) CGFloat width;
 /**
  * The height, including border, padding, content
  */
-@property (nonatomic, readonly) CGFloat height;
+@property (nonatomic) CGFloat height;
 /**
  * The size, both width and height include border, padding, content
  */

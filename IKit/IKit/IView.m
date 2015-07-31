@@ -280,7 +280,7 @@
 }
 
 - (void)layoutSubviews{
-	log_debug(@"%@ %s", self.name, __func__);
+	//log_debug(@"%@ %s", self.name, __func__);
 	if(!_need_layout){
 		return;
 	}
@@ -301,6 +301,8 @@
 	if(self.layer.contents){
 		self.layer.contents = self.layer.contents;
 	}
+	
+	[self updateFrame];
 }
 
 - (void)layout{
@@ -318,39 +320,14 @@
 		_style.x = _style.left + _style.margin.left;
 		_style.y = _style.top + _style.margin.top;
 	}
-
+	
 	if(self.isPrimativeView){
 		//
 	}else if(_subs && _subs.count > 0){
 		if(!_layouter){
-			_layouter = [IFlowLayout layoutWithStyle:_style];
+			_layouter = [IFlowLayout layoutWithView:self];
 		}
-		_style.w -= _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
-		[_layouter reset];
-		for(IView *sub in _subs){
-			sub.level = self.level + 1;
-			[_layouter place:sub];
-			sub.style.x += _style.borderLeft.width + _style.padding.left;
-			sub.style.y += _style.borderTop.width + _style.padding.top;
-			//log_trace(@"%@ position: %@", sub.name, NSStringFromCGRect(sub.style.rect));
-			[sub updateFrame];
-		}
-		_style.w += _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
-		_layouter.realWidth += _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
-		_layouter.realHeight += _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
-		
-		if(_style.resizeWidth && !self.isRootView){
-			if(_style.w != _layouter.realWidth){
-				//NSLog(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
-			}
-			_style.w = _layouter.realWidth;
-		}
-		if(_style.resizeHeight){
-			if(_style.h != _layouter.realHeight){
-				//NSLog(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
-			}
-			_style.h = _layouter.realHeight;
-		}
+		[_layouter layout];
 	}else{
 		if(_style.resizeWidth && !self.isRootView){
 			_style.w = _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
@@ -360,7 +337,6 @@
 		}
 	}
 	
-	[self updateFrame];
 	log_debug(@"%@ %s end %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
 }
 

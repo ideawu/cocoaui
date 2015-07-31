@@ -12,21 +12,33 @@
 #import "IStyleInternal.h"
 
 @interface IFlowLayout (){
-	CGFloat _x2;
+	CGFloat _x2, _y2;
 	NSMutableArray *_leftPoints;
 	NSMutableArray *_rightPoints;
 }
 @property (nonatomic, weak) IStyle *style;
+@property (nonatomic, weak) IView *view;
 
+
+@property (nonatomic) CGFloat x;
+@property (nonatomic) CGFloat y;
+@property (nonatomic) CGFloat w;
+@property (nonatomic) CGFloat h;
+@property (nonatomic) CGFloat realWidth;
+@property (nonatomic) CGFloat realHeight;
+
+- (void)reset;
+- (void)place:(IView *)view;
 - (void)newLine:(IStyleFloatType)floatType;
 @end
 
+
 @implementation IFlowLayout
 
-+ (id)layoutWithStyle:(IStyle *)style{
++ (id)layoutWithView:(IView *)view{
 	IFlowLayout *ret = [[IFlowLayout alloc] init];
-	ret.style = style;
-	[ret reset];
+	ret.view = view;
+	ret.style = view.style;
 	return ret;
 }
 
@@ -38,14 +50,61 @@
 - (void)reset{
 	_x = 0;
 	_y = 0;
-	_w = _style.w;
-	_h = _style.h;
+	_w = _style.innerWidth;
+	_h = _style.innerHeight;
+	
 	_x2 = _w;
+	_y2 = _h;
+	
 	_realWidth = 0;
 	_realHeight = 0;
 	if(_leftPoints != nil){
 		[_leftPoints removeAllObjects];
 		[_rightPoints removeAllObjects];
+	}
+}
+
+- (void)layout{
+	if(_style.resizeHeight){
+		_style.h = 0;
+	}
+
+	[self layout_once];
+	
+	for(IView *sub in _view.subs){
+		if(sub.style.valignType != IStyleValignTop){
+			[self layout_once];
+			break;
+		}
+	}
+}
+
+- (void)layout_once{
+	[self reset];
+	
+	for(IView *sub in _view.subs){
+		sub.level = _view.level + 1;
+		[self place:sub];
+		sub.style.x += _style.borderLeft.width + _style.padding.left;
+		sub.style.y += _style.borderTop.width + _style.padding.top;
+		[sub updateFrame];
+		//log_trace(@"%@ position: %@", sub.name, NSStringFromCGRect(sub.style.rect));
+	}
+	
+	self.realWidth += _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
+	self.realHeight += _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
+	
+	if(_style.resizeWidth){
+		if(_style.w != self.realWidth){
+			//NSLog(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
+		}
+		_style.w = self.realWidth;
+	}
+	if(_style.resizeHeight){
+		if(_style.h != self.realHeight){
+			//NSLog(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
+		}
+		_style.h = self.realHeight;
 	}
 }
 
@@ -81,7 +140,7 @@
 		//log_trace(@"left=%lu, right=%lu", _leftPoints.count, _rightPoints.count);
 	}
 	if(style.ratioHeight > 0){
-		style.h = style.ratioHeight * (_h - _y) - style.margin.top - style.margin.bottom;
+		style.h = style.ratioHeight * (_y2 - _y) - style.margin.top - style.margin.bottom;
 	}
 
 	if(style.resizeNone){
@@ -119,9 +178,11 @@
 	if(style.valignType == IStyleValignTop){
 		box.y = _y;
 	}else if(style.valignType == IStyleValignBottom){
-		box.y = _style.innerHeight - box.h;
+		box.y = _y2 - box.h;
+		box.y = MAX(box.y, 0);
 	}else if(style.valignType == IStyleValignMiddle){
-		box.y = ((_style.innerHeight - _y) - box.h)/2;
+		box.y = ((_y2 - _y) - box.h)/2 + _y;
+		box.y = MAX(box.y, 0);
 	}
 
 	if(style.floatCenter){
