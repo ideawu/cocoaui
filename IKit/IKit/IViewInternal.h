@@ -39,7 +39,7 @@
 @property (readonly) void (^unhighlightHandler)(IEventType, IView *);
 @property (readonly) void (^clickHandler)(IEventType, IView *);
 
-
+- (void)setDataInternal:(id)data;
 - (void)addUIView:(UIView *)view;
 
 - (NSString *)name;

@@ -30,7 +30,6 @@
 	// footerRefreshControl 在最后一个 cell 后面
 	IRefreshControl *_headerRefreshControl, *_footerRefreshControl;
 
-	NSMutableArray *_cells;
 	NSMutableDictionary *_tagViews;
 	NSMutableDictionary *_tagClasses;
 	
@@ -242,6 +241,7 @@
 	}
 	ICell *cell = [_cells objectAtIndex:index];
 	if(cell.contentView){
+		cell.contentView.data = nil;
 		cell.contentView.cell = nil;
 	}
 	if(cell.view){
@@ -281,7 +281,8 @@
 				}
 			}
 			if(cell.data && cell.contentView){
-				cell.contentView.data = cell.data;
+				//cell.contentView.data = cell.data;
+				[cell.contentView setDataInternal:cell.data];
 			}
 		}else{
 			cell.view = [[ICellView alloc] init];
@@ -565,6 +566,18 @@
 }
 
 #pragma mark - Event hanlders
+
+- (void)onHighlight:(IView *)view atIndex:(NSUInteger)index{
+	[self onHighlight:view];
+}
+
+- (void)onUnhighlight:(IView *)view atIndex:(NSUInteger)index{
+	[self onUnhighlight:view];
+}
+
+- (void)onClick:(IView *)view atIndex:(NSUInteger)index{
+	[self onClick:view];
+}
 
 - (void)onHighlight:(IView *)view{
 	//log_trace(@"%s", __func__);

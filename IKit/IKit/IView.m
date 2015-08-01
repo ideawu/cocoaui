@@ -15,6 +15,7 @@
 #import "IViewLoader.h"
 
 @interface IView (){
+	id _data;
 	NSMutableArray *_subs;
 	IFlowLayout *_layouter;
 	
@@ -121,8 +122,16 @@
 	return nil;
 }
 
-- (void)setStyle:(IStyle *)style{
-	_style = style;
+- (id)data{
+	return _data;
+}
+
+- (void)setData:(id)data{
+	_data = data;
+}
+
+- (void)setDataInternal:(id)data{
+	[self setData:data];
 }
 
 - (void)addUIView:(UIView *)view{

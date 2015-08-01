@@ -34,4 +34,12 @@
 	}
 }
 
+- (NSUInteger)index{
+	if(_table){
+		return [_table.cells indexOfObject:self];
+	}else{
+		return NSNotFound;
+	}
+}
+
 @end

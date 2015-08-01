@@ -32,7 +32,6 @@ typedef enum{
 @interface IView : UIView
 
 @property (nonatomic, readonly) IStyle *style;
-@property (nonatomic) id data;
 
 + (IView *)viewWithUIView:(UIView *)view;
 + (IView *)viewWithUIView:(UIView *)view style:(NSString *)css;
@@ -40,6 +39,12 @@ typedef enum{
 + (IView *)namedView:(NSString *)name;
 + (IView *)viewFromXml:(NSString *)xml;
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
+
+- (id)data;
+/**
+ * override this method when IView is used as ITable row(MUST call [super setData])
+ */
+- (void)setData:(id)data;
 
 // only available when init with xml or file
 - (IView *)getViewById:(NSString *)vid;

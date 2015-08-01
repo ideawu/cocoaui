@@ -160,8 +160,8 @@
 	}
 }
 
-- (void)onClick:(IView *)view{
-	NSLog(@"%s:%d %@", __func__, __LINE__, view);
+- (void)onClick:(IView *)view atIndex:(NSUInteger)index{
+	NSLog(@"%s:%d %d:%@", __func__, __LINE__, (int)index, view);
 }
 
 - (void)click:(UIButton *)btn{

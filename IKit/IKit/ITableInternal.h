@@ -16,11 +16,9 @@
 
 @interface ITable()
 
-- (void)cell:(ICell *)cell didResizeHeightDelta:(CGFloat)delta;
+@property (nonatomic) NSMutableArray *cells;
 
-- (void)onHighlight:(IView *)view;
-- (void)onUnhighlight:(IView *)view;
-- (void)onClick:(IView *)view;
+- (void)cell:(ICell *)cell didResizeHeightDelta:(CGFloat)delta;
 
 @end
 

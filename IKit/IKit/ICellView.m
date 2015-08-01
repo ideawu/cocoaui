@@ -16,7 +16,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 	//log_trace(@"%s", __func__);
 	[super touchesBegan:touches withEvent:event];
-	[_cell.table onHighlight:_cell.contentView];
+	[_cell.table onHighlight:_cell.contentView atIndex:_cell.index];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -27,15 +27,19 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 	//log_trace(@"%s", __func__);
 	[super touchesEnded:touches withEvent:event];
-	[_cell.table onClick:_cell.contentView];
-	//[_cell.table onUnhighlight:_cell.contentView];
-	[_cell.table performSelector:@selector(onUnhighlight:) withObject:_cell.contentView afterDelay:0.15];
+	[_cell.table onClick:_cell.contentView atIndex:_cell.index];
+	[self performSelector:@selector(delayUnhighlight) withObject:nil afterDelay:0.15];
+	//[_cell.table performSelector:@selector(onUnhighlight:) withObject:_cell.contentView afterDelay:0.15];
+}
+
+- (void)delayUnhighlight{
+	[_cell.table onUnhighlight:_cell.contentView atIndex:_cell.index];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
 	//log_trace(@"%s", __func__);
 	[super touchesCancelled:touches withEvent:event];
-	[_cell.table onUnhighlight:_cell.contentView];
+	[_cell.table onUnhighlight:_cell.contentView atIndex:_cell.index];
 }
 
 @end

@@ -32,6 +32,8 @@
 @property (nonatomic) NSString *tag;
 @property (nonatomic) id data;
 
+- (NSUInteger)index;
+
 @end
 
 #endif

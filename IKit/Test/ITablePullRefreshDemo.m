@@ -147,6 +147,10 @@
 	}
 }
 
+- (void)onClick:(IView *)view atIndex:(NSUInteger)index{
+	NSLog(@"%s %d", __func__, (int)index);
+}
+
 - (void)reloadData{
 	//[self clear];
 	//[self loadData:20];
