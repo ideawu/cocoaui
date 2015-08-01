@@ -22,8 +22,8 @@
 	
 	UINavigationController *nav = [[UINavigationController alloc] init];
 	nav.navigationBar.tintColor = [UIColor whiteColor];
-	nav.navigationBar.barTintColor = [IStyleUtil colorFromHex:@"#6cf"];
 	nav.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+	nav.navigationBar.barTintColor = [IStyleUtil colorFromHex:@"#6cf"];
 	nav.navigationBar.translucent = NO;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 

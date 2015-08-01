@@ -96,7 +96,6 @@
 		31D2C7621B68CFD8009C1C97 /* ISwitch.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31D2C75F1B68CD1E009C1C97 /* ISwitch.h */; };
 		31D2C76C1B69E90B009C1C97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C76B1B69E90B009C1C97 /* main.m */; };
 		31D2C76F1B69E90B009C1C97 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C76E1B69E90B009C1C97 /* AppDelegate.m */; };
-		31D2C7721B69E90B009C1C97 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C7711B69E90B009C1C97 /* ViewController.m */; };
 		31D2C77A1B69E90B009C1C97 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7781B69E90B009C1C97 /* LaunchScreen.xib */; };
 		31D2C78F1B69EB32009C1C97 /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29041AA5A996001C8647 /* libIKit.a */; };
 		31D2C7901B69EB32009C1C97 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CA29061AA5A996001C8647 /* libIObj.a */; };
@@ -266,8 +265,6 @@
 		31D2C76B1B69E90B009C1C97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		31D2C76D1B69E90B009C1C97 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		31D2C76E1B69E90B009C1C97 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		31D2C7701B69E90B009C1C97 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		31D2C7711B69E90B009C1C97 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		31D2C7791B69E90B009C1C97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		31D2C7921B69EBDE009C1C97 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		31D2C7931B69EBDE009C1C97 /* Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
@@ -479,8 +476,6 @@
 				31D2C79C1B69EBDE009C1C97 /* ViewerController.m */,
 				31D2C76D1B69E90B009C1C97 /* AppDelegate.h */,
 				31D2C76E1B69E90B009C1C97 /* AppDelegate.m */,
-				31D2C7701B69E90B009C1C97 /* ViewController.h */,
-				31D2C7711B69E90B009C1C97 /* ViewController.m */,
 				31D2C7941B69EBDE009C1C97 /* datasource.xml */,
 				31D2C7691B69E90B009C1C97 /* Supporting Files */,
 			);
@@ -768,7 +763,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31D2C7721B69E90B009C1C97 /* ViewController.m in Sources */,
 				31D2C79D1B69EBDE009C1C97 /* Config.m in Sources */,
 				31D2C76F1B69E90B009C1C97 /* AppDelegate.m in Sources */,
 				31D2C76C1B69E90B009C1C97 /* main.m in Sources */,
