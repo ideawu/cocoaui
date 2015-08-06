@@ -479,6 +479,13 @@
 	}
 }
 
+- (IPullRefresh *)pullRefresh{
+	if(!_pullRefresh){
+		[self initPullRefresh];
+	}
+	return _pullRefresh;
+}
+
 - (void)initPullRefresh{
 	if(!_pullRefresh){
 		_pullRefresh = [[IPullRefresh alloc] initWithScrollView:_scrollView];

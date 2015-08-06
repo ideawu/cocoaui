@@ -94,6 +94,12 @@
 		[headerRow column:2 setText:@"Age"];
 		self.headerView = headerRow;
 	}
+	{
+		self.pullRefresh.footerTriggerMode = IRefreshTriggerPull;
+		ILabel *label = [ILabel labelWithText:@"footer"];
+		[label.style set:@"padding: 10; width: 100%; background: #cc6; text-align: center;"];
+		self.footerView = label;
+	}
 	[self initHeaderFooter];
 
 	[self registerViewClass:[ITablePullRefreshItem class] forTag:@"item"];
