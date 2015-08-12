@@ -277,6 +277,7 @@
 				if(cls){
 					//log_trace(@"create new row class: %@", cls);
 					cell.contentView = [[cls alloc] init];
+					[cell.contentView.style set:@"width: 100%;"];
 					[cell.view addSubview:cell.contentView];
 				}
 			}
