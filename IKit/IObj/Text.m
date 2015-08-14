@@ -111,7 +111,7 @@ NSString *number_format(double number, int decimals, NSString *decimalpoint, NSS
 	NSArray *ps = [str componentsSeparatedByString:@"."];
 	NSString *ival = ps[0];
 	NSString *fval = ps[1];
-	if(separator != nil || separator.length > 0){
+	if(separator != nil && separator.length > 0){
 		int offset = number > 0? 0 : 1;
 		for(int i = (int)ival.length - 3; i>offset; i-=3){
 			NSRange range = NSMakeRange(i, 0);
