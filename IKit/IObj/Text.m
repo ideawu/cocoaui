@@ -98,9 +98,9 @@ NSData *base64_decode(NSString *str){
 }
 
 
-NSString *number_format(double number, int decimals, NSString *decimalpoint, NSString *separator){
-	if(decimalpoint == nil || decimalpoint.length == 0){
-		decimalpoint = @".";
+NSString *number_format(double number, int decimals, NSString *dec_point, NSString *thousands_sep){
+	if(dec_point == nil || dec_point.length == 0){
+		dec_point = @".";
 	}
 	NSString *str;
 	if(decimals > 0){
@@ -111,15 +111,15 @@ NSString *number_format(double number, int decimals, NSString *decimalpoint, NSS
 	NSArray *ps = [str componentsSeparatedByString:@"."];
 	NSString *ival = ps[0];
 	NSString *fval = ps[1];
-	if(separator != nil && separator.length > 0){
+	if(thousands_sep != nil && thousands_sep.length > 0){
 		int offset = number > 0? 0 : 1;
 		for(int i = (int)ival.length - 3; i>offset; i-=3){
 			NSRange range = NSMakeRange(i, 0);
-			ival = [ival stringByReplacingCharactersInRange:range withString:separator];
+			ival = [ival stringByReplacingCharactersInRange:range withString:thousands_sep];
 		}
 	}
 	if(decimals > 0){
-		ival = [ival stringByAppendingFormat:@"%@%@", decimalpoint, fval];
+		ival = [ival stringByAppendingFormat:@"%@%@", dec_point, fval];
 	}
 	return ival;
 }

@@ -23,7 +23,13 @@ NSString *base64_encode_data(NSData *data);
 
 NSData *base64_decode(NSString *str);
 
-NSString *number_format(double number, int decimals, NSString *decimalpoint, NSString *separator);
+/**
+ * 将数字格式化为 xx,xxx.xx 的格式.
+ * @param decimals 小数位数
+ * @param dec_point 小数和整数的分隔符, 如果传 nil, 将默认是点号"."
+ * @param thousands_sep 千分位分隔符, 一般是逗号",", 如果传 nil, 将没有分隔符
+ */
+NSString *number_format(double number, int decimals, NSString *dec_point, NSString *thousands_sep);
 NSString* md5(NSString *input);
 
 @interface Text : NSObject
