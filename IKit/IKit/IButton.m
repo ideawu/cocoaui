@@ -102,6 +102,14 @@
 	[super layout];
 }
 
+- (BOOL)fireEvent:(IEventType)event{
+	if(!_button.enabled){
+		return NO;
+	}else{
+		return [super fireEvent:event];
+	}
+}
+
 - (void)onClick{
 	[self fireUnhighlightEvent];
 	[self fireClickEvent];
