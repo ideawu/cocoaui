@@ -114,7 +114,7 @@
 	}
 #endif
 	
-#if 1
+#if 0
 	[IView loadUrl:@"http://127.0.0.1/cocoaui.xml" callback:^(IView *view) {
 		NSLog(@"reload");
 		[self addIViewRow:view];
