@@ -7,11 +7,11 @@
  @website: http://www.cocoaui.com/
  */
 
-#import "MaskUIView.h"
+#import "IMaskUIView.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 
-@implementation MaskUIView
+@implementation IMaskUIView
 
 - (id)init{
 	self = [super init];

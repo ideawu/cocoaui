@@ -9,15 +9,21 @@
 
 #import "IStyleSheet.h"
 #import "IStyleUtil.h"
+#import "IViewInternal.h"
+#import "IStyleInternal.h"
+#import "IStyleRule.h"
 
 @interface IStyleSheet(){
 //	NSMutableDictionary *_idStyle;
 //	NSMutableDictionary *_tagStyle;
 //	NSMutableDictionary *_classStyle;
+	NSString *_baseUrl;
 }
 @property (nonatomic) NSMutableDictionary *idStyle;
 @property (nonatomic) NSMutableDictionary *tagStyle;
 @property (nonatomic) NSMutableDictionary *classStyle;
+
+@property (nonatomic) NSMutableArray *rules;
 
 @end
 
@@ -28,6 +34,7 @@
 	_idStyle = [[NSMutableDictionary alloc] init];
 	_tagStyle = [[NSMutableDictionary alloc] init];
 	_classStyle = [[NSMutableDictionary alloc] init];
+	_rules = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -35,6 +42,7 @@
 	if(!src){
 		return;
 	}
+	_baseUrl = baseUrl;
 	if(![IStyleUtil isHttpUrl:src]){
 		if(baseUrl){
 			src = [baseUrl stringByAppendingString:src];
@@ -150,28 +158,42 @@
 		if(key.length == 0){
 			continue;
 		}
-		NSString *old_val;
-		if([key characterAtIndex:0] == '.'){
-			key = [key substringFromIndex:1];
-			old_val = [_classStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
+		
+		IStyleRule *rule = [[IStyleRule alloc] init];
+		[rule parseRule:key];
+		rule.css = val;
+		[_rules addObject:rule];
+	}
+}
+
+- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs{
+	[view.style reset];
+	
+	if(attrs){
+		NSString *class_ = [attrs objectForKey:@"class"];
+		if(class_ != nil){
+			NSMutableArray *ps = [NSMutableArray arrayWithArray:
+								  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+			[ps removeObject:@""];
+			for(NSString *clz in ps){
+				[view.style addClass:clz];
 			}
-			[_classStyle setObject:val forKey:key];
-		}else if([key characterAtIndex:0] == '#'){
-			key = [key substringFromIndex:1];
-			old_val = [_idStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
-			}
-			[_idStyle setObject:val forKey:key];
-		}else{
-			old_val = [_tagStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
-			}
-			[_tagStyle setObject:val forKey:key.lowercaseString];
 		}
+	}
+	
+	for(IStyleRule *rule in _rules){
+		if([rule match:view]){
+			[view.style set:rule.css baseUrl:_baseUrl];
+		}
+	}
+	
+	if(attrs){
+		[view.style set:[attrs objectForKey:@"style"] baseUrl:_baseUrl];
+	}
+	
+	// 重新应用子节点的样式
+	for(IView *sub in view.subs){
+		[self applyCssForView:sub attributes:nil];
 	}
 }
 

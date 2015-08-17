@@ -9,6 +9,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class IView;
+
 /*
  CSS(级联样式表) 的主要特性:
  1. 级联(Cascade, Selector)
@@ -26,13 +28,6 @@
 - (void)parseCss:(NSString *)css;
 - (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl;
 
-- (NSString *)getStyleById:(NSString *)_id;
-- (NSString *)getStyleByTagName:(NSString *)tag;
-- (NSString *)getStyleByClass:(NSString *)_class;
-
-// 根据 DOM 节点, 找出包含该节点*前缀*的所有样式选择器
-// 这个方法用在如修改了节点的 class 之后, 要先找出所有包含该节点的选择器,
-// 然后遍历节点为根的子树, 将样式应用到所有可能的节点上
-//- (NSArray *)getSelectorsContainingDomNode:(id)node;
+- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs;
 
 @end

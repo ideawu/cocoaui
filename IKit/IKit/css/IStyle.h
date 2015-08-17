@@ -56,10 +56,9 @@
  */
 - (void)set:(NSString *)css;
 
-/**
- * set css from style sheet by clz
- */
-- (void)setClass:(NSString *)clz;
+- (void)addClass:(NSString *)clz;
+- (void)removeClass:(NSString *)clz;
+- (BOOL)hasClass:(NSString *)clz;
 
 @end
 

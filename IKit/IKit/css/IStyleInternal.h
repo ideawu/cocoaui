@@ -92,12 +92,8 @@ typedef enum{
 
 @interface IStyle ()
 
-// 故意制造内存泄露
-#ifdef DEBUG
-@property (nonatomic) IView *view;
-#else
 @property (nonatomic, weak) IView *view;
-#endif
+@property (nonatomic) NSString *tagName;
 
 // TODO:
 @property (nonatomic) CGFloat top;
@@ -136,6 +132,8 @@ typedef enum{
 + (CGFloat)smallFontSize;
 + (CGFloat)normalFontSize;
 + (CGFloat)largeFontSize;
+
+- (void)reset;
 
 - (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;
 

@@ -309,7 +309,13 @@ typedef enum{
 	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
 
 	if(view){
-		[self applyCssForView:view tagName:tagName attributes:attributeDict];
+		view.style.tagName = tagName;
+		
+		NSString *id_ = [attributeDict objectForKey:@"id"];
+		if(id_ != nil && id_.length > 0){
+			view.vid = id_;
+			[_viewsById setObject:view forKey:id_];
+		}
 		
 		if(currentView){
 			if([currentView class] == [IView class]){
@@ -327,43 +333,14 @@ typedef enum{
 		}
 		currentView = view;
 		[parse_stack addObject:view];
+		
+		if(_styleSheet){
+			[_styleSheet applyCssForView:view attributes:attributeDict];
+		}
 	}else{
 		[parse_stack addObject:@""];
 	}
 	
-}
-	
-- (void)applyCssForView:(IView *)view tagName:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
-	if(_styleSheet){
-		NSString *css = [_styleSheet getStyleByTagName:tagName];
-		[view.style set:css baseUrl:_baseUrl];
-	}
-	if(attributeDict){
-		if(_styleSheet){
-			NSString *class_ = [attributeDict objectForKey:@"class"];
-			if(class_ != nil){
-				NSMutableArray *ps = [NSMutableArray arrayWithArray:
-									  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-				[ps removeObject:@""];
-				for(NSString *clz in ps){
-					NSString *css = [_styleSheet getStyleByClass:clz];
-					[view.style set:css baseUrl:_baseUrl];
-				}
-			}
-		}
-		
-		NSString *id_ = [attributeDict objectForKey:@"id"];
-		if(id_ != nil && id_.length > 0){
-			view.vid = id_;
-			[_viewsById setObject:view forKey:id_];
-			if(_styleSheet){
-				NSString *css = [_styleSheet getStyleById:id_];
-				[view.style set:css baseUrl:_baseUrl];
-			}
-		}
-		
-		[view.style set:[attributeDict objectForKey:@"style"] baseUrl:_baseUrl];
-	}
 }
 
 #if DTHTML

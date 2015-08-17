@@ -12,6 +12,6 @@
 /**
  * 用于实现 border.
  */
-@interface MaskUIView : UIView
+@interface IMaskUIView : UIView
 
 @end
