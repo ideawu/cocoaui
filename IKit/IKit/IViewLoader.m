@@ -129,7 +129,7 @@ typedef enum{
 	//log_trace(@"%@", str);
 	state = ParseInit;
 	currentView = nil;
-	_styleSheet = nil;
+	_styleSheet = [[IStyleSheet alloc] init];
 	
 	_ignore = NO;
 	_rootViews = [[NSMutableArray alloc] init];
@@ -173,9 +173,6 @@ typedef enum{
 		}
 	}
 	if(src){
-		if(!_styleSheet){
-			_styleSheet = [[IStyleSheet alloc] init];
-		}
 		[_styleSheet parseCssResource:src baseUrl:_baseUrl];
 	}
 	return ret;
@@ -224,7 +221,7 @@ typedef enum{
 #endif
 	}
 
-	log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
+	//log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
 
 	IView *view;
 	if([tagName isEqualToString:@"view"] || [tagName isEqualToString:@"div"]){
@@ -260,41 +257,41 @@ typedef enum{
 		view = [[ISwitch alloc] init];
 	}else if([tagName isEqualToString:@"h1"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;"];
+		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
 	}else if([tagName isEqualToString:@"h2"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;"];
+		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
 	}else if([tagName isEqualToString:@"h3"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;"];
+		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
 	}else if([tagName isEqualToString:@"h4"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;"];
+		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
 	}else if([tagName isEqualToString:@"h5"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;"];
+		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
 	}else if([tagName isEqualToString:@"hr"]){
 		view = [[IView alloc] init];
-		[view.style set:@"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;"];
+		view.style.inlineCss = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
 	}else if([tagName isEqualToString:@"br"]){
 		static NSString *br_s = nil;
 		if(!br_s){
 			br_s = [NSString stringWithFormat:@"clear: both; width: 100%%; height: %f;", [IStyle normalFontSize]];
 		}
 		view = [[IView alloc] init];
-		[view.style set:br_s];
+		view.style.inlineCss = br_s;
 	}else if([tagName isEqualToString:@"li"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; margin: 4 0; width: 100%;"];
+		view.style.inlineCss = @"clear: both; margin: 4 0; width: 100%;";
 	}else if([tagName isEqualToString:@"p"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"clear: both; margin: 12 0; width: 100%;"];
+		view.style.inlineCss = @"clear: both; margin: 12 0; width: 100%;";
 	}else if([tagName isEqualToString:@"a"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"color: #00f;"];
+		view.style.inlineCss = @"color: #00f;";
 	}else if([tagName isEqualToString:@"b"]){
 		view = [[ILabel alloc] init];
-		[view.style set:@"font-weight: bold;"];
+		view.style.inlineCss = @"font-weight: bold;";
 	}else if([tagName isEqualToString:@"label"] || [tagName isEqualToString:@"span"]){
 		view = [[ILabel alloc] init];
 	}else if([tagName isEqualToString:@"*text*"]){
@@ -307,7 +304,7 @@ typedef enum{
 	}
 	
 	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
-
+	
 	if(view){
 		view.style.tagName = tagName;
 		
@@ -334,9 +331,7 @@ typedef enum{
 		currentView = view;
 		[parse_stack addObject:view];
 		
-		if(_styleSheet){
-			[_styleSheet applyCssForView:view attributes:attributeDict];
-		}
+		[_styleSheet applyCssForView:view attributes:attributeDict];
 	}else{
 		[parse_stack addObject:@""];
 	}
@@ -365,7 +360,7 @@ typedef enum{
 	id view = [parse_stack lastObject];
 	[parse_stack removeLastObject];
 	
-	log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
+	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
 
 	if([view isKindOfClass:[IView class]]){
 		currentView = view;
@@ -433,9 +428,6 @@ typedef enum{
 	}
 	if([_tag isEqualToString:@"style"]){
 		//log_trace(@"    parse text: %@", str);
-		if(!_styleSheet){
-			_styleSheet = [[IStyleSheet alloc] init];
-		}
 		[_styleSheet parseCss:str];
 		return;
 	}
@@ -446,7 +438,7 @@ typedef enum{
 	if(str.length == 0){
 		return;
 	}
-	log_trace(@"    parse text: %@", str);
+	//log_trace(@"    parse text: %@", str);
 	[_text appendString:str];
 }
 

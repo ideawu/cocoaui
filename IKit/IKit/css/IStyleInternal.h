@@ -94,6 +94,7 @@ typedef enum{
 
 @property (nonatomic, weak) IView *view;
 @property (nonatomic) NSString *tagName;
+@property (nonatomic) NSString *inlineCss;
 
 // TODO:
 @property (nonatomic) CGFloat top;
