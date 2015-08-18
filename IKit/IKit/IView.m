@@ -131,7 +131,7 @@
 }
 
 - (void)setDataInternal:(id)data{
-	[self setData:data];
+	_data = data;
 }
 
 - (void)addUIView:(UIView *)view{

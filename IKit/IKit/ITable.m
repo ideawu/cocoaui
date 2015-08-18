@@ -241,7 +241,7 @@
 	}
 	ICell *cell = [_cells objectAtIndex:index];
 	if(cell.contentView){
-		cell.contentView.data = nil;
+		[cell.contentView setDataInternal:nil];
 		cell.contentView.cell = nil;
 	}
 	if(cell.view){
