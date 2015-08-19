@@ -282,8 +282,8 @@
 				}
 			}
 			if(cell.data && cell.contentView){
-				//cell.contentView.data = cell.data;
 				[cell.contentView setDataInternal:cell.data];
+				cell.contentView.data = cell.data;
 			}
 		}else{
 			cell.view = [[ICellView alloc] init];
