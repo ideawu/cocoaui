@@ -9,15 +9,15 @@
 
 #import "IStyleSheet.h"
 #import "IStyleUtil.h"
+#import "IViewInternal.h"
+#import "IStyleInternal.h"
+#import "IStyleRule.h"
 
 @interface IStyleSheet(){
-//	NSMutableDictionary *_idStyle;
-//	NSMutableDictionary *_tagStyle;
-//	NSMutableDictionary *_classStyle;
+	NSString *_baseUrl;
 }
-@property (nonatomic) NSMutableDictionary *idStyle;
-@property (nonatomic) NSMutableDictionary *tagStyle;
-@property (nonatomic) NSMutableDictionary *classStyle;
+
+@property (nonatomic) NSMutableArray *rules;
 
 @end
 
@@ -25,9 +25,7 @@
 
 - (id)init{
 	self = [super init];
-	_idStyle = [[NSMutableDictionary alloc] init];
-	_tagStyle = [[NSMutableDictionary alloc] init];
-	_classStyle = [[NSMutableDictionary alloc] init];
+	_rules = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -35,6 +33,7 @@
 	if(!src){
 		return;
 	}
+	_baseUrl = baseUrl;
 	if(![IStyleUtil isHttpUrl:src]){
 		if(baseUrl){
 			src = [baseUrl stringByAppendingString:src];
@@ -47,44 +46,40 @@
 	if(cache == nil){
 		cache = [[NSMutableDictionary alloc] init];
 	}
-	IStyleSheet *sheet = [cache objectForKey:src];
-	if(sheet){
-		log_debug(@"load css resource from cache: %@", src);
-	}else{
-		log_debug(@"load css resource: %@", src);
+	IStyleSheet *sheet;
+	
+	if([IStyleUtil isHttpUrl:src]){
 		sheet = [[IStyleSheet alloc] init];
 		NSString *text = nil;
 		NSError *err;
-		if([IStyleUtil isHttpUrl:src]){
-			NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-			[request setHTTPMethod:@"GET"];
-			[request setURL:[NSURL URLWithString:src]];
-			NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
-			if(data){
-				text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			}
-		}else{
-			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
+		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+		[request setHTTPMethod:@"GET"];
+		[request setURL:[NSURL URLWithString:src]];
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
+		if(data){
+			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			[sheet parseCss:text];
 		}
-		[sheet parseCss:text];
-		[cache setObject:sheet forKey:src];
+	}else{
+		sheet = [cache objectForKey:src];
+		if(sheet){
+			log_debug(@"load css resource from cache: %@", src);
+		}else{
+			log_debug(@"load css resource: %@", src);
+			sheet = [[IStyleSheet alloc] init];
+			NSString *text = nil;
+			NSError *err;
+			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
+			if(!err){
+				[sheet parseCss:text];
+				[cache setObject:sheet forKey:src];
+			}
+		}
 	}
-	[self.idStyle addEntriesFromDictionary:sheet.idStyle];
-	[self.tagStyle addEntriesFromDictionary:sheet.tagStyle];
-	[self.classStyle addEntriesFromDictionary:sheet.classStyle];
-}
 
-
-- (NSString *)getStyleById:(NSString *)_id{
-	return [_idStyle objectForKey:_id];
-}
-
-- (NSString *)getStyleByTagName:(NSString *)tag{
-	return [_tagStyle objectForKey:tag];
-}
-
-- (NSString *)getStyleByClass:(NSString *)_class{
-	return [_classStyle objectForKey:_class];
+	for(IStyleRule *rule in sheet.rules){
+		[_rules addObject:rule];
+	}
 }
 
 - (NSString *)stripComment:(NSString *)css{
@@ -144,34 +139,54 @@
 }
 
 - (void)setValue:(id)val forSelector:(NSString *)selector{
+	// grouped rule
 	NSArray *ps = [selector componentsSeparatedByString:@","];
 	for(NSString *p in ps){
 		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if(key.length == 0){
 			continue;
 		}
-		NSString *old_val;
-		if([key characterAtIndex:0] == '.'){
-			key = [key substringFromIndex:1];
-			old_val = [_classStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
+		
+		IStyleRule *rule = [[IStyleRule alloc] init];
+		[rule parseRule:key];
+		rule.css = val;
+		[_rules addObject:rule];
+	}
+}
+
+- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs{
+	[view.style reset];
+
+	if(attrs){
+		NSString *class_ = [attrs objectForKey:@"class"];
+		if(class_ != nil){
+			NSMutableArray *ps = [NSMutableArray arrayWithArray:
+								  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+			[ps removeObject:@""];
+			for(NSString *clz in ps){
+				[view.style addClass:clz];
 			}
-			[_classStyle setObject:val forKey:key];
-		}else if([key characterAtIndex:0] == '#'){
-			key = [key substringFromIndex:1];
-			old_val = [_idStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
-			}
-			[_idStyle setObject:val forKey:key];
-		}else{
-			old_val = [_tagStyle objectForKey:key];
-			if(old_val){
-				val = [old_val stringByAppendingString:val];
-			}
-			[_tagStyle setObject:val forKey:key.lowercaseString];
 		}
+	}
+	
+	for(IStyleRule *rule in _rules){
+		if([rule match:view]){
+			//NSLog(@"%@{%@}", rule.selectors, rule.css);
+			[view.style set:rule.css baseUrl:_baseUrl];
+		}
+	}
+	
+	if(attrs){
+		NSString *css = [attrs objectForKey:@"style"];
+		if(css){
+			view.style.inlineCss = [NSString stringWithFormat:@"%@;%@", view.style.inlineCss, css];
+		}
+	}
+	[view.style set:view.style.inlineCss baseUrl:_baseUrl];
+	
+	// 重新应用子节点的样式
+	for(IView *sub in view.subs){
+		[self applyCssForView:sub attributes:nil];
 	}
 }
 

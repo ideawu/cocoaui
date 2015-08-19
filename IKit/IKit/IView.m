@@ -10,7 +10,7 @@
 #import "IViewInternal.h"
 #import "IFlowLayout.h"
 #import "IStyleInternal.h"
-#import "MaskUIView.h"
+#import "IMaskUIView.h"
 #import "ICell.h"
 #import "IViewLoader.h"
 
@@ -23,7 +23,7 @@
 	//void (^_unhighlightHandler)(IEventType, IView *);
 	//void (^_clickHandler)(IEventType, IView *);
 	
-	MaskUIView *maskView;
+	IMaskUIView *maskView;
 	UIView *contentView;
 }
 @property (nonatomic) BOOL need_layout;
@@ -215,7 +215,7 @@
 		}
 	}else{
 		if(!maskView){
-			maskView = [[MaskUIView alloc] init];
+			maskView = [[IMaskUIView alloc] init];
 			[super addSubview:maskView];
 		}
 		CGRect frame = self.frame;

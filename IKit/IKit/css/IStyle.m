@@ -38,6 +38,8 @@
 @property (nonatomic) UIFont *font;
 @property (nonatomic) UIColor *color;
 @property (nonatomic) IStyleTextAlign textAlign;
+
+@property (nonatomic) NSMutableArray *classes;
 @end
 
 
@@ -105,11 +107,17 @@
 
 - (id)init{
 	self = [super init];
+	[self reset];
+	_classes = [[NSMutableArray alloc] init];
+	return self;
+}
+
+- (void)reset{
 	_floatType = IStyleFloatLeft;
 	_resizeType = IStyleResizeBoth;
 	//_resizeType = IStyleResizeHeight;
 	_ratioWidth = 1;
-
+	
 	_borderLeft = [[IStyleBorder alloc] init];
 	_borderRight = [[IStyleBorder alloc] init];
 	_borderTop = [[IStyleBorder alloc] init];
@@ -118,7 +126,37 @@
 	_textAlign = IStyleTextAlignNone;
 	_fontSize = [UIFont systemFontSize];
 	_backgroundColor = [UIColor clearColor];
-	return self;
+}
+
+- (void)addClass:(NSString *)clz{
+	[_classes removeObject:clz];
+	[_classes addObject:clz];
+	
+	IView *view = _view;
+	while(view){
+		if(view.viewLoader){
+			[view.viewLoader.styleSheet applyCssForView:_view attributes:nil];
+			return;
+		}
+		view = view.parent;
+	}
+}
+
+- (void)removeClass:(NSString *)clz{
+	[_classes removeObject:clz];
+	
+	IView *view = _view;
+	while(view){
+		if(view.viewLoader){
+			[view.viewLoader.styleSheet applyCssForView:_view attributes:nil];
+			return;
+		}
+		view = view.parent;
+	}
+}
+
+- (BOOL)hasClass:(NSString *)clz{
+	return [_classes containsObject:clz];
 }
 
 - (BOOL)hidden{
@@ -307,20 +345,6 @@
 			return NSTextAlignmentJustified;
 		default:
 			return NSTextAlignmentLeft;
-	}
-}
-
-- (void)setClass:(NSString *)clz{
-	IView *view = _view;
-	while(view){
-		if(view.viewLoader){
-			NSString *css = [view.viewLoader.styleSheet getStyleByClass:clz];
-			if(css){
-				[self set:css];
-			}
-			return;
-		}
-		view = view.parent;
 	}
 }
 

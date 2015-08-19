@@ -10,6 +10,9 @@
 		background: #f33;
 		border: 1 solid #999;
 		}
+		.a .btn{
+			background: #3f3;
+		}
 	</style>
 	<div style="float: center; clear: both;">
 		<button class="btn" id="btn_1">-</button>
@@ -20,6 +23,8 @@
 		<span id="seq" style="text-align: center; width: 50%; background: #3c3;">-</span>
 		<span style="width: 100%; width: 100%; background: #39f; valign: middle;">middle</span>
 	</div>
-	<button class="btn" id="btn_3" style="float: left; width: auto;">left</button>
-	<button class="btn" id="btn_4" style="float: right; width: auto;">right</button>
+	<div id="div2">
+		<button class="btn" id="btn_3" style="float: left; width: auto;">left</button>
+		<button class="btn" id="btn_4" style="float: right; width: auto;">right</button>
+	</div>
 </div>
