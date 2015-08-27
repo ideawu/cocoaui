@@ -63,16 +63,16 @@
 
 - (void)setImage:(UIImage *)image{
 	_image = image;
+	[self.imageView setImage:_image];
+	[self setNeedsLayout];
+}
+
+- (UIImageView *)imageView{
 	if(!_imageView){
 		_imageView = [[UIImageView alloc] init];
 		_imageView.contentMode = UIViewContentModeScaleToFill;
 		[self addUIView:_imageView];
 	}
-	[_imageView setImage:_image];
-	[self setNeedsLayout];
-}
-
-- (UIImageView *)imageView{
 	return _imageView;
 }
 
