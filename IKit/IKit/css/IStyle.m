@@ -131,28 +131,12 @@
 - (void)addClass:(NSString *)clz{
 	[_classes removeObject:clz];
 	[_classes addObject:clz];
-	
-	IView *view = _view;
-	while(view){
-		if(view.viewLoader){
-			[view.viewLoader.styleSheet applyCssForView:_view attributes:nil];
-			return;
-		}
-		view = view.parent;
-	}
+	[_view.inheritedStyleSheet applyCssForView:_view attributes:nil];
 }
 
 - (void)removeClass:(NSString *)clz{
 	[_classes removeObject:clz];
-	
-	IView *view = _view;
-	while(view){
-		if(view.viewLoader){
-			[view.viewLoader.styleSheet applyCssForView:_view attributes:nil];
-			return;
-		}
-		view = view.parent;
-	}
+	[_view.inheritedStyleSheet applyCssForView:_view attributes:nil];
 }
 
 - (BOOL)hasClass:(NSString *)clz{

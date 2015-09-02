@@ -33,6 +33,7 @@
 
 	self = [super init];
 	[self.style setResizeWidth];
+	self.style.tagName = @"button";
 
 	//_btn = [[UIButton alloc] init];
 	//_button = [UIButton buttonWithType:UIButtonTypeSystem];

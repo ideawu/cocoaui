@@ -11,6 +11,7 @@
 #define IKit_IViewInternal_h
 
 #import "IView.h"
+#import "IStyleSheet.h"
 
 @class IRow;
 @class ICell;
@@ -49,6 +50,8 @@
 - (void)fireHighlightEvent;
 - (void)fireUnhighlightEvent;
 - (void)fireClickEvent;
+
+- (IStyleSheet *)inheritedStyleSheet;
 
 @end
 

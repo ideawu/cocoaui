@@ -13,6 +13,10 @@
 		.a .btn{
 			background: #3f3;
 		}
+		label{margin:5 5 5 0; padding: 5;}
+		.x{background: #f33;}
+		.y{background: #3f3;}
+		.z{background: #ff3;}
 	</style>
 	<div style="float: center; clear: both;">
 		<button class="btn" id="btn_1">-</button>
