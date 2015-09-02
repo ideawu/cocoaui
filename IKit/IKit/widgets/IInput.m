@@ -45,6 +45,7 @@ typedef enum{
 	}
 
 	self = [super init];
+	self.style.tagName = @"input";
 
 	_textField = [[UITextField alloc] init];
 	[self addUIView:_textField];

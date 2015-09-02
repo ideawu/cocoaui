@@ -13,6 +13,7 @@
 #import "IMaskUIView.h"
 #import "ICell.h"
 #import "IViewLoader.h"
+#import "IStyleSheet.h"
 
 @interface IView (){
 	id _data;
@@ -122,6 +123,17 @@
 	return nil;
 }
 
+- (IStyleSheet *)inheritedStyleSheet{
+	IView *v = self;
+	while(v){
+		if(v.viewLoader){
+			return v.viewLoader.styleSheet;
+		}
+		v = v.parent;
+	}
+	return nil;
+}
+
 - (id)data{
 	return _data;
 }
@@ -156,6 +168,8 @@
 
 	[_subs addObject:sub];
 	[super addSubview:sub];
+
+	[self.inheritedStyleSheet applyCssForView:sub attributes:nil];
 }
 
 - (void)addSubview:(UIView *)view{

@@ -63,6 +63,13 @@
 		[div2.style addClass:@"a"];
 	}];
 	
+	
+	NSArray *arr = @[@"x", @"y", @"z"];
+	for(NSString *s in arr){
+		ILabel *label = [ILabel labelWithText:s];
+		[label.style addClass:s];
+		[div2 addSubview:label];
+	}
 
 	
 	return self;
