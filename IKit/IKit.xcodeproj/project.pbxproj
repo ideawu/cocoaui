@@ -41,6 +41,10 @@
 		085492791A8342F700F0563C /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492781A8342F700F0563C /* HomeController.m */; };
 		0875F0D71A6A80E900870619 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0875F0D61A6A80E900870619 /* LoginController.m */; };
 		08914B8B1A70C7A1004A93EF /* ITableFixedHeaderDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08914B8A1A70C7A1004A93EF /* ITableFixedHeaderDemo.m */; };
+		089C7BFC1B98645A003CEA7F /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFA1B98645A003CEA7F /* libIKit.a */; };
+		089C7BFD1B98645A003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
+		089C7BFE1B986488003CEA7F /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFA1B98645A003CEA7F /* libIKit.a */; };
+		089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
 		08A0F14B1A7281AE007A8D2A /* IPullRefresh.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08EAD7101A6AF54B00A0822A /* IPullRefresh.h */; };
 		08A34A4A1A53F36300C1B7F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A491A53F36300C1B7F8 /* main.m */; };
 		08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */; };
@@ -191,6 +195,9 @@
 		0875F0D61A6A80E900870619 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		08914B891A70C7A1004A93EF /* ITableFixedHeaderDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableFixedHeaderDemo.h; sourceTree = "<group>"; };
 		08914B8A1A70C7A1004A93EF /* ITableFixedHeaderDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableFixedHeaderDemo.m; sourceTree = "<group>"; };
+		089C7BFA1B98645A003CEA7F /* libIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIKit.a; path = "../build/Debug-iphonesimulator/libIKit.a"; sourceTree = "<group>"; };
+		089C7BFB1B98645A003CEA7F /* libIObj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIObj.a; path = "../build/Debug-iphonesimulator/libIObj.a"; sourceTree = "<group>"; };
+		089C7C001B986488003CEA7F /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaUIViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A34A0F1A53EC3800C1B7F8 /* IKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKit.h; sourceTree = "<group>"; };
 		08A34A481A53F36300C1B7F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08A34A491A53F36300C1B7F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -260,7 +267,6 @@
 		31CA29061AA5A996001C8647 /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libIObj.a; path = "/Users/wuzuyang/Works/cocoaui/IKit/../build/Debug-iphoneos/libIObj.a"; sourceTree = "<absolute>"; };
 		31CA29071AA5A996001C8647 /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TestIObj; path = /Users/wuzuyang/Works/cocoaui/IKit/../build/Debug/TestIObj; sourceTree = "<absolute>"; };
 		31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITablePullRefreshItem.xml; sourceTree = "<group>"; };
-		31D2C7671B69E90B009C1C97 /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = CocoaUIViewer.app; path = "/Users/wuzuyang/Works/cocoaui/IKit/../build/Debug-iphoneos/CocoaUIViewer.app"; sourceTree = "<absolute>"; };
 		31D2C76A1B69E90B009C1C97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31D2C76B1B69E90B009C1C97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		31D2C76D1B69E90B009C1C97 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -290,6 +296,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089C7BFC1B98645A003CEA7F /* libIKit.a in Frameworks */,
+				089C7BFD1B98645A003CEA7F /* libIObj.a in Frameworks */,
 				31344D4B1AE0BE990035FEA5 /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +320,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089C7BFE1B986488003CEA7F /* libIKit.a in Frameworks */,
+				089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */,
 				31D2C7911B69EB9B009C1C97 /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,6 +337,9 @@
 				08A34A461A53F36300C1B7F8 /* Test */,
 				08C2547F1A5E60EB0095EC77 /* TestIObj */,
 				31D2C7681B69E90B009C1C97 /* CocoaUIViewer */,
+				089C7C001B986488003CEA7F /* CocoaUIViewer.app */,
+				089C7BFA1B98645A003CEA7F /* libIKit.a */,
+				089C7BFB1B98645A003CEA7F /* libIObj.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -591,7 +604,7 @@
 			);
 			name = CocoaUIViewer;
 			productName = CocoaUIViewer;
-			productReference = 31D2C7671B69E90B009C1C97 /* CocoaUIViewer.app */;
+			productReference = 089C7C001B986488003CEA7F /* CocoaUIViewer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -954,7 +967,10 @@
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
@@ -975,7 +991,10 @@
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
@@ -1092,6 +1111,10 @@
 				INFOPLIST_FILE = CocoaUIViewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1115,6 +1138,10 @@
 				INFOPLIST_FILE = CocoaUIViewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
 				TARGETED_DEVICE_FAMILY = 1;
