@@ -544,6 +544,7 @@
 			NSLog(@"www for c*ui");
 		}
 	}
+	_inlineCss = [NSString stringWithFormat:@"%@;%@", _inlineCss, css];
 	
 	if(needsDisplay && _view){
 		[_view setNeedsDisplay];
