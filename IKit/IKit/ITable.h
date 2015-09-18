@@ -29,6 +29,8 @@
 - (void)reload;
 - (NSUInteger)count;
 
+- (void)removeCellAtIndex:(NSUInteger)index;
+
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
 
 - (void)addIViewRow:(IView *)view;

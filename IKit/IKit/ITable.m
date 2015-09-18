@@ -107,6 +107,20 @@
 	return _cells.count;
 }
 
+- (void)removeCellAtIndex:(NSUInteger)index{
+	ICell *cell = [_cells objectAtIndex:index];
+	if(!cell){
+		return;
+	}
+	//_contentFrame.size.height -= cell.height;
+	cell.height = 0;
+	
+	[cell.view removeFromSuperview];
+	cell.view = nil;
+	cell.contentView = nil;
+	[_cells removeObjectAtIndex:index];
+}
+
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag{
 	[_tagClasses setObject:ivClass forKey:tag];
 	
@@ -405,7 +419,11 @@
 	//log_debug(@"visible.index: [%d, %d]=>[%d, %d]", (int)_visibleCellIndexMin, (int)_visibleCellIndexMax, (int)minIndex, (int)maxIndex);
 	NSUInteger low = MIN(minIndex, _visibleCellIndexMin);
 	NSUInteger high = MAX(maxIndex, _visibleCellIndexMax);
+	
 	for(NSUInteger index=low; index<=high; index++){
+		if(index >= _cells.count){
+			break;
+		}
 		ICell *cell = [_cells objectAtIndex:index];
 		if(index < minIndex || index > maxIndex){
 			if(cell.view.superview){
