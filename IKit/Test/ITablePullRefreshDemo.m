@@ -55,8 +55,8 @@
 	IView *div2 = (IView *)[view getViewById:@"div2"];
 
 	[_btn_3 addEvent:IEventClick handler:^(IEventType event, IView *view) {
-		//me.div.style.width -= 20;
-		//[div2.style removeClass:@"a"];
+		me.div.style.width -= 20;
+		[div2.style removeClass:@"a"];
 	}];
 	[_btn_4 addEvent:IEventClick handler:^(IEventType event, IView *view) {
 		me.div.style.width += 20;
