@@ -86,116 +86,6 @@
 
 #pragma mark - datasource manipulating
 
-- (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag{
-	[_tagClasses setObject:ivClass forKey:tag];
-	
-	NSMutableArray *views = [[NSMutableArray alloc] init];
-	[_tagViews setObject:views forKey:tag];
-}
-
-- (void)addIViewRow:(IView *)view{
-	[self addIViewRow:view defaultHeight:view.style.outerHeight];
-}
-
-- (void)addIViewRow:(IView *)view defaultHeight:(CGFloat)height{
-	view.style.ratioWidth = 1.0;
-	ICell *cell = [[ICell alloc] init];
-	cell.contentView = view;
-	[self addCell:cell defaultHeight:height];
-}
-
-- (void)addDataRow:(id)data forTag:(NSString *)tag{
-	[self addDataRow:data forTag:tag defaultHeight:90];
-}
-
-- (void)addDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height{
-	ICell *cell = [[ICell alloc] init];
-	cell.tag = tag;
-	cell.data = data;
-	[self addCell:cell defaultHeight:height];
-}
-
-- (void)addDivider:(NSString *)css{
-	[self addDivider:css height:15]; // 默认高度 15
-}
-
-- (void)addDivider:(NSString *)css height:(CGFloat)height{
-	IView *view = [[IView alloc] init];
-	[view.style set:[NSString stringWithFormat:@"height: %f; background: #efeff4;", height]];
-	[view.style set:css];
-	ICell *cell = [[ICell alloc] init];
-	cell.isSeparator = YES;
-	cell.contentView = view;
-	[self addCell:cell defaultHeight:view.style.outerHeight];
-}
-
-- (void)addSeparator:(NSString *)css{
-	[self addDivider:css];
-}
-
-- (void)addSeparator:(NSString *)css height:(CGFloat)height{
-	[self addDivider:css height:height];
-}
-
-- (void)addCell:(ICell *)cell defaultHeight:(CGFloat)height{
-	_contentFrame.size.height += height;
-	//log_debug(@"%s %.1f height: %.1f", __func__, height, _contentFrame.size.height);
-	
-	cell.height = height;
-	cell.table = self;
-	ICell *last = [_cells lastObject];
-	if(last){
-		cell.y = last.y + last.height;
-	}
-	[_cells addObject:cell];
-}
-
-- (void)insertCell:(ICell *)cell atIndex:(NSUInteger)index{
-	_contentFrame.size.height += cell.height;
-	cell.table = self;
-	[_cells insertObject:cell atIndex:index];
-	
-	ICell *prev = nil;
-	for(NSUInteger i=index; i<_cells.count; i++){
-		ICell *cell = [_cells objectAtIndex:i];
-		if(!prev){
-			cell.y = 0;
-		}else{
-			cell.y = prev.y + prev.height;
-		}
-		prev = cell;
-	}
-	
-	if(index <= _visibleCellIndexMin){
-		CGPoint offset = _scrollView.contentOffset;
-		offset.y += cell.height;
-		_scrollView.contentOffset = offset;
-	}
-}
-
-- (void)prependIViewRow:(IView *)view{
-	[self prependIViewRow:view defaultHeight:90];
-}
-
-- (void)prependIViewRow:(IView *)view defaultHeight:(CGFloat)height{
-	ICell *cell = [[ICell alloc] init];
-	cell.contentView = view;
-	cell.height = height;
-	[self insertCell:cell atIndex:0];
-}
-
-- (void)prependDataRow:(id)data forTag:(NSString *)tag{
-	[self prependDataRow:data forTag:tag defaultHeight:90];
-}
-
-- (void)prependDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height{
-	ICell *cell = [[ICell alloc] init];
-	cell.tag = tag;
-	cell.data = data;
-	cell.height = height;
-	[self insertCell:cell atIndex:0];
-}
-
 - (void)clear{
 	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
 		ICell *cell = [_cells objectAtIndex:i];
@@ -212,6 +102,141 @@
 - (void)reload{
 	[self layoutViews];
 }
+
+- (NSUInteger)count{
+	return _cells.count;
+}
+
+- (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag{
+	[_tagClasses setObject:ivClass forKey:tag];
+	
+	NSMutableArray *views = [[NSMutableArray alloc] init];
+	[_tagViews setObject:views forKey:tag];
+}
+
+- (void)addIViewRow:(IView *)view{
+	[self insertIViewRow:view atIndex:_cells.count defaultHeight:view.style.outerHeight];
+}
+
+- (void)addIViewRow:(IView *)view defaultHeight:(CGFloat)height{
+	[self insertIViewRow:view atIndex:_cells.count defaultHeight:height];
+}
+
+- (void)addDataRow:(id)data forTag:(NSString *)tag{
+	[self insertDataRow:data forTag:tag atIndex:_cells.count];
+}
+
+- (void)addDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height{
+	[self insertDataRow:data forTag:tag atIndex:_cells.count defaultHeight:height];
+}
+
+- (void)prependIViewRow:(IView *)view{
+	[self insertIViewRow:view atIndex:0 defaultHeight:view.style.outerHeight];
+}
+
+- (void)prependIViewRow:(IView *)view defaultHeight:(CGFloat)height{
+	[self insertIViewRow:view atIndex:0 defaultHeight:height];
+}
+
+- (void)prependDataRow:(id)data forTag:(NSString *)tag{
+	[self insertDataRow:data forTag:tag atIndex:0];
+}
+
+- (void)prependDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height{
+	[self insertDataRow:data forTag:tag atIndex:0 defaultHeight:height];
+}
+
+- (void)updateIViewRow:(IView *)view atIndex:(NSUInteger)index{
+	ICell *cell = [_cells objectAtIndex:index];
+	if(!cell){
+		return;
+	}
+	cell.contentView = view;
+}
+
+- (void)updateDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index{
+	ICell *cell = [_cells objectAtIndex:index];
+	if(!cell){
+		return;
+	}
+	cell.tag = tag;
+	cell.data = data;
+}
+
+- (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index{
+	[self insertIViewRow:view atIndex:index defaultHeight:90];
+}
+
+- (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
+	ICell *cell = [[ICell alloc] init];
+	cell.contentView = view;
+	[self insertCell:cell atIndex:index defaultHeight:height];
+}
+
+- (void)insertDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index{
+	[self insertDataRow:data forTag:tag atIndex:index defaultHeight:90];
+}
+
+- (void)insertDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
+	ICell *cell = [[ICell alloc] init];
+	cell.tag = tag;
+	cell.data = data;
+	[self insertCell:cell atIndex:index defaultHeight:height];
+}
+
+- (void)insertCell:(ICell *)cell atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
+	// 先设置 height, 再设置 table. 如果弄反了, setHeight() 方法会自动更新 _contentFrame
+	cell.height = height;
+	cell.table = self;
+	[_cells insertObject:cell atIndex:index];
+	
+	ICell *prev = nil;
+	if(index > 0){
+		prev = [_cells objectAtIndex:index-1];
+	}
+	for(NSUInteger i=index; i<_cells.count; i++){
+		ICell *cell = [_cells objectAtIndex:i];
+		if(!prev){
+			cell.y = 0;
+		}else{
+			cell.y = prev.y + prev.height;
+		}
+		prev = cell;
+	}
+	
+	_contentFrame.size.height += cell.height;
+	
+	// 更新 contentOffset, 以便使可视区域不变
+	if(index <= _visibleCellIndexMin){
+		CGPoint offset = _scrollView.contentOffset;
+		offset.y += cell.height;
+		_scrollView.contentOffset = offset;
+	}
+}
+
+
+- (void)addDivider:(NSString *)css{
+	[self addDivider:css height:15]; // 默认高度 15
+}
+
+- (void)addDivider:(NSString *)css height:(CGFloat)height{
+	IView *view = [[IView alloc] init];
+	[view.style set:[NSString stringWithFormat:@"height: %f; background: #efeff4;", height]];
+	[view.style set:css];
+	ICell *cell = [[ICell alloc] init];
+	cell.isSeparator = YES;
+	cell.contentView = view;
+	[self insertCell:cell atIndex:_cells.count defaultHeight:view.style.outerHeight];
+}
+
+- (void)addSeparator:(NSString *)css{
+	[self addDivider:css];
+}
+
+- (void)addSeparator:(NSString *)css height:(CGFloat)height{
+	[self addDivider:css height:height];
+}
+
 
 #pragma mark - layout views
 

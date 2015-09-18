@@ -82,7 +82,7 @@
 	NSLog(@"%@ %d", n, (int)state);
 	if(state == IRefreshBegin){
 		// refresh
-		[self performSelector:@selector(afterReloadData:) withObject:view afterDelay:2.0];
+		[self performSelector:@selector(afterReloadData:) withObject:view afterDelay:1.0];
 		return;
 	}
 	[super onRefresh:view state:state];
