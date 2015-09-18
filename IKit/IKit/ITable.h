@@ -27,6 +27,9 @@
 
 - (void)clear;
 - (void)reload;
+- (NSUInteger)count;
+
+- (void)removeCellAtIndex:(NSUInteger)index;
 
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
 
@@ -39,6 +42,15 @@
 - (void)prependIViewRow:(IView *)view defaultHeight:(CGFloat)height;
 - (void)prependDataRow:(id)data forTag:(NSString *)tag;
 - (void)prependDataRow:(id)data forTag:(NSString *)tag defaultHeight:(CGFloat)height;
+
+- (void)updateIViewRow:(IView *)view atIndex:(NSUInteger)index;
+- (void)updateDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index;
+
+- (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index;
+- (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index defaultHeight:(CGFloat)height;
+- (void)insertDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index;
+- (void)insertDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index defaultHeight:(CGFloat)height;
+
 
 - (void)addDivider:(NSString *)css;
 - (void)addDivider:(NSString *)css height:(CGFloat)height;
