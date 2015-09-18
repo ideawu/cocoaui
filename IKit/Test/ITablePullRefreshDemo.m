@@ -168,6 +168,8 @@
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
 	NSLog(@"%s %d", __func__, (int)index);
+	//[self removeCellAtIndex:index];
+	//[self reload];
 }
 
 - (void)reloadData{

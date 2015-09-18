@@ -262,10 +262,10 @@
 		31344D491AE0BE810035FEA5 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableClickToRefresh.h; sourceTree = "<group>"; };
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
-		31CA29041AA5A996001C8647 /* libIKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libIKit.a; path = "/Users/wuzuyang/Works/cocoaui/IKit/../build/Release-iphoneos/libIKit.a"; sourceTree = "<absolute>"; };
-		31CA29051AA5A996001C8647 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Test.app; path = "/Users/wuzuyang/Works/cocoaui/IKit/../build/Release-iphoneos/Test.app"; sourceTree = "<absolute>"; };
-		31CA29061AA5A996001C8647 /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libIObj.a; path = "/Users/wuzuyang/Works/cocoaui/IKit/../build/Debug-iphoneos/libIObj.a"; sourceTree = "<absolute>"; };
-		31CA29071AA5A996001C8647 /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TestIObj; path = /Users/wuzuyang/Works/cocoaui/IKit/../build/Debug/TestIObj; sourceTree = "<absolute>"; };
+		31D02F181BA814880046EE7C /* libIKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		31D02F191BA814880046EE7C /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		31D02F1A1BA814880046EE7C /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIObj.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		31D02F1B1BA814880046EE7C /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestIObj; sourceTree = BUILT_PRODUCTS_DIR; };
 		31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITablePullRefreshItem.xml; sourceTree = "<group>"; };
 		31D2C76A1B69E90B009C1C97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31D2C76B1B69E90B009C1C97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -340,6 +340,10 @@
 				089C7C001B986488003CEA7F /* CocoaUIViewer.app */,
 				089C7BFA1B98645A003CEA7F /* libIKit.a */,
 				089C7BFB1B98645A003CEA7F /* libIObj.a */,
+				31D02F181BA814880046EE7C /* libIKit.a */,
+				31D02F191BA814880046EE7C /* Test.app */,
+				31D02F1A1BA814880046EE7C /* libIObj.a */,
+				31D02F1B1BA814880046EE7C /* TestIObj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -534,7 +538,7 @@
 			);
 			name = IKit;
 			productName = IKit;
-			productReference = 31CA29041AA5A996001C8647 /* libIKit.a */;
+			productReference = 31D02F181BA814880046EE7C /* libIKit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		08A34A441A53F36300C1B7F8 /* Test */ = {
@@ -552,7 +556,7 @@
 			);
 			name = Test;
 			productName = Test;
-			productReference = 31CA29051AA5A996001C8647 /* Test.app */;
+			productReference = 31D02F191BA814880046EE7C /* Test.app */;
 			productType = "com.apple.product-type.application";
 		};
 		08C254561A5E55D60095EC77 /* IObj */ = {
@@ -569,7 +573,7 @@
 			);
 			name = IObj;
 			productName = IObj;
-			productReference = 31CA29061AA5A996001C8647 /* libIObj.a */;
+			productReference = 31D02F1A1BA814880046EE7C /* libIObj.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		08C2547D1A5E60EB0095EC77 /* TestIObj */ = {
@@ -586,7 +590,7 @@
 			);
 			name = TestIObj;
 			productName = TestIObj;
-			productReference = 31CA29071AA5A996001C8647 /* TestIObj */;
+			productReference = 31D02F1B1BA814880046EE7C /* TestIObj */;
 			productType = "com.apple.product-type.tool";
 		};
 		31D2C7661B69E90B009C1C97 /* CocoaUIViewer */ = {
@@ -969,7 +973,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+					"../build/Debug-iphonesimulator",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -993,7 +997,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+					"../build/Debug-iphonesimulator",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1113,7 +1117,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+					"../build/Debug-iphonesimulator",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
@@ -1140,7 +1144,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/wuzuyang/Works/cocoaui/build/Debug-iphonesimulator",
+					"../build/Debug-iphonesimulator",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = ../build;
