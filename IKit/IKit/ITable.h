@@ -29,7 +29,7 @@
 - (void)reload;
 - (NSUInteger)count;
 
-- (void)removeCellAtIndex:(NSUInteger)index;
+- (void)removeRowAtIndex:(NSUInteger)index;
 
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
 

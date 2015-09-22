@@ -107,7 +107,7 @@
 	return _cells.count;
 }
 
-- (void)removeCellAtIndex:(NSUInteger)index{
+- (void)removeRowAtIndex:(NSUInteger)index{
 	ICell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
