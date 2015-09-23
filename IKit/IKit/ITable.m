@@ -107,7 +107,7 @@
 	return _cells.count;
 }
 
-- (void)removeCellAtIndex:(NSUInteger)index{
+- (void)removeRowAtIndex:(NSUInteger)index{
 	ICell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
@@ -175,6 +175,8 @@
 	}
 	cell.tag = tag;
 	cell.data = data;
+	[cell.contentView setDataInternal:cell.data];
+	cell.contentView.data = cell.data;
 }
 
 - (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index{
@@ -328,6 +330,7 @@
 			cell.view = [[ICellView alloc] init];
 			//cell.uiview.clipsToBounds = YES;
 			if(cell.contentView){
+				[cell.contentView.style set:@"width: 100%;"];
 				[cell.view addSubview:cell.contentView];
 			}
 		}
