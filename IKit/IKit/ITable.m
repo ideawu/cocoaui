@@ -175,6 +175,8 @@
 	}
 	cell.tag = tag;
 	cell.data = data;
+	[cell.contentView setDataInternal:cell.data];
+	cell.contentView.data = cell.data;
 }
 
 - (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index{

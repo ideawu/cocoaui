@@ -168,8 +168,11 @@
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
 	NSLog(@"%s %d", __func__, (int)index);
-	//[self removeCellAtIndex:index];
-	//[self reload];
+	IObj *obj = view.data;
+	obj.strval = @"clicked\nwww\naaa";
+	[self updateDataRow:obj forTag:@"item" atIndex:index];
+	//[self removeRowAtIndex:index];
+	[self reload];
 }
 
 - (void)reloadData{
