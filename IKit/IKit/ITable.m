@@ -322,10 +322,6 @@
 					[cell.view addSubview:cell.contentView];
 				}
 			}
-			if(cell.data && cell.contentView){
-				[cell.contentView setDataInternal:cell.data];
-				cell.contentView.data = cell.data;
-			}
 		}else{
 			cell.view = [[ICellView alloc] init];
 			//cell.uiview.clipsToBounds = YES;
@@ -408,6 +404,11 @@
 		cell.view.frame = frame;
 		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.uiview.frame));
 		//NSLog(@"cell#%d y=%.1f", (int)i, cell.y);
+		
+		if(cell.data && cell.contentView && !cell.contentView.data){
+			[cell.contentView setDataInternal:cell.data];
+			cell.contentView.data = cell.data;
+		}
 	}
 	[UIView setAnimationsEnabled:YES];
 	
