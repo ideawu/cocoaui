@@ -35,8 +35,8 @@
 	[_iview.style set:@"margin: 15;"];
 	[self addIViewRow:_iview];
 	
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"uc_logo.png"]];
-	[_iview addSubview:logo style:@"float: center; clear: both; width: 80; height: 80; margin: 10 0;"];
+	IImage *logo = [IImage imageNamed:@"icon.png"];
+	[_iview addSubview:logo style:@"float: center; clear: both; width: auto; height: 80; margin: 10 0;"];
 	
 	{
 		_nameField = [[UITextField alloc] init];
