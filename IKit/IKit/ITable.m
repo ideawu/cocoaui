@@ -223,7 +223,7 @@
 	_contentFrame.size.height += cell.height;
 	
 	// 更新 contentOffset, 以便使可视区域不变
-	if(index <= _visibleCellIndexMin){
+	if(_cells.count > 1 && index <= _visibleCellIndexMin){
 		CGPoint offset = _scrollView.contentOffset;
 		offset.y += cell.height;
 		_scrollView.contentOffset = offset;

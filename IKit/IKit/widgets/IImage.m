@@ -96,12 +96,21 @@
 	if(_imageView){
 		[_imageView sizeToFit];
 		if(self.style.resizeWidth){
-			//NSLog(@"width: %f", _imgView.frame.size.width);
+			//NSLog(@"width: %f", _imageView.frame.size.width);
 			[self.style setInnerWidth:_imageView.frame.size.width];
 		}
 		if(self.style.resizeHeight){
-			//NSLog(@"height: %f", _imgView.frame.size.height);
+			//NSLog(@"height: %f", _imageView.frame.size.height);
 			[self.style setInnerHeight:_imageView.frame.size.height];
+		}
+		if(!self.style.resizeWidth && self.style.resizeHeight){
+			// 等比缩放
+			CGFloat h = self.style.innerWidth / _imageView.frame.size.width * _imageView.frame.size.height;
+			[self.style setInnerHeight:h];
+		}else if(self.style.resizeWidth && !self.style.resizeHeight){
+			// 等比缩放
+			CGFloat w = self.style.innerHeight / _imageView.frame.size.height * _imageView.frame.size.width;
+			[self.style setInnerWidth:w];
 		}
 	}
 	
