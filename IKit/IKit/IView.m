@@ -340,6 +340,14 @@
 		if(_style.ratioHeight > 0){
 			_style.h = _style.ratioHeight * self.superview.frame.size.height - _style.margin.top - _style.margin.bottom;
 		}
+        
+        if (_style.ratioWidth < 0) {
+            _style.w = _style.h * -_style.ratioWidth;
+        }
+        if (_style.ratioHeight < 0) {
+            _style.h = _style.w * -_style.ratioHeight;
+        }
+        
 		_style.x = _style.left + _style.margin.left;
 		_style.y = _style.top + _style.margin.top;
 	}
