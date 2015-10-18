@@ -586,6 +586,11 @@
 			if(baseUrl){
 				src = [baseUrl stringByAppendingString:src];
 			}else{
+                _backgroundImage = [UIImage imageNamed:src];
+                
+                if (_backgroundImage){
+                    return;
+                }
 				src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
 			}
 		}

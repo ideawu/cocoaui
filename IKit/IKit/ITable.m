@@ -270,13 +270,13 @@
 }
 
 - (void)addVisibleCellAtIndex:(NSUInteger)index{
-	//log_debug(@"%s %d", __func__, (int)index);
+	log_debug(@"%s %d", __func__, (int)index);
 	ICell *cell = [self cellForRowAtIndex:index];
 	[_contentView addSubview:cell.view];
 }
 
 - (void)removeVisibleCellAtIndex:(NSUInteger)index{
-	//log_debug(@"%s %d", __func__, (int)index);
+	log_debug(@"%s %d", __func__, (int)index);
 	if(index >= _cells.count){
 		return;
 	}
@@ -417,6 +417,7 @@
 }
 
 - (void)layoutVisibleCellsMinIndex:(NSUInteger)minIndex maxIndex:(NSUInteger)maxIndex{
+    
 	if(_visibleCellIndexMin == minIndex && _visibleCellIndexMax == maxIndex){
 		return;
 	}
@@ -424,12 +425,14 @@
 	NSUInteger low = MIN(minIndex, _visibleCellIndexMin);
 	NSUInteger high = MAX(maxIndex, _visibleCellIndexMax);
 	
+
+    
 	for(NSUInteger index=low; index<=high; index++){
 		if(index >= _cells.count){
 			break;
 		}
 		ICell *cell = [_cells objectAtIndex:index];
-		if(index < minIndex || index > maxIndex){
+		if(index < low || index > high){
 			if(cell.view.superview){
 				[self removeVisibleCellAtIndex:index];
 			}
@@ -439,6 +442,7 @@
 				[self addVisibleCellAtIndex:index];
 			}
 		}
+
 	}
 	_visibleCellIndexMin = minIndex;
 	_visibleCellIndexMax = maxIndex;
