@@ -138,6 +138,9 @@
 	[self add_btn:@"ITablePullRefreshDemo"];
 	[self add_btn:@"ITableClickToRefresh"];
 	[self add_btn:@"IPopoverDemo"];
+
+	[self addSeparator:@"height: 8;"];
+	[self add_btn:@"Detect memory leak"];
 	
 	[self addSeparator:@"height: 8;"];
 	
@@ -180,6 +183,16 @@
 	}
 	if([text isEqualToString:@"IPopoverDemo"]){
 		controller = [[IPopoverDemo alloc] init];
+	}
+	if([text isEqualToString:@"Detect memory leak"]){
+		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
+		NSLog(@"start");
+		for(int i=0; i<1000; i++){
+			IView *view = [IView viewFromXml:xml];
+			view = nil;
+		}
+		NSLog(@"end");
+		return;
 	}
 	[self.navigationController pushViewController:controller animated:YES];
 }

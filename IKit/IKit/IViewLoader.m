@@ -144,11 +144,10 @@ typedef enum{
 	// 未来每一个 view 都应指向 viewLoader, 当 view 被从节点树中删除时, 也要从相应的 viewLoader 中删除
 	retView.viewLoader = self;
 	
+	// 避免循环引用
 	if(retView.vid){
 		[_viewsById removeObjectForKey:retView.vid];
 	}
-	
-	// 避免循环引用
 	_rootViews = nil;
 	parse_stack = nil;
 	currentView = nil;
