@@ -107,9 +107,7 @@
 }
 
 + (IView *)viewFromXml:(NSString *)xml{
-	IViewLoader *viewLoader = [[IViewLoader alloc] init];
-	[viewLoader loadXml:xml];
-	return viewLoader.view;
+	return [IViewLoader viewFromXml:xml];
 }
 
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{

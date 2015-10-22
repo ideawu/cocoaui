@@ -12,12 +12,12 @@
 
 
 #ifdef DEBUG
-#	define VERSION "1.2.2(for development only)"
+#	define VERSION "1.2.3(for development only)"
 #	define log_trace(...) NSLog(__VA_ARGS__)
 #	define log_debug(...) NSLog(__VA_ARGS__)
 #	define log_info(...) NSLog(__VA_ARGS__)
 #else
-#	define VERSION "1.2.2(for production)"
+#	define VERSION "1.2.3(for production)"
 #if 1
 #	define log_trace(...)
 #	define log_debug(...)

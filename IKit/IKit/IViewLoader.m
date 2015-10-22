@@ -38,18 +38,25 @@ typedef enum{
 #endif
 	ParseState state;
 	IView *currentView;
-	NSMutableArray *parse_stack;
-	NSMutableArray *_rootViews;
-	NSString *_tag;
 	IStyleSheet *_styleSheet;
+	NSString *_tag;
+	NSMutableArray *parse_stack;
 	NSDictionary *_attributeDict;
 	BOOL _ignore;
 	NSMutableString *_text;
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
+@property (nonatomic) NSMutableArray *rootViews;
 @end
 
 @implementation IViewLoader
+	
++ (IView *)viewFromXml:(NSString *)xml{
+	IViewLoader *viewLoader = [[IViewLoader alloc] init];
+	IView *view = [viewLoader loadXml:xml];
+	return view;
+}
+
 	
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
 	NSRange r1 = [url rangeOfString:@"://"];
@@ -69,8 +76,8 @@ typedef enum{
 		NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		IViewLoader *viewLoader = [[IViewLoader alloc] init];
 		viewLoader.baseUrl = base;
-		[viewLoader loadXml:xml];
-		callback(viewLoader.view);
+		IView *view = [viewLoader loadXml:xml];
+		callback(view);
 	}];
 }
 
@@ -79,36 +86,11 @@ typedef enum{
 	return self;
 }
 
-- (IView *)view{
-	IView *ret;
-	if(_rootViews.count == 1){
-		ret = [_rootViews objectAtIndex:0];
-	}else{
-		ret = [[IView alloc] init];
-		for(IView *v in _rootViews){
-			[ret addSubview:v];
-		}
-	}
-	// 未来每一个 view 都应指向 viewLoader, 当 view 被从节点树中删除时, 也要从相应的 viewLoader 中删除
-	ret.viewLoader = self;
-	
-	// 避免循环引用
-	_rootViews = nil;
-	if(ret.vid){
-		[_viewsById removeObjectForKey:ret.vid];
-	}
-	
-	currentView = nil;
-	parse_stack = nil;
-	_text = nil;
-	return ret;
-}
-
 - (IStyleSheet *)styleSheet{
 	return _styleSheet;
 }
 
-- (void)loadXml:(NSString *)str{
+- (IView *)loadXml:(NSString *)str{
 	/* 测试发现只有细微的性能提升
 	if(0){
 		static NSMutableDictionary *cache = nil;
@@ -149,9 +131,29 @@ typedef enum{
 		log_trace(@"parse xml error: %@", [parser parserError]);
 	}
 	log_trace(@"views: %d", (int)_rootViews.count);
-
+	
+	IView *retView;
+	if(_rootViews.count == 1){
+		retView = [_rootViews objectAtIndex:0];
+	}else{
+		retView = [[IView alloc] init];
+		for(IView *v in _rootViews){
+			[retView addSubview:v];
+		}
+	}
+	// 未来每一个 view 都应指向 viewLoader, 当 view 被从节点树中删除时, 也要从相应的 viewLoader 中删除
+	retView.viewLoader = self;
+	
+	// 避免循环引用
+	if(retView.vid){
+		[_viewsById removeObjectForKey:retView.vid];
+	}
+	_rootViews = nil;
 	parse_stack = nil;
 	currentView = nil;
+	_text = nil;
+	
+	return retView;
 }
 
 - (IView *)getViewById:(NSString *)id_{
