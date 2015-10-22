@@ -15,14 +15,11 @@
 @interface IViewLoader : NSObject
 
 @property (nonatomic) NSString *baseUrl;
-
-@property (nonatomic, readonly) NSArray *rootViews;
-@property (nonatomic, readonly) IView *view;
 @property (nonatomic, readonly) IStyleSheet *styleSheet;
 
++ (IView *)viewFromXml:(NSString *)xml;
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
 
-- (void)loadXml:(NSString *)str;
 - (IView *)getViewById:(NSString *)id_;
 
 - (void)duplicate;

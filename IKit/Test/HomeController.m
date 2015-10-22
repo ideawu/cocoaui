@@ -68,19 +68,17 @@
 	 }];
 	*/
 	
+#if 0
 	{
-		/*
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
 		NSLog(@"start");
 		for(int i=0; i<10000; i++){
 			IView *view = [IView viewFromXml:xml];
 		}
 		NSLog(@"end");
-		 */
-		//[self addIViewRow:view];
-		//[self reload];
 	}
-
+#endif
+	
 #if 0
 	{
 		NSString *s = @"padding: 2; border: 1 solid #333; margin: 3;";
