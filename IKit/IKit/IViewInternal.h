@@ -21,12 +21,7 @@
 
 @property (nonatomic) IViewLoader *viewLoader;
 
-// 故意制造内存泄露
-#ifdef DEBUG
-@property (nonatomic) IView *parent;
-#else
 @property (nonatomic, weak) IView *parent;
-#endif
 @property (nonatomic, readonly) NSMutableArray *subs;
 
 @property (nonatomic, weak) IRow *row;
