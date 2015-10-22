@@ -89,6 +89,7 @@
 }
 
 + (IView *)namedView:(NSString *)name{
+    
 	NSError *err;
 	NSString *path;
 	NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
@@ -256,6 +257,8 @@
 		frame.origin = CGPointZero;
 		_backgroundView.frame = frame;
 	}
+    
+
 }
 
 - (void)updateFrame{
@@ -312,7 +315,9 @@
 		}
 	}
 	//log_debug(@"%d %s begin %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
+
 	[self layout];
+
 	//log_debug(@"%d %s end %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
 	
 	if(self.isRootView && self.cell != nil){
@@ -322,11 +327,14 @@
 	if(self.layer.contents){
 		self.layer.contents = self.layer.contents;
 	}
-	
+
 	[self updateFrame];
+
 }
 
 - (void)layout{
+    
+
 	log_debug(@"%@ %s begin %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
 	_need_layout = false;
 	
@@ -334,21 +342,32 @@
 		self.level = 0;
 		if(_style.ratioWidth > 0){
 			_style.w = _style.ratioWidth * self.superview.frame.size.width - _style.margin.left - _style.margin.right;
-		}
+        }
 		if(_style.ratioHeight > 0){
 			_style.h = _style.ratioHeight * self.superview.frame.size.height - _style.margin.top - _style.margin.bottom;
 		}
+        
+        if (_style.ratioWidth < 0) {
+            _style.w = _style.h * -_style.ratioWidth;
+        }
+        if (_style.ratioHeight < 0) {
+            _style.h = _style.w * -_style.ratioHeight;
+        }
 		_style.x = _style.left + _style.margin.left;
 		_style.y = _style.top + _style.margin.top;
+
 	}
 	
 	if(self.isPrimativeView){
 		//
 	}else if(_subs && _subs.count > 0){
+
+        
 		if(!_layouter){
 			_layouter = [IFlowLayout layoutWithView:self];
 		}
 		[_layouter layout];
+
 	}else{
 		if(_style.resizeWidth && !self.isRootView){
 			_style.w = _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
@@ -356,8 +375,9 @@
 		if(_style.resizeHeight){
 			_style.h = _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
 		}
+        
 	}
-	
+
 	log_debug(@"%@ %s end %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
 }
 

@@ -134,14 +134,39 @@
 		}
 	}
 	
-	if(style.ratioWidth > 0){
-		style.w = style.ratioWidth * (_x2 - _x) - style.margin.left - style.margin.right;
-		//log_trace(@"x2=%f, x=%f, margin-left: %f, margin-right: %f", _x2, _x, style.margin.left, style.margin.right);
-		//log_trace(@"left=%lu, right=%lu", _leftPoints.count, _rightPoints.count);
-	}
-	if(style.ratioHeight > 0){
-		style.h = style.ratioHeight * (_y2 - _y) - style.margin.top - style.margin.bottom;
-	}
+    if(style.ratioWidth > 0){
+        if ([view.superview isKindOfClass:[IView class]]) {
+            IView * v = (IView *)view.superview;
+            style.w = style.ratioWidth * (v.style.w) - style.margin.left - style.margin.right;
+            
+        }else{
+            style.w = style.ratioWidth * (_x2 - _x) - style.margin.left - style.margin.right;
+            
+        }
+        
+        //log_trace(@"x2=%f, x=%f, margin-left: %f, margin-right: %f", _x2, _x, style.margin.left, style.margin.right);
+        //log_trace(@"left=%lu, right=%lu", _leftPoints.count, _rightPoints.count);
+    }
+    
+    if(style.ratioHeight > 0){
+        
+        if ([view.superview isKindOfClass:[IView class]]) {
+            IView * v = (IView *)view.superview;
+            style.h = style.ratioHeight * (v.style.h) - style.margin.top - style.margin.bottom;
+            
+        }else{
+            style.h = style.ratioHeight * (_y2 - _y) - style.margin.top - style.margin.bottom;
+            
+        }
+    }
+    
+    if(style.ratioWidth < 0){
+        style.w = style.h * -style.ratioWidth;
+    }
+    
+    if(style.ratioHeight < 0){
+        style.h = style.w * -style.ratioHeight;
+    }
 
 	if(style.resizeNone){
 		// view.need_layout 的时候再调用?
