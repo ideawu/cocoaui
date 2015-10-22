@@ -8,6 +8,8 @@ CocoaUI Demo: [https://github.com/ideawu/cocoaui-demos](https://github.com/ideaw
 
 @author: ideawu
 
+Supported: iOS 8.0+
+
 
 ## About Source Code
 
