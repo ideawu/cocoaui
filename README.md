@@ -1,14 +1,18 @@
 # CocoaUI
 
-Build adaptive UI for iOS Apps with flow-layout and CSS properties
+Build adaptive UI for iOS Apps with Flow-Layout mechanism and CSS properties
 
-More docs: [http://www.cocoaui.com/](http://www.cocoaui.com/)
+| AAA | BBB |
+| ----| --- |
+| OS | iOS 8.0+, iOS 7.0(should work, unable to test on newer version Xcode) |
+| Language | Objective-C, Swift |
+| License | New BSD License |
+| Author | [ideawu](http://www.ideawu.net/) |
+| Docs | [http://www.cocoaui.com/](http://www.cocoaui.com/) |
 
-CocoaUI Demo: [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
 
-@author: ideawu
-
-Supported: iOS 8.0+
+__Demos:__
+ * [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
 
 
 ## About Source Code
