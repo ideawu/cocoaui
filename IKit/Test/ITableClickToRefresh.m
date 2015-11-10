@@ -49,8 +49,17 @@
 			[view addSubview:btn style:@"float: center; margin-top: 100; padding: 5 8; color: #fff; background: #f36145"];
 			
 			__weak typeof(self) me = self;
-			[btn bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-				[me.pullRefresh beginFooterRefresh];
+			[btn bindEvent:IEventClick|IEventHighlight|IEventUnhighlight handler:^(IEventType event, IView *view) {
+				NSLog(@"%d", event);
+				if(event == IEventHighlight){
+					[view.style set:@"background: #333"];
+				}
+				if(event == IEventUnhighlight){
+					[view.style set:@"background: #f36145"];
+				}
+				if(event == IEventClick){
+					[me.pullRefresh beginFooterRefresh];
+				}
 			}];
 		}
 	}

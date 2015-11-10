@@ -29,11 +29,11 @@
 		NSLog(@"%d", event);
 		if(event == IEventHighlight){
 			[view.style set:@"background: #ffe;"];
-			//[view.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
+			//[view.style set:@"padding: 8; background: #ffe url(ic_down.png)"];
 		}
 		if(event == IEventUnhighlight){
 			[view.style set:@"background: #fff;"];
-			//[view.style set:@"padding: 8; background: #0fff url(coupon_ic_up.png)"];
+			//[view.style set:@"padding: 8; background: #0fff url(ic_up.png)"];
 		}
 		if(event == IEventClick){
 			IButton *ib = (IButton *)view;
