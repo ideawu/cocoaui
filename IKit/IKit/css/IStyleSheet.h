@@ -25,7 +25,7 @@
 
 @interface IStyleSheet : NSObject
 
-@property (nonatomic) NSMutableArray *rules;
+@property (nonatomic, readonly) NSMutableArray *rules;
 
 - (void)parseCss:(NSString *)css;
 - (void)parseCssFile:(NSString *)src baseUrl:(NSString *)baseUrl;

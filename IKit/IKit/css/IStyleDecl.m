@@ -14,7 +14,7 @@
 @end
 
 
-@implementation IStyleSet
+@implementation IStyleBlock
 
 - (id)init{
 	self = [super init];
@@ -22,8 +22,8 @@
 	return self;
 }
 
-+ (IStyleSet *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl{
-	IStyleSet *ret = [[IStyleSet alloc] init];
++ (IStyleBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl{
+	IStyleBlock *ret = [[IStyleBlock alloc] init];
 	ret.baseUrl = baseUrl;
 	if(!css){
 		return ret;

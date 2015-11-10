@@ -42,8 +42,7 @@
 @property (nonatomic) UIColor *color;
 @property (nonatomic) IStyleTextAlign textAlign;
 
-@property (nonatomic) NSMutableArray *classes;
-@property (nonatomic) IStyleSet *styleSet;
+@property (nonatomic) IStyleBlock *declBlock;
 @end
 
 
@@ -68,8 +67,7 @@
 - (id)init{
 	self = [super init];
 	[self reset];
-	_classes = [[NSMutableArray alloc] init];
-	_styleSet = [[IStyleSet alloc] init];
+	_declBlock = [[IStyleBlock alloc] init];
 	return self;
 }
 
@@ -279,21 +277,21 @@
 }
 
 - (void)addClass:(NSString *)clz{
-	[_styleSet addClass:clz];
+	[_declBlock addClass:clz];
 	if(_view.inheritedStyleSheet){
 		[self applyAllCss];
 	}
 }
 
 - (void)removeClass:(NSString *)clz{
-	[_styleSet removeClass:clz];
+	[_declBlock removeClass:clz];
 	if(_view.inheritedStyleSheet){
 		[self applyAllCss];
 	}
 }
 
 - (BOOL)hasClass:(NSString *)clz{
-	return [_styleSet hasClass:clz];
+	return [_declBlock hasClass:clz];
 }
 
 - (void)set:(NSString *)css{
@@ -307,12 +305,12 @@
 	needsDisplay = NO;
 	needsLayout = NO;
 	
-	_styleSet.baseUrl = baseUrl;
+	_declBlock.baseUrl = baseUrl;
 	
-	IStyleSet *set = [IStyleSet fromCss:css baseUrl:baseUrl];
+	IStyleBlock *set = [IStyleBlock fromCss:css baseUrl:baseUrl];
 	for(IStyleDecl *decl in set.decls){
 		[self applyDecl:decl baseUrl:set.baseUrl];
-		[_styleSet addDecl:decl];
+		[_declBlock addDecl:decl];
 	}
 
 	if(needsDisplay && _view){
@@ -327,23 +325,21 @@
 	//NSLog(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
 	
-	for(IStyleDecl *decl in _styleSet.decls){
+	for(IStyleDecl *decl in _declBlock.decls){
 		NSString *k = decl.key;
 		if([k characterAtIndex:0] == '.'){
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
 				for(IStyleRule *rule in sheet.rules){
 					if([rule match:_view]){
-						//NSLog(@"%@{%@}", rule.selectors, rule.css);
-						IStyleSet *set = [IStyleSet fromCss:rule.css baseUrl:rule.baseUrl];
-						for(IStyleDecl *decl in set.decls){
-							[self applyDecl:decl baseUrl:set.baseUrl];
+						for(IStyleDecl *decl in rule.declBlock.decls){
+							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
 						}
 					}
 				}
 			}
 		}else{
-			[self applyDecl:decl baseUrl:_styleSet.baseUrl];
+			[self applyDecl:decl baseUrl:_declBlock.baseUrl];
 		}
 	}
 	

@@ -9,6 +9,7 @@
 #import "IStyleRule.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
+#import "IStyleDecl.h"
 
 @implementation IStyleRule
 
@@ -18,7 +19,7 @@
 	return self;
 }
 
-- (void)parseRule:(NSString *)rule{
+- (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl{
 	NSArray *ps = [rule componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	for(NSString *p in ps){
 		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -37,6 +38,9 @@
 			[_selectors addObject:key];
 		}
 	}
+	
+	_baseUrl = baseUrl;
+	_declBlock = [IStyleBlock fromCss:css baseUrl:_baseUrl];
 }
 
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{

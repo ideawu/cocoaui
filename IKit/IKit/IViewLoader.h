@@ -22,6 +22,4 @@
 
 - (IView *)getViewById:(NSString *)id_;
 
-- (void)duplicate;
-
 @end

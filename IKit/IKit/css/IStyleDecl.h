@@ -16,10 +16,10 @@
 @end
 
 
-@interface IStyleSet : NSObject
+@interface IStyleBlock : NSObject
 
 @property (nonatomic) NSString *baseUrl;
-@property (nonatomic) NSMutableArray *decls;
+@property (nonatomic, readonly) NSMutableArray *decls;
 
 - (void)addDecl:(IStyleDecl *)decl;
 - (void)addKey:(NSString *)key value:(NSString *)val;
@@ -27,7 +27,7 @@
 - (void)removeClass:(NSString *)clz;
 - (BOOL)hasClass:(NSString *)clz;
 
-+ (IStyleSet *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
++ (IStyleBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
 
 @end
 

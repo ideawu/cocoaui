@@ -132,11 +132,11 @@
 		searchRange.length = css.length - searchRange.location;
 
 		//NSLog(@"%@ = %@", key,val);
-		[self setValue:val forSelector:selector];
+		[self setCssValue:val forSelector:selector];
 	}
 }
 
-- (void)setValue:(id)val forSelector:(NSString *)selector{
+- (void)setCssValue:(id)val forSelector:(NSString *)selector{
 	// grouped rule
 	NSArray *ps = [selector componentsSeparatedByString:@","];
 	for(NSString *p in ps){
@@ -146,8 +146,7 @@
 		}
 		
 		IStyleRule *rule = [[IStyleRule alloc] init];
-		[rule parseRule:key];
-		rule.css = val;
+		[rule parseRule:key css:val baseUrl:_baseUrl];
 		[_rules addObject:rule];
 	}
 }
