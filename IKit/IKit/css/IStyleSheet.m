@@ -17,8 +17,6 @@
 	NSString *_baseUrl;
 }
 
-@property (nonatomic) NSMutableArray *rules;
-
 @end
 
 @implementation IStyleSheet
@@ -29,7 +27,7 @@
 	return self;
 }
 
-- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl{
+- (void)parseCssFile:(NSString *)src baseUrl:(NSString *)baseUrl{
 	if(!src){
 		return;
 	}
@@ -151,42 +149,6 @@
 		[rule parseRule:key];
 		rule.css = val;
 		[_rules addObject:rule];
-	}
-}
-
-- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs{
-	[view.style reset];
-
-	if(attrs){
-		NSString *class_ = [attrs objectForKey:@"class"];
-		if(class_ != nil){
-			NSMutableArray *ps = [NSMutableArray arrayWithArray:
-								  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-			[ps removeObject:@""];
-			for(NSString *clz in ps){
-				[view.style addClass:clz];
-			}
-		}
-	}
-	
-	for(IStyleRule *rule in _rules){
-		if([rule match:view]){
-			//NSLog(@"%@{%@}", rule.selectors, rule.css);
-			[view.style set:rule.css baseUrl:_baseUrl];
-		}
-	}
-	
-	if(attrs){
-		NSString *css = [attrs objectForKey:@"style"];
-		if(css){
-			view.style.inlineCss = [NSString stringWithFormat:@"%@;%@", view.style.inlineCss, css];
-		}
-	}
-	[view.style set:view.style.inlineCss baseUrl:_baseUrl];
-	
-	// 重新应用子节点的样式
-	for(IView *sub in view.subs){
-		[self applyCssForView:sub attributes:nil];
 	}
 }
 

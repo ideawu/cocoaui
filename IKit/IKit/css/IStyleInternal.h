@@ -94,7 +94,6 @@ typedef enum{
 
 @property (nonatomic, weak) IView *view;
 @property (nonatomic) NSString *tagName;
-@property (nonatomic) NSString *inlineCss;
 
 // TODO:
 @property (nonatomic) CGFloat top;
@@ -135,11 +134,10 @@ typedef enum{
 + (CGFloat)largeFontSize;
 
 - (void)reset;
+- (void)applyAllCss;
 
 - (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;
 
-
-- (void)copyFrom:(IStyle *)style;
 
 - (UIColor *)inheritedColor;
 - (UIFont *)inheritedFont;

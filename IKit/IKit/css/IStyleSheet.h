@@ -25,9 +25,9 @@
 
 @interface IStyleSheet : NSObject
 
-- (void)parseCss:(NSString *)css;
-- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl;
+@property (nonatomic) NSMutableArray *rules;
 
-- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs;
+- (void)parseCss:(NSString *)css;
+- (void)parseCssFile:(NSString *)src baseUrl:(NSString *)baseUrl;
 
 @end

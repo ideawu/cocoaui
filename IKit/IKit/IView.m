@@ -156,9 +156,6 @@
 	}else{
 		sub = [IView viewWithUIView:view];
 	}
-	if(css){
-		[sub.style set:css];
-	}
 	if(!_subs){
 		_subs = [[NSMutableArray alloc] init];
 	}
@@ -167,7 +164,12 @@
 	[_subs addObject:sub];
 	[super addSubview:sub];
 
-	[self.inheritedStyleSheet applyCssForView:sub attributes:nil];
+	if(css){
+		[sub.style set:css];
+	}
+	if(self.inheritedStyleSheet){
+		[sub.style applyAllCss];
+	}
 }
 
 - (void)addSubview:(UIView *)view{

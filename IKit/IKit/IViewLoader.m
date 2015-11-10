@@ -91,23 +91,6 @@ typedef enum{
 }
 
 - (IView *)loadXml:(NSString *)str{
-	/* 测试发现只有细微的性能提升
-	if(0){
-		static NSMutableDictionary *cache = nil;
-		if(cache == nil){
-			cache = [[NSMutableDictionary alloc] init];
-		}
-		IViewLoader *loader = [cache objectForKey:str];
-		if(loader){
-			self.viewsById = loader.viewsById;
-			self.rootViews = (NSMutableArray *)loader.rootViews;
-			[self duplicate];
-			return;
-		}
-		[cache setObject:self forKey:str];
-	}
-	*/
-
 	//log_trace(@"%@", str);
 	state = ParseInit;
 	currentView = nil;
@@ -153,6 +136,8 @@ typedef enum{
 	currentView = nil;
 	_text = nil;
 	
+	// 之前设置的 class 属性并没有立即生效
+	[retView.style applyAllCss];
 	return retView;
 }
 
@@ -175,7 +160,7 @@ typedef enum{
 		}
 	}
 	if(src){
-		[_styleSheet parseCssResource:src baseUrl:_baseUrl];
+		[_styleSheet parseCssFile:src baseUrl:_baseUrl];
 	}
 	return ret;
 }
@@ -226,6 +211,7 @@ typedef enum{
 	//log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
 
 	IView *view;
+	NSString *defaultCss = nil;
 	if([tagName isEqualToString:@"view"] || [tagName isEqualToString:@"div"]){
 		view = [[IView alloc] init];
 	}else if([tagName isEqualToString:@"img"]){
@@ -259,41 +245,41 @@ typedef enum{
 		view = [[ISwitch alloc] init];
 	}else if([tagName isEqualToString:@"h1"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
+		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
 	}else if([tagName isEqualToString:@"h2"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
+		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
 	}else if([tagName isEqualToString:@"h3"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
+		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
 	}else if([tagName isEqualToString:@"h4"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
+		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
 	}else if([tagName isEqualToString:@"h5"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
+		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
 	}else if([tagName isEqualToString:@"hr"]){
 		view = [[IView alloc] init];
-		view.style.inlineCss = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
+		defaultCss = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
 	}else if([tagName isEqualToString:@"br"]){
 		static NSString *br_s = nil;
 		if(!br_s){
 			br_s = [NSString stringWithFormat:@"clear: both; width: 100%%; height: %f;", [IStyle normalFontSize]];
 		}
 		view = [[IView alloc] init];
-		view.style.inlineCss = br_s;
+		defaultCss = br_s;
 	}else if([tagName isEqualToString:@"li"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; margin: 4 0; width: 100%;";
+		defaultCss = @"clear: both; margin: 4 0; width: 100%;";
 	}else if([tagName isEqualToString:@"p"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"clear: both; margin: 12 0; width: 100%;";
+		defaultCss = @"clear: both; margin: 12 0; width: 100%;";
 	}else if([tagName isEqualToString:@"a"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"color: #00f;";
+		defaultCss = @"color: #00f;";
 	}else if([tagName isEqualToString:@"b"]){
 		view = [[ILabel alloc] init];
-		view.style.inlineCss = @"font-weight: bold;";
+		defaultCss = @"font-weight: bold;";
 	}else if([tagName isEqualToString:@"label"] || [tagName isEqualToString:@"span"]){
 		view = [[ILabel alloc] init];
 	}else if([tagName isEqualToString:@"*text*"]){
@@ -333,7 +319,27 @@ typedef enum{
 		currentView = view;
 		[parse_stack addObject:view];
 		
-		[_styleSheet applyCssForView:view attributes:attributeDict];
+		if(defaultCss){
+			[view.style set:defaultCss];
+		}
+		
+		//[_styleSheet applyCssForView:view attributes:attributeDict];
+		if(attributeDict){
+			NSString *class_ = [attributeDict objectForKey:@"class"];
+			if(class_ != nil){
+				NSMutableArray *ps = [NSMutableArray arrayWithArray:
+									  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+				[ps removeObject:@""];
+				for(NSString *clz in ps){
+					[view.style addClass:clz];
+				}
+			}
+			
+			NSString *css = [attributeDict objectForKey:@"style"];
+			if(css){
+				[view.style set:css];
+			}
+		}
 	}else{
 		[parse_stack addObject:@""];
 	}
@@ -442,62 +448,6 @@ typedef enum{
 	}
 	//log_trace(@"    parse text: %@", str);
 	[_text appendString:str];
-}
-
-#pragma mark - duplicate
-
-- (IView *)cloneView:(IView *)view{
-	IView *ret = [self my_cloneView:view];
-	ret.vid = view.vid;
-	if(ret.vid){
-		[_viewsById setObject:ret forKey:ret.vid];
-	}
-	[ret.style copyFrom:view.style];
-	return ret;
-}
-
-- (IView *)my_cloneView:(IView *)view{
-	Class clz = [view class];
-	if(clz == [IButton class]){
-		IButton *old = (IButton *)view;
-		IButton *ret = [[IButton alloc] init];
-		ret.text = old.text;
-		return ret;
-	}else if(clz == [ILabel class]){
-		ILabel *old = (ILabel *)view;
-		ILabel *ret = [[ILabel alloc] init];
-		ret.attributedText = old.attributedText;
-		return ret;
-	}else if(clz == [IInput class]){
-		IInput *old = (IInput *)view;
-		IInput *ret = [[IInput alloc] init];
-		ret.value = old.value;
-		ret.placeholder = old.placeholder;
-		ret.isPasswordInput = old.isPasswordInput;
-		return ret;
-	}else if(clz == [IImage class]){
-		IImage *old = (IImage *)view;
-		IImage *ret = [[IImage alloc] init];
-		ret.src = old.src;
-		return ret;
-	}else{
-		IView *ret = [[IView alloc] init];
-		for(IView *sub in view.subs){
-			IView *sub_iv = [self cloneView:sub];
-			[ret addSubview:sub_iv];
-		}
-		return ret;
-	}
-}
-
-- (void)duplicate{
-	_viewsById = [[NSMutableDictionary alloc] init];
-	NSMutableArray *new_rootViews = [[NSMutableArray alloc] initWithCapacity:_rootViews.count];
-	for(IView *view in _rootViews){
-		IView *new_view = [self cloneView:view];
-		[new_rootViews addObject:new_view];
-	}
-	_rootViews = new_rootViews;
 }
 
 @end

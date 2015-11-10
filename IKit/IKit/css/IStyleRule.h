@@ -14,6 +14,7 @@
 
 @property (nonatomic) NSMutableArray *selectors;
 @property (nonatomic) NSString *css;
+@property (nonatomic) NSString *baseUrl;
 
 - (void)parseRule:(NSString *)rule;
 - (BOOL)match:(IView *)view;
