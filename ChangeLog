@@ -1,7 +1,7 @@
 * 1.2.4
 	* Bug fixes:
-		- Fix addClass() bug, now addClass/removeClass works in the right way now(2015-11-10)
-		- Fix background image bug on iOS 7.0.3(2015-11-11)
+		- Fix addClass() bug, now addClass/removeClass work in the right way now(2015-11-10)
+		- Fix "background: url(a.png)" image not showing on iOS 7.0.3(2015-11-11)
 * 1.2.3
 	* Bug fixes:
 		- Fix memory leak(2015-10-22)
