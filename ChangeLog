@@ -1,3 +1,6 @@
+* 1.2.4
+	* Bug fixes:
+		- Fix addClass() bug, now addClass/removeClass works in the right way now(2015-11-10)
 * 1.2.3
 	* Bug fixes:
 		- Fix memory leak(2015-10-22)
