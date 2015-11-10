@@ -93,8 +93,8 @@
 		31344D4B1AE0BE990035FEA5 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31344D491AE0BE810035FEA5 /* libxml2.dylib */; };
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		3194B6681B25527900CAD469 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34AAB1A58533800C1B7F8 /* IViewLoader.m */; };
-		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; settings = {ASSET_TAGS = (); }; };
-		31B69C4A1BF1E6BB00EC1908 /* IStyleDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* IStyleDecl.m */; settings = {ASSET_TAGS = (); }; };
+		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
+		31B69C4A1BF1E6BB00EC1908 /* IStyleDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* IStyleDecl.m */; };
 		31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254C61A63A8760095EC77 /* Http.h */; };
 		31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254881A5E71BD0095EC77 /* Text.h */; };
 		31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0854925F1A8092CC00F0563C /* RSA.h */; };

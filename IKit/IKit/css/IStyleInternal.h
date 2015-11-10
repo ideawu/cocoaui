@@ -136,6 +136,7 @@ typedef enum{
 - (void)reset;
 - (void)applyAllCss;
 
+- (void)setId:(NSString *)ident;
 - (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;
 
 

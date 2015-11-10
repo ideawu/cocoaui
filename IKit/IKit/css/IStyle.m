@@ -277,6 +277,7 @@
 }
 
 - (void)addClass:(NSString *)clz{
+	//NSLog(@"%s %@", __func__, clz);
 	[_declBlock addClass:clz];
 	if(_view.inheritedStyleSheet){
 		[self applyAllCss];
@@ -294,6 +295,13 @@
 	return [_declBlock hasClass:clz];
 }
 
+- (void)setId:(NSString *)ident{
+	[_declBlock addKey:@"#" value:[NSString stringWithFormat:@"#%@",ident]];
+	if(_view.inheritedStyleSheet){
+		[self applyAllCss];
+	}
+}
+
 - (void)set:(NSString *)css{
 	[self set:css baseUrl:nil];
 }
@@ -305,7 +313,9 @@
 	needsDisplay = NO;
 	needsLayout = NO;
 	
-	_declBlock.baseUrl = baseUrl;
+	if(baseUrl){
+		_declBlock.baseUrl = baseUrl;
+	}
 	
 	IStyleBlock *set = [IStyleBlock fromCss:css baseUrl:baseUrl];
 	for(IStyleDecl *decl in set.decls){
@@ -331,8 +341,22 @@
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
 				for(IStyleRule *rule in sheet.rules){
-					if([rule match:_view]){
+					if([rule.selectors containsObject:k] && [rule match:_view]){
 						for(IStyleDecl *decl in rule.declBlock.decls){
+							//NSLog(@"  %@ %@ %@: %@", decl, k, decl.key, decl.val);
+							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
+						}
+					}
+				}
+			}
+		}else if([k isEqualToString:@"#"]){
+			IStyleSheet *sheet = _view.inheritedStyleSheet;
+			if(sheet){
+				NSString *v = decl.val;
+				for(IStyleRule *rule in sheet.rules){
+					if([rule.selectors containsObject:v] && [rule match:_view]){
+						for(IStyleDecl *decl in rule.declBlock.decls){
+							//NSLog(@"  %@ %@ %@: %@", decl, k, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
 						}
 					}
@@ -581,7 +605,7 @@
 			}
 		}
 		if(src){
-			log_debug(@"load background image: %@", src);
+			log_debug(@"%@ load background image: %@", _view.name, src);
 			if([IStyleUtil isHttpUrl:src]){
 				NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 				[request setHTTPMethod:@"GET"];
@@ -591,7 +615,10 @@
 					_backgroundImage = [UIImage imageWithData:data];
 				}
 			}else{
-				_backgroundImage = [UIImage imageNamed:src];
+				NSData *data = [NSData dataWithContentsOfFile:src];
+				if(data){
+					_backgroundImage = [UIImage imageWithData:data];
+				}
 			}
 		}
 	}

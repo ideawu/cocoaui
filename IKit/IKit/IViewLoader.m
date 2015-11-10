@@ -295,12 +295,7 @@ typedef enum{
 	
 	if(view){
 		view.style.tagName = tagName;
-		
-		NSString *id_ = [attributeDict objectForKey:@"id"];
-		if(id_ != nil && id_.length > 0){
-			view.vid = id_;
-			[_viewsById setObject:view forKey:id_];
-		}
+		[view.style set:@"" baseUrl:_baseUrl];
 		
 		if(currentView){
 			if([currentView class] == [IView class]){
@@ -319,6 +314,11 @@ typedef enum{
 		currentView = view;
 		[parse_stack addObject:view];
 		
+		// 1. builtin(default) css
+		// 2. class css
+		// 3. ID css
+		// 4. inline css
+		
 		if(defaultCss){
 			[view.style set:defaultCss];
 		}
@@ -333,6 +333,13 @@ typedef enum{
 				for(NSString *clz in ps){
 					[view.style addClass:clz];
 				}
+			}
+			
+			NSString *id_ = [attributeDict objectForKey:@"id"];
+			if(id_ != nil && id_.length > 0){
+				view.vid = id_;
+				[_viewsById setObject:view forKey:id_];
+				[view.style setId:id_];
 			}
 			
 			NSString *css = [attributeDict objectForKey:@"style"];
