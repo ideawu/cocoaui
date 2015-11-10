@@ -42,7 +42,6 @@
 @property (nonatomic) UIColor *color;
 @property (nonatomic) IStyleTextAlign textAlign;
 
-@property (nonatomic) IStyleBlock *declBlock;
 @end
 
 
@@ -295,11 +294,19 @@
 	return [_declBlock hasClass:clz];
 }
 
+// 该方法只被 IViewLoader 使用
 - (void)setId:(NSString *)ident{
+	_view.vid = ident;
 	[_declBlock addKey:@"#" value:[NSString stringWithFormat:@"#%@",ident]];
 	if(_view.inheritedStyleSheet){
 		[self applyAllCss];
 	}
+}
+
+// 该方法只被 IViewLoader 使用
+- (void)setTagName:(NSString *)tagName{
+	_tagName = tagName;
+	[_declBlock addKey:@"@" value:tagName];
 }
 
 - (void)set:(NSString *)css{
@@ -336,20 +343,7 @@
 	[self reset];
 	
 	for(IStyleDecl *decl in _declBlock.decls){
-		NSString *k = decl.key;
-		if([k characterAtIndex:0] == '.'){
-			IStyleSheet *sheet = _view.inheritedStyleSheet;
-			if(sheet){
-				for(IStyleRule *rule in sheet.rules){
-					if([rule.selectors containsObject:k] && [rule match:_view]){
-						for(IStyleDecl *decl in rule.declBlock.decls){
-							//NSLog(@"  %@ %@ %@: %@", decl, k, decl.key, decl.val);
-							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
-						}
-					}
-				}
-			}
-		}else if([k isEqualToString:@"#"]){
+		if(decl.isId || decl.isClass || decl.isTagName){
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
 				NSString *v = decl.val;

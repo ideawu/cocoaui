@@ -11,6 +11,16 @@
 
 @implementation IStyleDecl
 
+- (BOOL)isId{
+	return [_key characterAtIndex:0] == '#';
+}
+- (BOOL)isClass{
+	return [_key characterAtIndex:0] == '.';
+}
+- (BOOL)isTagName{
+	return [_key characterAtIndex:0] == '@';
+}
+
 @end
 
 
@@ -73,7 +83,7 @@
 
 - (void)addClass:(NSString *)clz{
 	NSString *key = [NSString stringWithFormat:@".%@", clz];
-	[self addKey:key value:nil];
+	[self addKey:key value:key];
 }
 
 - (void)removeClass:(NSString *)clz{

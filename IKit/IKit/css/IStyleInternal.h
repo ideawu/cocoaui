@@ -14,6 +14,7 @@
 
 @class IView;
 @class IStyleBorder;
+@class IStyleBlock;
 
 typedef struct{
 	CGFloat x, y, w, h;
@@ -128,6 +129,8 @@ typedef enum{
 @property (nonatomic, readonly) UIColor *backgroundColor;
 @property (nonatomic, readonly) UIImage *backgroundImage;
 @property (nonatomic, readonly) BOOL backgroundRepeat;
+
+@property (nonatomic) IStyleBlock *declBlock;
 
 + (CGFloat)smallFontSize;
 + (CGFloat)normalFontSize;

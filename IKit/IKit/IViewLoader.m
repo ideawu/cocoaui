@@ -19,6 +19,7 @@
 #import "IStyleSheet.h"
 #import "Text.h"
 #import "IStyleInternal.h"
+#import "IStyleDecl.h"
 
 #define DTHTML 0
 
@@ -294,7 +295,6 @@ typedef enum{
 	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
 	
 	if(view){
-		view.style.tagName = tagName;
 		[view.style set:@"" baseUrl:_baseUrl];
 		
 		if(currentView){
@@ -315,13 +315,17 @@ typedef enum{
 		[parse_stack addObject:view];
 		
 		// 1. builtin(default) css
-		// 2. class css
-		// 3. ID css
-		// 4. inline css
+		// 2. tagName css
+		// 3. class css
+		// 4. ID css
+		// 5. inline css
+		// $: dynamic set css
 		
 		if(defaultCss){
 			[view.style set:defaultCss];
 		}
+		
+		[view.style setTagName:tagName];
 		
 		//[_styleSheet applyCssForView:view attributes:attributeDict];
 		if(attributeDict){
@@ -337,7 +341,6 @@ typedef enum{
 			
 			NSString *id_ = [attributeDict objectForKey:@"id"];
 			if(id_ != nil && id_.length > 0){
-				view.vid = id_;
 				[_viewsById setObject:view forKey:id_];
 				[view.style setId:id_];
 			}
