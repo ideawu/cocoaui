@@ -12,7 +12,7 @@
 
 #define VER_NUM  "1.2.4"
 
-#ifndef DEBUG
+#ifdef DEBUG
 #	define VERSION  VER_NUM "(for development only)"
 #	define log_trace(...) NSLog(__VA_ARGS__)
 #	define log_debug(...) NSLog(__VA_ARGS__)
