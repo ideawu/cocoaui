@@ -168,7 +168,7 @@
 		[sub.style set:css];
 	}
 	if(self.inheritedStyleSheet){
-		[sub.style applyAllCss];
+		[sub.style renderAllCss];
 	}
 }
 

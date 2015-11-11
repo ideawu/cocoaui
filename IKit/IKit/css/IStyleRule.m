@@ -19,6 +19,13 @@
 	return self;
 }
 
+- (NSString *)description{
+	NSMutableString *ret = [[NSMutableString alloc] init];
+	[ret appendString:[_selectors componentsJoinedByString:@" "]];
+	[ret appendString:_declBlock.description];
+	return ret;
+}
+
 - (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl{
 	NSArray *ps = [rule componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	for(NSString *p in ps){

@@ -137,7 +137,7 @@ typedef enum{
 + (CGFloat)largeFontSize;
 
 - (void)reset;
-- (void)applyAllCss;
+- (void)renderAllCss;
 
 - (void)setId:(NSString *)ident;
 - (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;

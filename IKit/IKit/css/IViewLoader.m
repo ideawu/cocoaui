@@ -138,7 +138,7 @@ typedef enum{
 	_text = nil;
 	
 	// 之前设置的 class 属性并没有立即生效
-	[retView.style applyAllCss];
+	[retView.style renderAllCss];
 	return retView;
 }
 
@@ -269,9 +269,12 @@ typedef enum{
 		}
 		view = [[IView alloc] init];
 		defaultCss = br_s;
+	}else if([tagName isEqualToString:@"ul"] || [tagName isEqualToString:@"ol"]){
+		view = [[IView alloc] init];
 	}else if([tagName isEqualToString:@"li"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; margin: 4 0; width: 100%;";
+		//view = [[ILabel alloc] init];
+		view = [[IView alloc] init];
+		defaultCss = @"clear: both; margin: 4 0 4 12; width: 100%;";
 	}else if([tagName isEqualToString:@"p"]){
 		view = [[ILabel alloc] init];
 		defaultCss = @"clear: both; margin: 12 0; width: 100%;";

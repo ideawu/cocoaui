@@ -279,14 +279,14 @@
 	//NSLog(@"%s %@", __func__, clz);
 	[_declBlock addClass:clz];
 	if(_view.inheritedStyleSheet){
-		[self applyAllCss];
+		[self renderAllCss];
 	}
 }
 
 - (void)removeClass:(NSString *)clz{
 	[_declBlock removeClass:clz];
 	if(_view.inheritedStyleSheet){
-		[self applyAllCss];
+		[self renderAllCss];
 	}
 }
 
@@ -299,7 +299,7 @@
 	_view.vid = ident;
 	[_declBlock addKey:@"#" value:[NSString stringWithFormat:@"#%@",ident]];
 	if(_view.inheritedStyleSheet){
-		[self applyAllCss];
+		[self renderAllCss];
 	}
 }
 
@@ -338,7 +338,7 @@
 	}
 }
 
-- (void)applyAllCss{
+- (void)renderAllCss{
 	//NSLog(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
 	
@@ -348,9 +348,11 @@
 			if(sheet){
 				NSString *v = decl.val;
 				for(IStyleRule *rule in sheet.rules){
+					//NSLog(@"RULE: %@", rule);
+					//NSLog(@" %@ match?: %d", _tagName, [rule match:_view]);
 					if([rule.selectors containsObject:v] && [rule match:_view]){
 						for(IStyleDecl *decl in rule.declBlock.decls){
-							//NSLog(@"  %@ %@ %@: %@", decl, k, decl.key, decl.val);
+							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
 						}
 					}
@@ -366,7 +368,7 @@
 	
 	// 重新应用子节点的样式
 	for(IView *sub in _view.subs){
-		[sub.style applyAllCss];
+		[sub.style renderAllCss];
 	}
 }
 

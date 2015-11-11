@@ -20,7 +20,6 @@
 - (BOOL)isTagName{
 	return [_key characterAtIndex:0] == '@';
 }
-
 @end
 
 
@@ -30,6 +29,16 @@
 	self = [super init];
 	_decls = [[NSMutableArray alloc] init];
 	return self;
+}
+
+- (NSString *)description{
+	NSMutableString *ret = [[NSMutableString alloc] init];
+	[ret appendString:@"{ "];
+	for(IStyleDecl *decl in _decls){
+		[ret appendFormat:@"%@: %@; ", decl.key, decl.val];
+	}
+	[ret appendString:@"}"];
+	return ret;
 }
 
 + (IStyleDeclBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl{
