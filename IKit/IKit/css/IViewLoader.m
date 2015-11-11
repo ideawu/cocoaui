@@ -66,7 +66,7 @@ typedef enum{
 	NSArray *arr = [IStyleUtil parsePath:url];
 	NSString *rootPath = [arr objectAtIndex:0];
 	NSString *basePath = [arr objectAtIndex:1];
-	//NSLog(@"%@ %@", rootPath, basePath);
+	//NSLog(@"root: %@ base: %@", rootPath, basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
@@ -92,6 +92,9 @@ typedef enum{
 }
 
 - (IView *)loadXml:(NSString *)str{
+	_rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
+	_basePath = _rootPath;
+	
 	//log_trace(@"%@", str);
 	state = ParseInit;
 	currentView = nil;
@@ -153,6 +156,9 @@ typedef enum{
 	if([_tag isEqualToString:@"style"]){
 		ret = YES;
 		src = [attributeDict objectForKey:@"src"];
+		if(!src){
+			src = [attributeDict objectForKey:@"href"];
+		}
 	}else if([_tag isEqualToString:@"link"]){
 		ret = YES;
 		NSString *type = [attributeDict objectForKey:@"type"];
@@ -165,7 +171,9 @@ typedef enum{
 			if([src characterAtIndex:0] == '/'){
 				src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
 			}else{
+				NSLog(@"%@ %@", _basePath, src);
 				src = [_basePath stringByAppendingString:src];
+				NSLog(@"%@", src);
 			}
 		}
 		[_styleSheet parseCssFile:src];

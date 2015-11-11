@@ -45,6 +45,7 @@
 		089C7BFD1B98645A003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
 		089C7BFE1B986488003CEA7F /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFA1B98645A003CEA7F /* libIKit.a */; };
 		089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
+		089C7C161BF3AF00003CEA7F /* ITablePullRefreshItem.css in Resources */ = {isa = PBXBuildFile; fileRef = 089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */; };
 		08A0F14B1A7281AE007A8D2A /* IPullRefresh.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08EAD7101A6AF54B00A0822A /* IPullRefresh.h */; };
 		08A34A4A1A53F36300C1B7F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A491A53F36300C1B7F8 /* main.m */; };
 		08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */; };
@@ -94,7 +95,7 @@
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* IStyleDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* IStyleDecl.m */; };
-		31B69C501BF3110100EC1908 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C4F1BF3110100EC1908 /* IViewLoader.m */; settings = {ASSET_TAGS = (); }; };
+		31B69C501BF3110100EC1908 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C4F1BF3110100EC1908 /* IViewLoader.m */; };
 		31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254C61A63A8760095EC77 /* Http.h */; };
 		31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254881A5E71BD0095EC77 /* Text.h */; };
 		31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0854925F1A8092CC00F0563C /* RSA.h */; };
@@ -200,6 +201,7 @@
 		089C7BFA1B98645A003CEA7F /* libIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIKit.a; path = "../build/Debug-iphonesimulator/libIKit.a"; sourceTree = "<group>"; };
 		089C7BFB1B98645A003CEA7F /* libIObj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIObj.a; path = "../build/Debug-iphonesimulator/libIObj.a"; sourceTree = "<group>"; };
 		089C7C001B986488003CEA7F /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaUIViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ITablePullRefreshItem.css; sourceTree = "<group>"; };
 		08A34A0F1A53EC3800C1B7F8 /* IKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKit.h; sourceTree = "<group>"; };
 		08A34A481A53F36300C1B7F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08A34A491A53F36300C1B7F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				08AEEF8E1A7C94FC0015D2D6 /* ITablePullRefreshDemo.h */,
 				08AEEF8F1A7C94FD0015D2D6 /* ITablePullRefreshDemo.m */,
 				31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */,
+				089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */,
 				3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */,
 				3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */,
 				08A49C671A76706400748605 /* IPopoverDemo.h */,
@@ -686,6 +689,7 @@
 				08FD76A51A846DFB00FB249C /* ic_down.png in Resources */,
 				08A34A551A53F36300C1B7F8 /* Images.xcassets in Resources */,
 				08FD76A61A846DFB00FB249C /* ic_up.png in Resources */,
+				089C7C161BF3AF00003CEA7F /* ITablePullRefreshItem.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
