@@ -276,6 +276,11 @@
 	}
 }
 
+- (void)setClass:(NSString *)clz{
+	[_classes removeAllObjects];
+	[self addClass:clz];
+}
+
 - (void)addClass:(NSString *)clz{
 	//NSLog(@"%s %@", __func__, clz);
 	[_classes addObject:clz];
