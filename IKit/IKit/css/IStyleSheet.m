@@ -40,14 +40,7 @@
 		}
 	}
 	
-	static NSMutableDictionary *cache = nil;
-	if(cache == nil){
-		cache = [[NSMutableDictionary alloc] init];
-	}
-	IStyleSheet *sheet;
-	
 	if([IStyleUtil isHttpUrl:src]){
-		sheet = [[IStyleSheet alloc] init];
 		NSString *text = nil;
 		NSError *err;
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -56,10 +49,15 @@
 		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
 		if(data){
 			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			[sheet parseCss:text];
+			[self parseCss:text];
 		}
 	}else{
-		sheet = [cache objectForKey:src];
+		static NSMutableDictionary *cache = nil;
+		if(cache == nil){
+			cache = [[NSMutableDictionary alloc] init];
+		}
+		
+		IStyleSheet *sheet = [cache objectForKey:src];
 		if(sheet){
 			log_debug(@"load css resource from cache: %@", src);
 		}else{
@@ -73,10 +71,9 @@
 				[cache setObject:sheet forKey:src];
 			}
 		}
-	}
-
-	for(IStyleRule *rule in sheet.rules){
-		[_rules addObject:rule];
+		for(IStyleRule *rule in sheet.rules){
+			[_rules addObject:rule];
+		}
 	}
 }
 
@@ -133,6 +130,26 @@
 
 		//NSLog(@"%@ = %@", key,val);
 		[self setCssValue:val forSelector:selector];
+	}
+	
+	// 按优先级排序样式规则列表
+	[_rules sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		IStyleRule *a = (IStyleRule *)obj1;
+		IStyleRule *b = (IStyleRule *)obj2;
+		if(a.weight > b.weight){
+			return 1;
+		}else if(a.weight < b.weight){
+			return -1;
+		}else{
+			return 0;
+		}
+	}];
+	//[self debugRules];
+}
+
+- (void)debugRules{
+	for(IStyleRule *rule in _rules){
+		NSLog(@"%10d: %@", rule.weight, rule);
 	}
 }
 

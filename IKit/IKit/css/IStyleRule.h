@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) NSMutableArray *selectors;
 @property (nonatomic, readonly) IStyleDeclBlock *declBlock;
 @property (nonatomic, readonly) NSString *baseUrl;
+@property (nonatomic, readonly) int weight;
 
 - (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl;
 - (BOOL)match:(IView *)view;

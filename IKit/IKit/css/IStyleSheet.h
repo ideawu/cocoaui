@@ -28,6 +28,7 @@
 @property (nonatomic, readonly) NSMutableArray *rules;
 
 - (void)parseCss:(NSString *)css;
-- (void)parseCssFile:(NSString *)src baseUrl:(NSString *)baseUrl;
+// TODO: path 必须是绝对路径
+- (void)parseCssFile:(NSString *)path baseUrl:(NSString *)baseUrl;
 
 @end

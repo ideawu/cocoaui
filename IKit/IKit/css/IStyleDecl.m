@@ -10,16 +10,6 @@
 #import "IStyleInternal.h"
 
 @implementation IStyleDecl
-
-- (BOOL)isId{
-	return [_key characterAtIndex:0] == '#';
-}
-- (BOOL)isClass{
-	return [_key characterAtIndex:0] == '.';
-}
-- (BOOL)isTagName{
-	return [_key characterAtIndex:0] == '@';
-}
 @end
 
 

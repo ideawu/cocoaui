@@ -41,7 +41,7 @@
 @property (nonatomic) UIFont *font;
 @property (nonatomic) UIColor *color;
 @property (nonatomic) IStyleTextAlign textAlign;
-
+@property (nonatomic) NSMutableSet *classes;
 @end
 
 
@@ -67,6 +67,7 @@
 	self = [super init];
 	[self reset];
 	_declBlock = [[IStyleDeclBlock alloc] init];
+	_classes = [[NSMutableSet alloc] init];
 	return self;
 }
 
@@ -277,36 +278,29 @@
 
 - (void)addClass:(NSString *)clz{
 	//NSLog(@"%s %@", __func__, clz);
-	[_declBlock addClass:clz];
+	[_classes addObject:clz];
 	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
 	}
 }
 
 - (void)removeClass:(NSString *)clz{
-	[_declBlock removeClass:clz];
+	[_classes removeObject:clz];
 	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
 	}
 }
 
 - (BOOL)hasClass:(NSString *)clz{
-	return [_declBlock hasClass:clz];
+	return [_classes containsObject:clz];
 }
 
 // 该方法只被 IViewLoader 使用
 - (void)setId:(NSString *)ident{
 	_view.vid = ident;
-	[_declBlock addKey:@"#" value:[NSString stringWithFormat:@"#%@",ident]];
 	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
 	}
-}
-
-// 该方法只被 IViewLoader 使用
-- (void)setTagName:(NSString *)tagName{
-	_tagName = tagName;
-	[_declBlock addKey:@"@" value:tagName];
 }
 
 - (void)set:(NSString *)css{
@@ -343,14 +337,13 @@
 	[self reset];
 	
 	for(IStyleDecl *decl in _declBlock.decls){
-		if(decl.isId || decl.isClass || decl.isTagName){
+		if([decl.key isEqualToString:@"@"]){
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
-				NSString *v = decl.val;
 				for(IStyleRule *rule in sheet.rules){
 					//NSLog(@"RULE: %@", rule);
 					//NSLog(@" %@ match?: %d", _tagName, [rule match:_view]);
-					if([rule.selectors containsObject:v] && [rule match:_view]){
+					if([rule match:_view]){
 						for(IStyleDecl *decl in rule.declBlock.decls){
 							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];

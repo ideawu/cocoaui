@@ -13,10 +13,6 @@
 @property (nonatomic) NSString *key;
 @property (nonatomic) NSString *val;
 
-- (BOOL)isId;
-- (BOOL)isClass;
-- (BOOL)isTagName;
-
 @end
 
 

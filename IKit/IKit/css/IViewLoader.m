@@ -161,6 +161,8 @@ typedef enum{
 		}
 	}
 	if(src){
+		// TODO: 根据路径的类型: 相对路径, 绝对路径, URL
+		// TODO: 计算新的 baseUrl
 		[_styleSheet parseCssFile:src baseUrl:_baseUrl];
 	}
 	return ret;
@@ -298,6 +300,7 @@ typedef enum{
 	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
 	
 	if(view){
+		view.style.tagName = tagName;
 		[view.style set:@"" baseUrl:_baseUrl];
 		
 		if(currentView){
@@ -318,20 +321,24 @@ typedef enum{
 		[parse_stack addObject:view];
 		
 		// 1. builtin(default) css
-		// 2. tagName css
-		// 3. class css
-		// 4. ID css
-		// 5. inline css
+		// 2. stylesheet(by style tag) css
+		// 3. inline css
 		// $: dynamic set css
 		
+		// 1.
 		if(defaultCss){
 			[view.style set:defaultCss];
 		}
+		// 2.
+		[view.style.declBlock addKey:@"@" value:@""];
 		
-		[view.style setTagName:tagName];
-		
-		//[_styleSheet applyCssForView:view attributes:attributeDict];
 		if(attributeDict){
+			// 3.
+			NSString *css = [attributeDict objectForKey:@"style"];
+			if(css){
+				[view.style set:css];
+			}
+
 			NSString *class_ = [attributeDict objectForKey:@"class"];
 			if(class_ != nil){
 				NSMutableArray *ps = [NSMutableArray arrayWithArray:
@@ -346,11 +353,6 @@ typedef enum{
 			if(id_ != nil && id_.length > 0){
 				[_viewsById setObject:view forKey:id_];
 				[view.style setId:id_];
-			}
-			
-			NSString *css = [attributeDict objectForKey:@"style"];
-			if(css){
-				[view.style set:css];
 			}
 		}
 	}else{

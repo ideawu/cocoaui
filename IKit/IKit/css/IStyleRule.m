@@ -27,10 +27,14 @@
 }
 
 - (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl{
+	_weight = 0;
 	NSArray *ps = [rule componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	for(NSString *p in ps){
 		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if(key.length == 0){
+			continue;
+		}
+		if([key isEqualToString:@"*"]){
 			continue;
 		}
 		if([key characterAtIndex:0] == '>'){
@@ -40,10 +44,22 @@
 			if(key.length == 0){
 				continue;
 			}
-			[_selectors addObject:key];
-		}else{
-			[_selectors addObject:key];
 		}
+		unichar c = [key characterAtIndex:0];
+		switch(c){
+			case '#': // ID
+				_weight += 1 * 1000 * 1000;
+				break;
+			case '.': // Class
+				_weight += 1 * 1000;
+				key = [key lowercaseString];
+				break;
+			default: // Tag
+				_weight += 1;
+				key = [key lowercaseString];
+				break;
+		}
+		[_selectors addObject:key];
 	}
 	
 	_baseUrl = baseUrl;
