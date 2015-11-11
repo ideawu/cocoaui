@@ -49,8 +49,8 @@
 }
 
 - (id)initWithFrame:(CGRect)frame{
-	self = [self init];
-	self.frame = frame;
+	self = [super initWithFrame:frame];
+	[self construct];
 
 	if(frame.size.width > 0){
 		[_style set:[NSString stringWithFormat:@"width: %f", frame.size.width]];
@@ -62,6 +62,13 @@
 }
 
 - (id)init{
+	// 宽高不能同时为0, 否则 layoutSubviews 不会被调用, 就没有机会显示了
+	self = [super initWithFrame:CGRectMake(0, 0, 1, 0)];
+	[self construct];
+	return self;
+}
+
+- (void)construct{
 	static BOOL inited = NO;
 	if(!inited){
 		inited = YES;
@@ -71,10 +78,6 @@
 		//NSString* appid = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
 		//NSLog(@"%@", appid);
 	}
-	
-	// 宽高不能同时为0, 否则 layoutSubviews 不会被调用, 就没有机会显示了
-	self = [super initWithFrame:CGRectMake(0, 0, 1, 0)];
-
 	self.backgroundColor = [UIColor clearColor];
 	//self.userInteractionEnabled = NO;
 	
@@ -85,7 +88,6 @@
 	self.seq = id_incr++;
 	
 	_need_layout = true;
-	return self;
 }
 
 + (IView *)namedView:(NSString *)name{
