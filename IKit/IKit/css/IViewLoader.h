@@ -14,7 +14,6 @@
 
 @interface IViewLoader : NSObject
 
-@property (nonatomic) NSString *baseUrl;
 @property (nonatomic, readonly) IStyleSheet *styleSheet;
 
 + (IView *)viewFromXml:(NSString *)xml;
