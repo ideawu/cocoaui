@@ -70,4 +70,37 @@ static CGFloat colorVal(NSString *hex){
 	return NO;
 }
 
++ (NSArray *)parsePath:(NSString *)url{
+	NSString *basePath, *rootPath;
+	NSRange r1 = [url rangeOfString:@"http://"];
+	if(r1.location != 0){
+		r1 = [url rangeOfString:@"https://"];
+	}
+	NSRange r2 = [url rangeOfString:@"/" options:NSBackwardsSearch];
+	if(r1.location != 0){ // File path
+		rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
+		if(r2.location == NSNotFound){
+			basePath = rootPath;
+		}else{
+			basePath = [NSString stringWithFormat:@"%@%@/", rootPath, [url substringToIndex:r2.location]];
+		}
+	}else{ // HTTP URL
+		if(r2.location < r1.location + r1.length){ // like http://cocoaui.com
+			basePath = [NSString stringWithFormat:@"%@/", url];
+			rootPath = basePath;
+		}else{
+			basePath = [url substringToIndex:r2.location + 1];
+			NSUInteger idx = r1.location + r1.length;
+			while(idx < url.length){
+				if([url characterAtIndex:idx] == '/'){
+					break;
+				}
+				idx ++;
+			}
+			rootPath = [url substringToIndex:idx + 1];
+		}
+	}
+	return [NSArray arrayWithObjects:rootPath, basePath, nil];
+}
+
 @end

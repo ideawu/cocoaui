@@ -29,6 +29,6 @@
 
 - (void)parseCss:(NSString *)css;
 // TODO: path 必须是绝对路径
-- (void)parseCssFile:(NSString *)path baseUrl:(NSString *)baseUrl;
+- (void)parseCssFile:(NSString *)path;
 
 @end

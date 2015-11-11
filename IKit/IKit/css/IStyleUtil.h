@@ -14,4 +14,6 @@
 + (UIColor *) colorFromHex:(NSString *)hex;
 + (BOOL)isHttpUrl:(NSString *)src;
 
++ (NSArray *)parsePath:(NSString *)path;
+
 @end

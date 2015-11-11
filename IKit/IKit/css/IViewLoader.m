@@ -20,6 +20,7 @@
 #import "Text.h"
 #import "IStyleInternal.h"
 #import "IStyleDecl.h"
+#import "IStyleUtil.h"
 
 #define DTHTML 0
 
@@ -48,6 +49,8 @@ typedef enum{
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
 @property (nonatomic) NSMutableArray *rootViews;
+@property (nonatomic) NSString *rootPath; // 以'/'结尾, 对于文件, 就是根目录; 对于URL, 就是根URL.
+@property (nonatomic) NSString *basePath; // 以'/'结尾
 @end
 
 @implementation IViewLoader
@@ -60,14 +63,10 @@ typedef enum{
 
 	
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
-	NSRange r1 = [url rangeOfString:@"://"];
-	NSRange r2 = [url rangeOfString:@"/" options:NSBackwardsSearch];
-	NSString *base;
-	if(r2.location < r1.location + r1.length){
-		base = [url stringByAppendingString:@"/"];
-	}else{
-		base = [url substringToIndex:r2.location + 1];
-	}
+	NSArray *arr = [IStyleUtil parsePath:url];
+	NSString *rootPath = [arr objectAtIndex:0];
+	NSString *basePath = [arr objectAtIndex:1];
+	//NSLog(@"%@ %@", rootPath, basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
@@ -76,7 +75,8 @@ typedef enum{
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error){
 		NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		IViewLoader *viewLoader = [[IViewLoader alloc] init];
-		viewLoader.baseUrl = base;
+		viewLoader.rootPath = rootPath;
+		viewLoader.basePath = basePath;
 		IView *view = [viewLoader loadXml:xml];
 		callback(view);
 	}];
@@ -161,9 +161,14 @@ typedef enum{
 		}
 	}
 	if(src){
-		// TODO: 根据路径的类型: 相对路径, 绝对路径, URL
-		// TODO: 计算新的 baseUrl
-		[_styleSheet parseCssFile:src baseUrl:_baseUrl];
+		if(![IStyleUtil isHttpUrl:src]){
+			if([src characterAtIndex:0] == '/'){
+				src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
+			}else{
+				src = [_basePath stringByAppendingString:src];
+			}
+		}
+		[_styleSheet parseCssFile:src];
 	}
 	return ret;
 }
@@ -221,8 +226,12 @@ typedef enum{
 		NSString *src = [attributeDict objectForKey:@"src"];
 		IImage *img = [[IImage alloc] init];
 		if(src){
-			if(_baseUrl){
-				src = [_baseUrl stringByAppendingString:src];
+			if(![IStyleUtil isHttpUrl:src]){
+				if([src characterAtIndex:0] == '/'){
+					src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
+				}else{
+					src = [_basePath stringByAppendingString:src];
+				}
 			}
 			img.src = src;
 		}
@@ -301,7 +310,7 @@ typedef enum{
 	
 	if(view){
 		view.style.tagName = tagName;
-		[view.style set:@"" baseUrl:_baseUrl];
+		[view.style set:@"" baseUrl:_basePath];
 		
 		if(currentView){
 			if([currentView class] == [IView class]){

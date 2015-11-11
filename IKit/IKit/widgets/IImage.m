@@ -54,7 +54,14 @@
 			}
 		}
 	}else{
-		[self setImage:[UIImage imageNamed:src]];
+		if([src characterAtIndex:0] == '/'){
+			NSData *data = [NSData dataWithContentsOfFile:src];
+			if(data){
+				[self setImage:[UIImage imageWithData:data]];
+			}
+		}else{
+			[self setImage:[UIImage imageNamed:src]];
+		}
 	}
 }
 

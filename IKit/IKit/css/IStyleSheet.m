@@ -27,18 +27,12 @@
 	return self;
 }
 
-- (void)parseCssFile:(NSString *)src baseUrl:(NSString *)baseUrl{
+- (void)parseCssFile:(NSString *)src{
 	if(!src){
 		return;
 	}
-	_baseUrl = baseUrl;
-	if(![IStyleUtil isHttpUrl:src]){
-		if(baseUrl){
-			src = [baseUrl stringByAppendingString:src];
-		}else{
-			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-		}
-	}
+	NSArray *arr = [IStyleUtil parsePath:src];
+	_baseUrl = [arr objectAtIndex:1];
 	
 	if([IStyleUtil isHttpUrl:src]){
 		NSString *text = nil;

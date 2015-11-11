@@ -336,6 +336,11 @@
 	//NSLog(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
 	
+	// 对于手工创建的控件, 加上对 stylesheet 的引用
+	if(_declBlock.decls.count == 0){
+		[_declBlock addKey:@"@" value:@""];
+	}
+	
 	for(IStyleDecl *decl in _declBlock.decls){
 		if([decl.key isEqualToString:@"@"]){
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
