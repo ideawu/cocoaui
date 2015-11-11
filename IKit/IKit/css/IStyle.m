@@ -66,7 +66,7 @@
 - (id)init{
 	self = [super init];
 	[self reset];
-	_declBlock = [[IStyleBlock alloc] init];
+	_declBlock = [[IStyleDeclBlock alloc] init];
 	return self;
 }
 
@@ -324,7 +324,7 @@
 		_declBlock.baseUrl = baseUrl;
 	}
 	
-	IStyleBlock *set = [IStyleBlock fromCss:css baseUrl:baseUrl];
+	IStyleDeclBlock *set = [IStyleDeclBlock fromCss:css baseUrl:baseUrl];
 	for(IStyleDecl *decl in set.decls){
 		[self applyDecl:decl baseUrl:set.baseUrl];
 		[_declBlock addDecl:decl];

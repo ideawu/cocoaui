@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @class IView;
-@class IStyleBlock;
+@class IStyleDeclBlock;
 
 @interface IStyleRule : NSObject
 
 @property (nonatomic, readonly) NSMutableArray *selectors;
-@property (nonatomic, readonly) IStyleBlock *declBlock;
+@property (nonatomic, readonly) IStyleDeclBlock *declBlock;
 @property (nonatomic, readonly) NSString *baseUrl;
 
 - (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl;

@@ -20,7 +20,7 @@
 @end
 
 
-@interface IStyleBlock : NSObject
+@interface IStyleDeclBlock : NSObject
 
 @property (nonatomic) NSString *baseUrl;
 @property (nonatomic, readonly) NSMutableArray *decls;
@@ -31,7 +31,7 @@
 - (void)removeClass:(NSString *)clz;
 - (BOOL)hasClass:(NSString *)clz;
 
-+ (IStyleBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
++ (IStyleDeclBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
 
 @end
 

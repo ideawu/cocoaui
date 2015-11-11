@@ -40,7 +40,7 @@
 	}
 	
 	_baseUrl = baseUrl;
-	_declBlock = [IStyleBlock fromCss:css baseUrl:_baseUrl];
+	_declBlock = [IStyleDeclBlock fromCss:css baseUrl:_baseUrl];
 }
 
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{
