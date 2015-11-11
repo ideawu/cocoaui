@@ -66,7 +66,7 @@ typedef enum{
 	NSArray *arr = [IStyleUtil parsePath:url];
 	NSString *rootPath = [arr objectAtIndex:0];
 	NSString *basePath = [arr objectAtIndex:1];
-	//NSLog(@"root: %@ base: %@", rootPath, basePath);
+	NSLog(@"root: %@ base: %@", rootPath, basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
@@ -84,6 +84,8 @@ typedef enum{
 
 - (id)init{
 	self = [super init];
+	_rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
+	_basePath = _rootPath;
 	return self;
 }
 
@@ -92,9 +94,6 @@ typedef enum{
 }
 
 - (IView *)loadXml:(NSString *)str{
-	_rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
-	_basePath = _rootPath;
-	
 	//log_trace(@"%@", str);
 	state = ParseInit;
 	currentView = nil;
@@ -171,9 +170,7 @@ typedef enum{
 			if([src characterAtIndex:0] == '/'){
 				src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
 			}else{
-				NSLog(@"%@ %@", _basePath, src);
 				src = [_basePath stringByAppendingString:src];
-				NSLog(@"%@", src);
 			}
 		}
 		[_styleSheet parseCssFile:src];
@@ -290,6 +287,7 @@ typedef enum{
 		defaultCss = br_s;
 	}else if([tagName isEqualToString:@"ul"] || [tagName isEqualToString:@"ol"]){
 		view = [[IView alloc] init];
+		defaultCss = @"clear: both; width: 100%;";
 	}else if([tagName isEqualToString:@"li"]){
 		//view = [[ILabel alloc] init];
 		view = [[IView alloc] init];
