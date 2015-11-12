@@ -34,9 +34,6 @@
 		if(key.length == 0){
 			continue;
 		}
-		if([key isEqualToString:@"*"]){
-			continue;
-		}
 		if([key characterAtIndex:0] == '>'){
 			[_selectors addObject:@">"];
 			key = [key substringFromIndex:1];

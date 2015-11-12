@@ -338,7 +338,7 @@ typedef enum{
 		// 1. builtin(default) css
 		// 2. stylesheet(by style tag) css
 		// 3. inline css
-		// $: dynamic set css
+		// $: dynamically set css
 		
 		// 1.
 		if(defaultCss){
