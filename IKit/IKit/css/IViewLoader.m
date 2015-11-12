@@ -255,7 +255,12 @@ typedef enum{
 	}else{
 		Class clz = [IViewLoader getClassForTag:tagName];
 		if(clz){
-			view = [[clz alloc] init];
+			// 避免嵌套的 ILabel
+			if([currentView class] == [ILabel class] && clz == [ILabel class]){
+				//
+			}else{
+				view = [[clz alloc] init];
+			}
 		}
 	}
 	
