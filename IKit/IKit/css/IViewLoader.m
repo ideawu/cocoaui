@@ -322,6 +322,9 @@ typedef enum{
 				[view.style setId:id_];
 			}
 		}
+		
+		// 清空, 不然 *text* 会被用到
+		_attributeDict = nil;
 	}else{
 		[parse_stack addObject:@""];
 	}
