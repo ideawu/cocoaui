@@ -53,9 +53,9 @@
 		
 		IStyleSheet *sheet = [cache objectForKey:src];
 		if(sheet){
-			log_debug(@"load css resource from cache: %@", src);
+			log_debug(@"load css file from cache: %@", src);
 		}else{
-			log_debug(@"load css resource: %@", src);
+			//log_debug(@"load css file: %@", src);
 			sheet = [[IStyleSheet alloc] init];
 			NSString *text = nil;
 			NSError *err;

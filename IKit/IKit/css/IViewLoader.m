@@ -43,6 +43,7 @@ typedef enum{
 	IStyleSheet *_styleSheet;
 	NSMutableArray *parse_stack;
 	NSMutableString *_text;
+	NSString *_last_tag;
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
 @property (nonatomic) NSMutableArray *rootViews;
@@ -162,15 +163,25 @@ typedef enum{
 		}
 	}
 	if(src){
-		if([IStyleUtil isHttpUrl:src]){
+		if([IStyleUtil isHttpUrl:_basePath]){
 			src = [IStyleUtil buildPath:_basePath src:src];
 		}else{
 			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
 			//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 		}
+		log_debug(@"load css file: %@", src);
 		[_styleSheet parseCssFile:src];
 	}
 	return ret;
+}
+
+	
++ (BOOL)isAutoCloseTag:(NSString *)tagName{
+	static NSSet *auto_close_tags = nil;
+	if(auto_close_tags == nil){
+		auto_close_tags = [NSSet setWithObjects:@"br", @"hr", @"img", @"meta", @"link", nil];
+	}
+	return tagName != nil && [auto_close_tags containsObject:tagName];
 }
 
 // 对于不支持的标签, 转成纯文本
@@ -181,7 +192,19 @@ typedef enum{
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
 #endif
 	tagName = [tagName lowercaseString];
-
+	//NSLog(@"<%@>", tagName);
+	
+	// 兼容不闭合的标签
+	if([IViewLoader isAutoCloseTag:_last_tag]){
+		//[parse_stack addObject:@""];
+#if DTHTML
+		[self parser:parser didEndElement:_last_tag];
+#else
+		[self parser:parser didEndElement:_last_tag namespaceURI:nil qualifiedName:nil];
+#endif
+	}
+	_last_tag = tagName; // 在 didEndElement 时清除
+	
 	if([self parseIfIsCSS:tagName attributes:attributeDict]){
 		return;
 	}
@@ -198,20 +221,6 @@ typedef enum{
 		}else{
 			return;
 		}
-	}
-	
-	// 兼容不闭合的标签
-	static NSArray *auto_close_tags = nil;
-	if(auto_close_tags == nil){
-		auto_close_tags = @[@"br", @"hr", @"img", @"meta", @"link"];
-	}
-	if([auto_close_tags containsObject:tagName]){
-		[parse_stack addObject:@""];
-#if DTHTML
-		[self parser:parser didEndElement:tagName];
-#else
-		[self parser:parser didEndElement:tagName namespaceURI:nil qualifiedName:nil];
-#endif
 	}
 
 	//log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
@@ -329,7 +338,6 @@ typedef enum{
 	}else{
 		[parse_stack addObject:@""];
 	}
-	
 }
 
 #if DTHTML
@@ -337,6 +345,7 @@ typedef enum{
 #else
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
 #endif
+	_last_tag = nil;
 	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
 	tagName = [tagName lowercaseString];
 	if([tagName isEqualToString:@"script"]){
