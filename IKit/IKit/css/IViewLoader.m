@@ -374,20 +374,17 @@ typedef enum{
 	}else if(viewClass == [IButton class]){
 		[(IButton *)currentView setText:[self getAndResetText]];
 	}else{
-		currentView = view;
-
 		NSString *str = [self getAndResetText];
 		if(str.length > 0){
 			ILabel *textView = [ILabel labelWithText:str];
 			[currentView addSubview:textView];
 		}
-
-		if(currentView.parent){
-			currentView = currentView.parent;
-		}else{
-			[_rootViews addObject:currentView];
-			currentView = nil;
-		}
+	}
+	if(currentView.parent){
+		currentView = currentView.parent;
+	}else{
+		[_rootViews addObject:currentView];
+		currentView = nil;
 	}
 }
 
