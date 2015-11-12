@@ -41,28 +41,8 @@
 
 - (void)setSrc:(NSString *)src{
 	_src = src;
-	// load image from network
-	if([IStyleUtil isHttpUrl:src]){
-		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-		[request setHTTPMethod:@"GET"];
-		[request setURL:[NSURL URLWithString:src]];
-		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-		if(data){
-			UIImage *img = [UIImage imageWithData:data];
-			if(img){
-				[self setImage:img];
-			}
-		}
-	}else{
-		if([src characterAtIndex:0] == '/'){
-			NSData *data = [NSData dataWithContentsOfFile:src];
-			if(data){
-				[self setImage:[UIImage imageWithData:data]];
-			}
-		}else{
-			[self setImage:[UIImage imageNamed:src]];
-		}
-	}
+	UIImage *img = [IStyleUtil loadImageFromPath:src];
+	[self setImage:img];
 }
 
 - (UIImage *)image{
@@ -112,12 +92,16 @@
 		}
 		if(!self.style.resizeWidth && self.style.resizeHeight){
 			// 等比缩放
-			CGFloat h = self.style.innerWidth / _imageView.frame.size.width * _imageView.frame.size.height;
-			[self.style setInnerHeight:h];
+			if(_imageView.frame.size.height != 0){
+				CGFloat h = self.style.innerWidth / _imageView.frame.size.width * _imageView.frame.size.height;
+				[self.style setInnerHeight:h];
+			}
 		}else if(self.style.resizeWidth && !self.style.resizeHeight){
 			// 等比缩放
-			CGFloat w = self.style.innerHeight / _imageView.frame.size.height * _imageView.frame.size.width;
-			[self.style setInnerWidth:w];
+			if(_imageView.frame.size.width != 0){
+				CGFloat w = self.style.innerHeight / _imageView.frame.size.height * _imageView.frame.size.width;
+				[self.style setInnerWidth:w];
+			}
 		}
 	}
 	

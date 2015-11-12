@@ -2,6 +2,7 @@
 	<style href="ITablePullRefreshItem.css" />
 	<div style="float: center; clear: both;">
 		<button class="btn" id="btn_1">-</button>
+		<img src="icon.png" width="40" />
 		<button class="btn" id="btn_2">+</button>
 	</div>
 	<div id="div" style="margin: 10 0; background: #eee; width: 300; float: center; border: 2 solid #3000;">

@@ -323,7 +323,7 @@
 		_declBlock.baseUrl = baseUrl;
 	}
 	
-	IStyleDeclBlock *set = [IStyleDeclBlock fromCss:css baseUrl:baseUrl];
+	IStyleDeclBlock *set = [IStyleDeclBlock fromCss:css baseUrl:_declBlock.baseUrl];
 	for(IStyleDecl *decl in set.decls){
 		[self applyDecl:decl baseUrl:set.baseUrl];
 		[_declBlock addDecl:decl];
@@ -433,7 +433,7 @@
 		}else{
 			[self setRatioWidth:f/100];
 		}
-		//log_trace(@"w = %f, ratioW = %f", self.w, self.ratioW);
+		//log_trace(@"w = %f, ratioW = %f", self.w, self.ratioWidth);
 	}else if([k isEqualToString:@"height"]){
 		needsLayout = YES;
 		if([v isEqualToString:@"auto"]){
@@ -579,10 +579,9 @@
 			_backgroundColor = [IKit colorFromHex:p];
 		}else if([p rangeOfString:@"url("].location != NSNotFound){
 			src = [p substringFromIndex:4];
-			static NSMutableCharacterSet *cs = nil;
+			static NSCharacterSet *cs = nil;
 			if(!cs){
-				cs = [[NSMutableCharacterSet alloc] init];
-				[cs addCharactersInString:@"\")"];
+				cs = [NSCharacterSet characterSetWithCharactersInString:@"'\")"];
 			}
 			src = [src stringByTrimmingCharactersInSet:cs];
 		}else if([p isEqualToString:@"none"]){
@@ -596,30 +595,11 @@
 		}
 	}
 	if(src){
-		if(![IStyleUtil isHttpUrl:src]){
-			if(baseUrl){
-				src = [baseUrl stringByAppendingString:src];
-			}else{
-				src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-			}
+		if(baseUrl){
+			src = [IStyleUtil buildPath:baseUrl src:src];
 		}
-		if(src){
-			log_debug(@"%@ load background image: %@", _view.name, src);
-			if([IStyleUtil isHttpUrl:src]){
-				NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-				[request setHTTPMethod:@"GET"];
-				[request setURL:[NSURL URLWithString:src]];
-				NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-				if(data){
-					_backgroundImage = [UIImage imageWithData:data];
-				}
-			}else{
-				NSData *data = [NSData dataWithContentsOfFile:src];
-				if(data){
-					_backgroundImage = [UIImage imageWithData:data];
-				}
-			}
-		}
+		log_debug(@"%@ load background image: %@", _view.name, src);
+		_backgroundImage = [IStyleUtil loadImageFromPath:src];
 	}
 }
 

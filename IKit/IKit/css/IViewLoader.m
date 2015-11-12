@@ -84,7 +84,7 @@ typedef enum{
 
 - (id)init{
 	self = [super init];
-	_rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
+	_rootPath = nil;//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 	_basePath = _rootPath;
 	return self;
 }
@@ -166,12 +166,11 @@ typedef enum{
 		}
 	}
 	if(src){
-		if(![IStyleUtil isHttpUrl:src]){
-			if([src characterAtIndex:0] == '/'){
-				src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
-			}else{
-				src = [_basePath stringByAppendingString:src];
-			}
+		if([IStyleUtil isHttpUrl:src]){
+			src = [IStyleUtil buildPath:_basePath src:src];
+		}else{
+			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
+			//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 		}
 		[_styleSheet parseCssFile:src];
 	}
@@ -231,15 +230,22 @@ typedef enum{
 		NSString *src = [attributeDict objectForKey:@"src"];
 		IImage *img = [[IImage alloc] init];
 		if(src){
-			if(![IStyleUtil isHttpUrl:src]){
-				if([src characterAtIndex:0] == '/'){
-					src = [_rootPath stringByAppendingString:[src substringFromIndex:1]];
-				}else{
-					src = [_basePath stringByAppendingString:src];
-				}
+			if([IStyleUtil isHttpUrl:_basePath]){
+				src = [IStyleUtil buildPath:_basePath src:src];
 			}
 			img.src = src;
+			log_debug(@"load image element: %@, base: %@", src, _basePath);
 		}
+		
+		NSString *width = [attributeDict objectForKey:@"width"];
+		NSString *height = [attributeDict objectForKey:@"height"];
+		if(width){
+			[img.style set:[NSString stringWithFormat:@"width: %@", width]];
+		}
+		if(height){
+			[img.style set:[NSString stringWithFormat:@"height: %@", height]];
+		}
+		
 		view = img;
 	}else if([tagName isEqualToString:@"input"]){
 		NSString *placeholder = [attributeDict objectForKey:@"placeholder"];

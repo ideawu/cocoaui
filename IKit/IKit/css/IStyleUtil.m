@@ -64,6 +64,9 @@ static CGFloat colorVal(NSString *hex){
 }
 
 + (BOOL)isHttpUrl:(NSString *)src{
+	if(!src){
+		return NO;
+	}
 	if([src rangeOfString:@"http://"].location == 0 || [src rangeOfString:@"https://"].location == 0){
 		return YES;
 	}
@@ -101,6 +104,44 @@ static CGFloat colorVal(NSString *hex){
 		}
 	}
 	return [NSArray arrayWithObjects:rootPath, basePath, nil];
+}
+
++ (NSString *)buildPath:(NSString *)basePath src:(NSString *)src{
+	if([IStyleUtil isHttpUrl:basePath]){
+		if([src characterAtIndex:0] == '/'){
+			NSArray *arr = [IStyleUtil parsePath:basePath];
+			NSString *rootPath = [arr objectAtIndex:0];
+			src = [rootPath stringByAppendingString:[src substringFromIndex:1]];
+		}else{
+			src = [basePath stringByAppendingString:src];
+		}
+	}else{
+		src = [basePath stringByAppendingString:src];
+	}
+	return src;
+}
+
++ (UIImage *)loadImageFromPath:(NSString *)path{
+	UIImage *img;
+	if([IStyleUtil isHttpUrl:path]){
+		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+		[request setHTTPMethod:@"GET"];
+		[request setURL:[NSURL URLWithString:path]];
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+		if(data){
+			img = [UIImage imageWithData:data];
+		}
+	}else{
+		if([path characterAtIndex:0] == '/'){
+			NSData *data = [NSData dataWithContentsOfFile:path];
+			if(data){
+				img = [UIImage imageWithData:data];
+			}
+		}else{
+			img = [UIImage imageNamed:path];
+		}
+	}
+	return img;
 }
 
 @end
