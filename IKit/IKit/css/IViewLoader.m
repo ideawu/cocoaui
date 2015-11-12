@@ -234,7 +234,6 @@ typedef enum{
 				src = [IStyleUtil buildPath:_basePath src:src];
 			}
 			img.src = src;
-			log_debug(@"load image element: %@, base: %@", src, _basePath);
 		}
 		
 		NSString *width = [attributeDict objectForKey:@"width"];

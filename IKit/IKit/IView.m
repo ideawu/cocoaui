@@ -83,6 +83,7 @@
 	
 	_style = [[IStyle alloc] init];
 	_style.view = self;
+	_style.tagName = @"div";
 	
 	static int id_incr = 0;
 	self.seq = id_incr++;
@@ -196,7 +197,7 @@
 }
 
 - (NSString *)name{
-	return [NSString stringWithFormat:@"%*s%-2d", self.level*3, "", self.seq];
+	return [NSString stringWithFormat:@"%*s%-2d.%@", self.level*2, "", self.seq, self.style.tagName];
 }
 
 - (void)show{
@@ -331,7 +332,7 @@
 }
 
 - (void)layout{
-	log_debug(@"%@ %s begin %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	log_debug(@"%@ layout begin %@", self.name, NSStringFromCGRect(_style.rect));
 	_need_layout = false;
 	
 	if(self.isRootView){
@@ -362,7 +363,7 @@
 		}
 	}
 	
-	log_debug(@"%@ %s end %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	log_debug(@"%@ layout end %@", self.name, NSStringFromCGRect(_style.rect));
 }
 
 #pragma mark - Events
