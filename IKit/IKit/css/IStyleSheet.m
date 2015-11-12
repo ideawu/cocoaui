@@ -100,6 +100,9 @@
 
 - (void)parseCss:(NSString *)css{
 	css = [self stripComment:css];
+	if(css.length == 0){
+		return;
+	}
 	
 	NSRange searchRange = NSMakeRange(0, css.length);
 	while (searchRange.length > 0) {

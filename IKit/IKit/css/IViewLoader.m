@@ -41,10 +41,7 @@ typedef enum{
 	ParseState state;
 	IView *currentView;
 	IStyleSheet *_styleSheet;
-	NSString *_tag;
 	NSMutableArray *parse_stack;
-	NSDictionary *_attributeDict;
-	BOOL _ignore;
 	NSMutableString *_text;
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
@@ -99,7 +96,6 @@ typedef enum{
 	currentView = nil;
 	_styleSheet = [[IStyleSheet alloc] init];
 	
-	_ignore = NO;
 	_rootViews = [[NSMutableArray alloc] init];
 	parse_stack = [[NSMutableArray alloc] init];
 	_viewsById = [[NSMutableDictionary alloc] init];
@@ -152,13 +148,13 @@ typedef enum{
 - (BOOL)parseIfIsCSS:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
 	BOOL ret = NO;
 	NSString *src = nil;
-	if([_tag isEqualToString:@"style"]){
+	if([tagName isEqualToString:@"style"]){
 		ret = YES;
 		src = [attributeDict objectForKey:@"src"];
 		if(!src){
 			src = [attributeDict objectForKey:@"href"];
 		}
-	}else if([_tag isEqualToString:@"link"]){
+	}else if([tagName isEqualToString:@"link"]){
 		ret = YES;
 		NSString *type = [attributeDict objectForKey:@"type"];
 		if([type isEqualToString:@"text/css"]){
@@ -177,21 +173,19 @@ typedef enum{
 	return ret;
 }
 
+// 对于不支持的标签, 转成纯文本
+
 #if DTHTML
 - (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
 #else
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
 #endif
 	tagName = [tagName lowercaseString];
-	NSString *last_tag = _tag;
-	_tag = tagName;
-	_attributeDict = attributeDict;
 
 	if([self parseIfIsCSS:tagName attributes:attributeDict]){
 		return;
 	}
-	if([_tag isEqualToString:@"script"]){
-		_ignore = YES;
+	if([tagName isEqualToString:@"script"]){
 		return;
 	}
 	if(state != ParseView){
@@ -205,18 +199,18 @@ typedef enum{
 			return;
 		}
 	}
-	[self parser:parser elementChanged:tagName];
 	
 	// 兼容不闭合的标签
 	static NSArray *auto_close_tags = nil;
 	if(auto_close_tags == nil){
 		auto_close_tags = @[@"br", @"hr", @"img", @"meta", @"link"];
 	}
-	if([auto_close_tags containsObject:last_tag]){
+	if([auto_close_tags containsObject:tagName]){
+		[parse_stack addObject:@""];
 #if DTHTML
-		[self parser:parser didEndElement:last_tag];
+		[self parser:parser didEndElement:tagName];
 #else
-		[self parser:parser didEndElement:last_tag namespaceURI:nil qualifiedName:nil];
+		[self parser:parser didEndElement:tagName namespaceURI:nil qualifiedName:nil];
 #endif
 	}
 
@@ -266,6 +260,12 @@ typedef enum{
 	}
 	
 	if(view){
+		NSString *str = [self getAndResetText];
+		if(str.length > 0){
+			ILabel *textView = [ILabel labelWithText:str];
+			[currentView addSubview:textView];
+		}
+		
 		view.style.tagName = tagName;
 		[view.style set:@"" baseUrl:_basePath];
 		
@@ -277,7 +277,6 @@ typedef enum{
 				if(!parent){
 					parent = [[IView alloc] init];
 					[parent addSubview:currentView];
-					//[parse_stack addObject:parent];
 					[_rootViews addObject:parent];
 				}
 				[parent addSubview:view];
@@ -322,15 +321,95 @@ typedef enum{
 				[view.style setId:id_];
 			}
 		}
-		
-		// 清空, 不然 *text* 会被用到
-		_attributeDict = nil;
 	}else{
 		[parse_stack addObject:@""];
 	}
 	
 }
+
+#if DTHTML
+- (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
+#else
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+#endif
+	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
+	tagName = [tagName lowercaseString];
+	if([tagName isEqualToString:@"script"]){
+		return;
+	}
+	if([tagName isEqualToString:@"style"]){
+		[_styleSheet parseCss:_text];
+		_text = [[NSMutableString alloc] init];
+		return;
+	}
+	if(state != ParseView){
+		_text = [[NSMutableString alloc] init];
+		return;
+	}
 	
+	if(parse_stack.count == 0){
+		NSString *str = [self getAndResetText];
+		if(str.length > 0){
+			ILabel *textView = [ILabel labelWithText:str];
+			[_rootViews addObject:textView];
+		}
+		return;
+	}
+	
+	id view = [parse_stack lastObject];
+	[parse_stack removeLastObject];
+	
+	if([view isKindOfClass:[NSString class]]){
+		return;
+	}
+	
+	Class viewClass = [view class];
+	if(viewClass == [ILabel class]){
+		[(ILabel *)currentView setText:[self getAndResetText]];
+	}else if(viewClass == [IButton class]){
+		[(IButton *)currentView setText:[self getAndResetText]];
+	}else{
+		currentView = view;
+
+		NSString *str = [self getAndResetText];
+		if(str.length > 0){
+			ILabel *textView = [ILabel labelWithText:str];
+			[currentView addSubview:textView];
+		}
+
+		if(currentView.parent){
+			currentView = currentView.parent;
+		}else{
+			[_rootViews addObject:currentView];
+			currentView = nil;
+		}
+	}
+}
+
+- (NSString *)getAndResetText{
+	if(_text.length == 0){
+		return @"";
+	}
+	// TODO: 对文本进行处理
+	NSString *str = [_text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	_text = [[NSMutableString alloc] init];
+	return str;
+}
+
+/*
+ https://developer.apple.com/library/mac/documentation/Cocoa/Reference/NSXMLParserDelegate_Protocol/Reference/Reference.html#//apple_ref/doc/uid/TP40008632-CH1-SW12
+ The parser object may send the delegate several parser:foundCharacters: messages to report the characters of an element. Because string may be only part of the total character content for the current element, you should append it to the current accumulation of characters until the element changes.
+ */
+	
+#if DTHTML
+- (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)str{
+#else
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)str{
+#endif
+	//log_trace(@"    parse text: %@", str);
+	[_text appendString:str];
+}
+
 + (Class)getClassForTag:(NSString *)tagName{
 	static NSMutableDictionary *tagClassTable = nil;
 	if(tagClassTable == nil){
@@ -364,7 +443,7 @@ typedef enum{
 	}
 	return [tagClassTable objectForKey:tagName];
 }
-	
+
 + (NSString *)getDefaultCssForTag:(NSString *)tagName{
 	static NSMutableDictionary *defaultCssTable = nil;
 	if(defaultCssTable == nil){
@@ -386,111 +465,6 @@ typedef enum{
 		defaultCssTable[@"h5"] = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
 	}
 	return [defaultCssTable objectForKey:tagName];
-}
-
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
-#else
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-#endif
-	tagName = [tagName lowercaseString];
-	_tag = nil;
-	if([tagName isEqualToString:@"script"]){
-		_ignore = NO;
-		return;
-	}
-	if([tagName isEqualToString:@"style"]){
-		return;
-	}
-	if(state != ParseView){
-		return;
-	}
-	
-	[self parser:parser elementChanged:tagName];
-	
-	id view = [parse_stack lastObject];
-	[parse_stack removeLastObject];
-	
-	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
-
-	if([view isKindOfClass:[IView class]]){
-		currentView = view;
-		if(currentView.parent){
-			currentView = currentView.parent;
-		}else{
-			[_rootViews addObject:currentView];
-			currentView = nil;
-		}
-	}
-}
-
-
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser elementChanged:(NSString *)tag{
-#else
-- (void)parser:(NSXMLParser *)parser elementChanged:(NSString *)tag{
-#endif
-	if(_text.length == 0){
-		return;
-	}
-	NSString *str = _text;
-	_text = [[NSMutableString alloc] init];
-	
-	Class clz = [currentView class];
-	//log_trace(@"    clz: %@", clz);
-	if(clz == nil || clz == [IView class]){
-		if([_tag isEqualToString:@"div"] || [_tag isEqualToString:@"view"]){
-			_attributeDict = nil;
-		}
-#if DTHTML
-		[self parser:parser didStartElement:@"*text*" attributes:_attributeDict];
-		[self parser:parser foundCharacters:str];
-		[self parser:parser didEndElement:@"*text*"];
-#else
-		[self parser:parser didStartElement:@"*text*" namespaceURI:nil qualifiedName:nil attributes:_attributeDict];
-		[self parser:parser foundCharacters:str];
-		[self parser:parser didEndElement:@"*text*" namespaceURI:nil qualifiedName:nil];
-#endif
-		return;
-	}
-	if(clz == [IButton class]){
-		[(IButton *)currentView setText:str];
-	}else if(clz == [ILabel class]){
-		[(ILabel *)currentView setText:str];
-	}else{
-		return;
-	}
-	//log_trace(@"%@ %@", str, clz);
-}
-	
-
-/*
- https://developer.apple.com/library/mac/documentation/Cocoa/Reference/NSXMLParserDelegate_Protocol/Reference/Reference.html#//apple_ref/doc/uid/TP40008632-CH1-SW12
- The parser object may send the delegate several parser:foundCharacters: messages to report the characters of an element. Because string may be only part of the total character content for the current element, you should append it to the current accumulation of characters until the element changes.
- */
-	
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)str{
-#else
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)str{
-#endif
-	if(_ignore){
-		return;
-	}
-	if([_tag isEqualToString:@"style"]){
-		//log_trace(@"    parse text: %@", str);
-		[_styleSheet parseCss:str];
-		return;
-	}
-	if(state != ParseView){
-		return;
-	}
-	str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	if(str.length == 0){
-		return;
-	}
-	//log_trace(@"    parse text: %@", str);
-	[_text appendString:str];
 }
 
 @end
