@@ -66,7 +66,7 @@ typedef enum{
 	NSArray *arr = [IStyleUtil parsePath:url];
 	NSString *rootPath = [arr objectAtIndex:0];
 	NSString *basePath = [arr objectAtIndex:1];
-	NSLog(@"root: %@ base: %@", rootPath, basePath);
+	log_debug(@"root: %@ base: %@", rootPath, basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
