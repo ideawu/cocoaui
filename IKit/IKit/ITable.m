@@ -84,6 +84,14 @@
 	[self layoutViews];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+	[super viewDidAppear:animated];
+	// iOS 9.0+ bug fix, _scrollView.height not correct
+	if([UIDevice currentDevice].systemVersion.floatValue >= 9.0){
+		[self layoutViews];
+	}
+}
+
 #pragma mark - datasource manipulating
 
 - (void)clear{
@@ -340,6 +348,7 @@
 }
 
 - (void)layoutViews{
+	//NSLog(@"%s", __func__);
 	_contentFrame.origin.y = 0;
 	if(_headerView){
 		_contentFrame.origin.y += _headerView.style.outerHeight;

@@ -202,8 +202,10 @@
 			}else{
 				offset.y = 0;
 			}
-			//NSLog(@"offset.y: %.1f", offset.y);
 		}
+		//NSLog(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
+		//NSLog(@"inset.top: %.1f, frame.h: %.1f", _scrollView.contentInset.top, _scrollView.frame.size.height);
+		//NSLog(@"offset.y: %.1f", offset.y);
 		
 		_scrollView.bounces = NO;
 		[UIView animateWithDuration:0.2 animations:^(){
