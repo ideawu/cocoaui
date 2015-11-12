@@ -212,7 +212,7 @@ typedef enum{
 	if(auto_close_tags == nil){
 		auto_close_tags = @[@"br", @"hr", @"img", @"meta", @"link"];
 	}
-	if([auto_close_tags indexOfObject:last_tag] != NSNotFound){
+	if([auto_close_tags containsObject:last_tag]){
 #if DTHTML
 		[self parser:parser didEndElement:last_tag];
 #else
@@ -223,10 +223,7 @@ typedef enum{
 	//log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
 
 	IView *view;
-	NSString *defaultCss = nil;
-	if([tagName isEqualToString:@"view"] || [tagName isEqualToString:@"div"]){
-		view = [[IView alloc] init];
-	}else if([tagName isEqualToString:@"img"]){
+	if([tagName isEqualToString:@"img"]){
 		NSString *src = [attributeDict objectForKey:@"src"];
 		IImage *img = [[IImage alloc] init];
 		if(src){
@@ -261,63 +258,12 @@ typedef enum{
 			input.value = value;
 		}
 		view = input;
-	}else if([tagName isEqualToString:@"button"]){
-		view = [[IButton alloc] init];
-	}else if([tagName isEqualToString:@"switch"]){
-		view = [[ISwitch alloc] init];
-	}else if([tagName isEqualToString:@"h1"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
-	}else if([tagName isEqualToString:@"h2"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
-	}else if([tagName isEqualToString:@"h3"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
-	}else if([tagName isEqualToString:@"h4"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
-	}else if([tagName isEqualToString:@"h5"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
-	}else if([tagName isEqualToString:@"hr"]){
-		view = [[IView alloc] init];
-		defaultCss = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
-	}else if([tagName isEqualToString:@"br"]){
-		static NSString *br_s = nil;
-		if(!br_s){
-			br_s = [NSString stringWithFormat:@"clear: both; width: 100%%; height: %f;", [IStyle normalFontSize]];
-		}
-		view = [[IView alloc] init];
-		defaultCss = br_s;
-	}else if([tagName isEqualToString:@"ul"] || [tagName isEqualToString:@"ol"]){
-		view = [[IView alloc] init];
-		defaultCss = @"clear: both; width: 100%;";
-	}else if([tagName isEqualToString:@"li"]){
-		//view = [[ILabel alloc] init];
-		view = [[IView alloc] init];
-		defaultCss = @"clear: both; margin: 4 0 4 12; width: 100%;";
-	}else if([tagName isEqualToString:@"p"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"clear: both; margin: 12 0; width: 100%;";
-	}else if([tagName isEqualToString:@"a"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"color: #00f;";
-	}else if([tagName isEqualToString:@"b"]){
-		view = [[ILabel alloc] init];
-		defaultCss = @"font-weight: bold;";
-	}else if([tagName isEqualToString:@"label"] || [tagName isEqualToString:@"span"]){
-		view = [[ILabel alloc] init];
-	}else if([tagName isEqualToString:@"*text*"]){
-		view = [[ILabel alloc] init];
 	}else{
-		//view = [[ILabel alloc] init];
-		//log_trace(@"parse_stack add: nil");
-		//[parse_stack addObject: @""];
-		//return;
+		Class clz = [IViewLoader getClassForTag:tagName];
+		if(clz){
+			view = [[clz alloc] init];
+		}
 	}
-	
-	//static NSString *text_tags = @"|label|span|a|b|i|u|s";
 	
 	if(view){
 		view.style.tagName = tagName;
@@ -346,6 +292,7 @@ typedef enum{
 		// $: dynamically set css
 		
 		// 1.
+		NSString *defaultCss = [IViewLoader getDefaultCssForTag:tagName];
 		if(defaultCss){
 			[view.style set:defaultCss];
 		}
@@ -380,12 +327,70 @@ typedef enum{
 	}
 	
 }
+	
++ (Class)getClassForTag:(NSString *)tagName{
+	static NSMutableDictionary *tagClassTable = nil;
+	if(tagClassTable == nil){
+		tagClassTable = [[NSMutableDictionary alloc] init];
+		
+		Class textClass = [ILabel class];
+		Class viewClass = [IView class];
+		
+		tagClassTable[@"a"] = textClass;
+		tagClassTable[@"b"] = textClass;
+		tagClassTable[@"p"] = textClass;
+		tagClassTable[@"h1"] = textClass;
+		tagClassTable[@"h2"] = textClass;
+		tagClassTable[@"h3"] = textClass;
+		tagClassTable[@"h4"] = textClass;
+		tagClassTable[@"h5"] = textClass;
+		tagClassTable[@"label"] = textClass;
+		tagClassTable[@"span"] = textClass;
+		tagClassTable[@"*text*"] = textClass;
+		
+		tagClassTable[@"br"] = viewClass;
+		tagClassTable[@"hr"] = viewClass;
+		tagClassTable[@"ul"] = viewClass;
+		tagClassTable[@"ol"] = viewClass;
+		tagClassTable[@"li"] = viewClass;
+		tagClassTable[@"div"] = viewClass;
+		tagClassTable[@"view"] = viewClass;
+		
+		tagClassTable[@"switch"] = [ISwitch class];
+		tagClassTable[@"button"] = [IButton class];
+	}
+	return [tagClassTable objectForKey:tagName];
+}
+	
++ (NSString *)getDefaultCssForTag:(NSString *)tagName{
+	static NSMutableDictionary *defaultCssTable = nil;
+	if(defaultCssTable == nil){
+		defaultCssTable = [[NSMutableDictionary alloc] init];
+		defaultCssTable[@"a"] = @"color: #00f;";
+		defaultCssTable[@"b"] = @"font-weight: bold;";
+		defaultCssTable[@"p"] = @"clear: both; width: 100%; margin: 12 0;";
+		defaultCssTable[@"br"] = @"clear: both; width: 100%%; height: 12;";
+		defaultCssTable[@"hr"] = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
+		
+		defaultCssTable[@"ul"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
+		defaultCssTable[@"ol"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
+		defaultCssTable[@"li"] = @"clear: both; width: 100%;";
+		
+		defaultCssTable[@"h1"] = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
+		defaultCssTable[@"h2"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
+		defaultCssTable[@"h3"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
+		defaultCssTable[@"h4"] = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
+		defaultCssTable[@"h5"] = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
+	}
+	return [defaultCssTable objectForKey:tagName];
+}
 
 #if DTHTML
 - (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
 #else
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
 #endif
+	tagName = [tagName lowercaseString];
 	_tag = nil;
 	if([tagName isEqualToString:@"script"]){
 		_ignore = NO;

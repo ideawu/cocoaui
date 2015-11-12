@@ -283,6 +283,7 @@
 
 - (void)addClass:(NSString *)clz{
 	//NSLog(@"%s %@", __func__, clz);
+	clz = [clz lowercaseString];
 	[_classes addObject:clz];
 	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
@@ -290,6 +291,7 @@
 }
 
 - (void)removeClass:(NSString *)clz{
+	clz = [clz lowercaseString];
 	[_classes removeObject:clz];
 	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
@@ -297,6 +299,7 @@
 }
 
 - (BOOL)hasClass:(NSString *)clz{
+	clz = [clz lowercaseString];
 	return [_classes containsObject:clz];
 }
 
