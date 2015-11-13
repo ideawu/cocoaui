@@ -63,6 +63,15 @@ static CGFloat colorVal(NSString *hex){
 	return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
 }
 
++ (BOOL)isHTML:(NSString *)str{
+	if([str rangeOfString:@"</html>"].length > 0 || [str rangeOfString:@"</HTML>"].length > 0){
+		if([str rangeOfString:@"</body>"].length > 0 || [str rangeOfString:@"</BODY>"].length > 0){
+			return YES;
+		}
+	}
+	return NO;
+}
+
 + (BOOL)isHttpUrl:(NSString *)src{
 	if(!src){
 		return NO;

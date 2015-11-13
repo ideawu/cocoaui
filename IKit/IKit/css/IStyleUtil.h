@@ -12,6 +12,8 @@
 @interface IStyleUtil : NSObject
 
 + (UIColor *) colorFromHex:(NSString *)hex;
+
++ (BOOL)isHTML:(NSString *)str;
 + (BOOL)isHttpUrl:(NSString *)src;
 
 + (NSArray *)parsePath:(NSString *)path;

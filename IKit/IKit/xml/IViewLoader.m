@@ -21,8 +21,7 @@
 #import "IStyleInternal.h"
 #import "IStyleDecl.h"
 #import "IStyleUtil.h"
-
-#define DTHTML 0
+#import "DTHTMLParser.h"
 
 typedef enum{
 	ParseInit,
@@ -32,12 +31,7 @@ typedef enum{
 	ParseView,
 }ParseState;
 
-#if DTHTML
-#import "DTHTMLParser.h"
-@interface IViewLoader () <DTHTMLParserDelegate>{
-#else
-@interface IViewLoader () <NSXMLParserDelegate>{
-#endif
+@interface IViewLoader () <NSXMLParserDelegate, DTHTMLParserDelegate>{
 	ParseState state;
 	IView *currentView;
 	IStyleSheet *_styleSheet;
@@ -49,6 +43,64 @@ typedef enum{
 @property (nonatomic) NSMutableArray *rootViews;
 @property (nonatomic) NSString *rootPath; // 以'/'结尾, 对于文件, 就是根目录; 对于URL, 就是根URL.
 @property (nonatomic) NSString *basePath; // 以'/'结尾
+- (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict;
+- (void)didEndElement:(NSString *)tagName;
+- (void)foundCharacters:(NSString *)str;
+@end
+
+
+@interface INSXmlViewLoader : NSObject <NSXMLParserDelegate>{
+	IViewLoader *_viewLoader;
+}
+@end
+@implementation INSXmlViewLoader
+- (void)parseXml:(NSString *)xml viewLoader:(IViewLoader *)viewLoader{
+	_viewLoader = viewLoader;
+	
+	NSData* data = [xml dataUsingEncoding:NSUTF8StringEncoding];
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
+	parser.delegate = self;
+	BOOL ret = [parser parse];
+	if(ret == NO){
+		log_trace(@"parse xml error: %@", [parser parserError]);
+	}
+}
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+	[_viewLoader didStartElement:tagName attributes:attributeDict];
+}
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+	[_viewLoader didEndElement:tagName];
+}
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)str{
+	[_viewLoader foundCharacters:str];
+}
+@end
+
+@interface IDTHTMLViewLoader : NSObject <DTHTMLParserDelegate>{
+	IViewLoader *_viewLoader;
+}
+@end
+@implementation IDTHTMLViewLoader
+- (void)parseXml:(NSString *)xml viewLoader:(IViewLoader *)viewLoader{
+	_viewLoader = viewLoader;
+	
+	NSData* data = [xml dataUsingEncoding:NSUTF8StringEncoding];
+	DTHTMLParser *parser = [[DTHTMLParser alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	parser.delegate = self;
+	BOOL ret = [parser parse];
+	if(ret == NO){
+		log_trace(@"parse xml error: %@", [parser parserError]);
+	}
+}
+- (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
+	[_viewLoader didStartElement:tagName attributes:attributeDict];
+}
+- (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
+	[_viewLoader didEndElement:tagName];
+}
+- (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)str{
+	[_viewLoader foundCharacters:str];
+}
 @end
 
 @implementation IViewLoader
@@ -102,16 +154,14 @@ typedef enum{
 	_viewsById = [[NSMutableDictionary alloc] init];
 	_text = [[NSMutableString alloc] init];
 	
-	NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];
-#if DTHTML
-	DTHTMLParser *parser = [[DTHTMLParser alloc] initWithData:data encoding:NSUTF8StringEncoding];
-#else
-	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
-#endif
-	parser.delegate = self;
-	BOOL ret = [parser parse];
-	if(ret == NO){
-		log_trace(@"parse xml error: %@", [parser parserError]);
+	if([IStyleUtil isHTML:str]){
+		log_trace(@"parse using DTHTML");
+		IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
+		[loader parseXml:str viewLoader:self];
+	}else{
+		log_trace(@"parse using NSXml");
+		INSXmlViewLoader *loader = [[INSXmlViewLoader alloc] init];
+		[loader parseXml:str viewLoader:self];
 	}
 	log_trace(@"views: %d", (int)_rootViews.count);
 	
@@ -186,22 +236,13 @@ typedef enum{
 
 // 对于不支持的标签, 转成纯文本
 
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
-#else
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
-#endif
+- (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
 	tagName = [tagName lowercaseString];
 	//NSLog(@"<%@>", tagName);
 	
 	// 兼容不闭合的标签
 	if([IViewLoader isAutoCloseTag:_last_tag]){
-		//[parse_stack addObject:@""];
-#if DTHTML
-		[self parser:parser didEndElement:_last_tag];
-#else
-		[self parser:parser didEndElement:_last_tag namespaceURI:nil qualifiedName:nil];
-#endif
+		[self didEndElement:_last_tag];
 	}
 	_last_tag = tagName; // 在 didEndElement 时清除
 	
@@ -340,11 +381,7 @@ typedef enum{
 	}
 }
 
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
-#else
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-#endif
+- (void)didEndElement:(NSString *)tagName{
 	_last_tag = nil;
 	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
 	tagName = [tagName lowercaseString];
@@ -411,12 +448,8 @@ typedef enum{
  https://developer.apple.com/library/mac/documentation/Cocoa/Reference/NSXMLParserDelegate_Protocol/Reference/Reference.html#//apple_ref/doc/uid/TP40008632-CH1-SW12
  The parser object may send the delegate several parser:foundCharacters: messages to report the characters of an element. Because string may be only part of the total character content for the current element, you should append it to the current accumulation of characters until the element changes.
  */
-	
-#if DTHTML
-- (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)str{
-#else
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)str{
-#endif
+
+- (void)foundCharacters:(NSString *)str{
 	//log_trace(@"    parse text: %@", str);
 	[_text appendString:str];
 }
