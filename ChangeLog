@@ -5,7 +5,7 @@
 		- Fix addClass() bug, now addClass/removeClass work in the right way now(2015-11-10)
 	* New features:
 		- Act more compatible with CSS specification(2015-11-13)
-		- Use libxml2 to parse HTML(2015-11-13)
+		- Support malformed HTML(2015-11-13)
 	* Incompatible changes:
 		- Act more compatible with CSS specification(2015-11-13)
 		- Treats unknown tag more friendly(2015-11-13)
