@@ -89,6 +89,7 @@ typedef enum{
 	state = ParseInit;
 	parentView = nil;
 	_styleSheet = [[IStyleSheet alloc] init];
+	_styleSheet.baseUrl = _basePath;
 	
 	_rootViews = [[NSMutableArray alloc] init];
 	parse_stack = [[NSMutableArray alloc] init];

@@ -13,10 +13,7 @@
 #import "IStyleInternal.h"
 #import "IStyleRule.h"
 
-@interface IStyleSheet(){
-	NSString *_baseUrl;
-}
-
+@interface IStyleSheet()
 @end
 
 @implementation IStyleSheet
