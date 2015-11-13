@@ -67,19 +67,15 @@
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{
 	if([selector isEqualToString:@"*"]){
 		return YES;
-	}
-	if([selector characterAtIndex:0] == '#'){
+	}else if([selector characterAtIndex:0] == '#'){
 		if(view.vid && [view.vid isEqualToString:[selector substringFromIndex:1]]){
 			return YES;
 		}
-	}
-	if([selector characterAtIndex:0] == '.'){
+	}else if([selector characterAtIndex:0] == '.'){
 		if([view.style hasClass:[selector substringFromIndex:1]]){
 			return YES;
 		}
-	}
-	// tag name
-	if(view.style.tagName && [view.style.tagName isEqualToString:selector]){
+	}else if(view.style.tagName && [view.style.tagName isEqualToString:selector]){
 		return YES;
 	}
 	return NO;
