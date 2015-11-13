@@ -117,6 +117,9 @@ static CGFloat colorVal(NSString *hex){
 
 + (NSString *)buildPath:(NSString *)basePath src:(NSString *)src{
 	if([IStyleUtil isHttpUrl:basePath]){
+		if([IStyleUtil isHttpUrl:src]){
+			return src;
+		}
 		if([src characterAtIndex:0] == '/'){
 			NSArray *arr = [IStyleUtil parsePath:basePath];
 			NSString *rootPath = [arr objectAtIndex:0];

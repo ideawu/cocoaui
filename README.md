@@ -14,6 +14,10 @@ Build adaptive UI for iOS Apps with Flow-Layout mechanism and CSS properties
 __Demos:__
  * [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
 
+## Dependency
+
+ * libxml2
+
 
 ## About Source Code
 

@@ -343,7 +343,6 @@
 		08A34A031A53EC3800C1B7F8 = {
 			isa = PBXGroup;
 			children = (
-				31B69C571BF5AE8500EC1908 /* libxml2.tbd */,
 				08A34A0E1A53EC3800C1B7F8 /* IKit */,
 				08C2544B1A5E44FB0095EC77 /* IObj */,
 				08A34A461A53F36300C1B7F8 /* Test */,
@@ -536,6 +535,7 @@
 		31D2C7691B69E90B009C1C97 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				31B69C571BF5AE8500EC1908 /* libxml2.tbd */,
 				31D2C79A1B69EBDE009C1C97 /* PrefixHeader.pch */,
 				31D2C7981B69EBDE009C1C97 /* Images.xcassets */,
 				31D2C7781B69E90B009C1C97 /* LaunchScreen.xib */,

@@ -386,6 +386,7 @@ typedef enum{
 	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
 	tagName = [tagName lowercaseString];
 	if([tagName isEqualToString:@"script"]){
+		_text = [[NSMutableString alloc] init];
 		return;
 	}
 	if([tagName isEqualToString:@"style"]){
