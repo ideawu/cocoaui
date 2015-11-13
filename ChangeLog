@@ -3,6 +3,12 @@
 		- Fix ITable first call of beginRefresh() UI not working on iOS 9.0(2015-11-12)
 		- Fix "background: url(a.png)" image not showing on iOS 7.0.3(2015-11-11)
 		- Fix addClass() bug, now addClass/removeClass work in the right way now(2015-11-10)
+	* New features:
+		- Act more compatible with CSS specification(2015-11-13)
+		- Use libxml2 to parse HTML(2015-11-13)
+	* Incompatible changes:
+		- Act more compatible with CSS specification(2015-11-13)
+		- Treats unknown tag more friendly(2015-11-13)
 * 1.2.3
 	* Bug fixes:
 		- Fix memory leak(2015-10-22)
