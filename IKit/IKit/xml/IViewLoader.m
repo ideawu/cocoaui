@@ -89,7 +89,6 @@ typedef enum{
 	state = ParseInit;
 	parentView = nil;
 	_styleSheet = [[IStyleSheet alloc] init];
-	_styleSheet.baseUrl = _basePath;
 	
 	_rootViews = [[NSMutableArray alloc] init];
 	parse_stack = [[NSMutableArray alloc] init];
@@ -344,7 +343,7 @@ typedef enum{
 		return;
 	}
 	if([tagName isEqualToString:@"style"]){
-		[_styleSheet parseCss:_text];
+		[_styleSheet parseCss:_text baseUrl:_basePath];
 		_text = [[NSMutableString alloc] init];
 		return;
 	}

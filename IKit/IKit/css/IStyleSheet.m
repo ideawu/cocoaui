@@ -29,7 +29,7 @@
 		return;
 	}
 	NSArray *arr = [IStyleUtil parsePath:src];
-	_baseUrl = [arr objectAtIndex:1];
+	NSString *baseUrl = [arr objectAtIndex:1];
 	
 	if([IStyleUtil isHttpUrl:src]){
 		NSString *text = nil;
@@ -40,7 +40,7 @@
 		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
 		if(data){
 			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			[self parseCss:text];
+			[self parseCss:text baseUrl:baseUrl];
 		}
 	}else{
 		static NSMutableDictionary *cache = nil;
@@ -58,7 +58,7 @@
 			NSError *err;
 			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
 			if(!err){
-				[sheet parseCss:text];
+				[sheet parseCss:text baseUrl:baseUrl];
 				[cache setObject:sheet forKey:src];
 			}
 		}
@@ -95,7 +95,7 @@
 	return ret;
 }
 
-- (void)parseCss:(NSString *)css{
+- (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl{
 	css = [self stripComment:css];
 	if(css.length == 0){
 		return;
@@ -123,7 +123,7 @@
 		searchRange.length = css.length - searchRange.location;
 
 		//NSLog(@"%@ = %@", key,val);
-		[self setCssValue:val forSelector:selector];
+		[self setCssValue:val forSelector:selector baseUrl:baseUrl];
 	}
 	
 	// 按优先级排序样式规则列表
@@ -147,7 +147,7 @@
 	}
 }
 
-- (void)setCssValue:(id)val forSelector:(NSString *)selector{
+- (void)setCssValue:(id)val forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{
 	// grouped rule
 	NSArray *ps = [selector componentsSeparatedByString:@","];
 	for(NSString *p in ps){
@@ -157,7 +157,7 @@
 		}
 		
 		IStyleRule *rule = [[IStyleRule alloc] init];
-		[rule parseRule:key css:val baseUrl:_baseUrl];
+		[rule parseRule:key css:val baseUrl:baseUrl];
 		[_rules addObject:rule];
 	}
 }

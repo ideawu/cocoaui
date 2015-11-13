@@ -45,7 +45,7 @@
 - (void)viewDidLoad {
 	NSString *css = @"   .a \n{\n    width: 100%; } ";
 	IStyleSheet *sheet = [[IStyleSheet alloc] init];
-	[sheet parseCss:css];
+	[sheet parseCss:css baseUrl:nil];
 	
 	[super viewDidLoad];
 	
