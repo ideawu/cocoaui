@@ -90,11 +90,12 @@ static CGFloat colorVal(NSString *hex){
 	}
 	NSRange r2 = [url rangeOfString:@"/" options:NSBackwardsSearch];
 	if(r1.location != 0){ // File path
-		rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 		if(r2.location == NSNotFound){
+			rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 			basePath = rootPath;
 		}else{
-			basePath = [NSString stringWithFormat:@"%@%@/", rootPath, [url substringToIndex:r2.location]];
+			rootPath = [url substringToIndex:r2.location + 1];
+			basePath = rootPath;
 		}
 	}else{ // HTTP URL
 		if(r2.location < r1.location + r1.length){ // like http://cocoaui.com

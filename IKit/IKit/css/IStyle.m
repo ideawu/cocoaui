@@ -598,7 +598,7 @@
 		}
 	}
 	if(src){
-		if(baseUrl){
+		if([IStyleUtil isHttpUrl:baseUrl]){
 			src = [IStyleUtil buildPath:baseUrl src:src];
 		}
 		log_debug(@"%@ load background image: %@", _view.name, src);
