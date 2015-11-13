@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014 ideawu. All rights reserved.
+ Copyright (c) 2014-2015 ideawu. All rights reserved.
  Use of this source code is governed by a license that can be
  found in the LICENSE file.
  
@@ -11,17 +11,16 @@
 #import "IViewLoader.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
+#import "IStyleSheet.h"
+#import "IStyleDecl.h"
+#import "IStyleUtil.h"
 #import "ILabel.h"
 #import "IInput.h"
 #import "IButton.h"
 #import "ISwitch.h"
 #import "IImage.h"
-#import "IStyleSheet.h"
-#import "Text.h"
-#import "IStyleInternal.h"
-#import "IStyleDecl.h"
-#import "IStyleUtil.h"
-#import "DTHTMLParser.h"
+#import "INSXmlViewLoader.h"
+#import "IDTHTMLViewLoader.h"
 
 typedef enum{
 	ParseInit,
@@ -43,65 +42,8 @@ typedef enum{
 @property (nonatomic) NSMutableArray *rootViews;
 @property (nonatomic) NSString *rootPath; // 以'/'结尾, 对于文件, 就是根目录; 对于URL, 就是根URL.
 @property (nonatomic) NSString *basePath; // 以'/'结尾
-- (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict;
-- (void)didEndElement:(NSString *)tagName;
-- (void)foundCharacters:(NSString *)str;
 @end
 
-
-@interface INSXmlViewLoader : NSObject <NSXMLParserDelegate>{
-	IViewLoader *_viewLoader;
-}
-@end
-@implementation INSXmlViewLoader
-- (void)parseXml:(NSString *)xml viewLoader:(IViewLoader *)viewLoader{
-	_viewLoader = viewLoader;
-	
-	NSData* data = [xml dataUsingEncoding:NSUTF8StringEncoding];
-	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
-	parser.delegate = self;
-	BOOL ret = [parser parse];
-	if(ret == NO){
-		log_trace(@"parse xml error: %@", [parser parserError]);
-	}
-}
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
-	[_viewLoader didStartElement:tagName attributes:attributeDict];
-}
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)tagName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-	[_viewLoader didEndElement:tagName];
-}
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)str{
-	[_viewLoader foundCharacters:str];
-}
-@end
-
-@interface IDTHTMLViewLoader : NSObject <DTHTMLParserDelegate>{
-	IViewLoader *_viewLoader;
-}
-@end
-@implementation IDTHTMLViewLoader
-- (void)parseXml:(NSString *)xml viewLoader:(IViewLoader *)viewLoader{
-	_viewLoader = viewLoader;
-	
-	NSData* data = [xml dataUsingEncoding:NSUTF8StringEncoding];
-	DTHTMLParser *parser = [[DTHTMLParser alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	parser.delegate = self;
-	BOOL ret = [parser parse];
-	if(ret == NO){
-		log_trace(@"parse xml error: %@", [parser parserError]);
-	}
-}
-- (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
-	[_viewLoader didStartElement:tagName attributes:attributeDict];
-}
-- (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)tagName{
-	[_viewLoader didEndElement:tagName];
-}
-- (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)str{
-	[_viewLoader foundCharacters:str];
-}
-@end
 
 @implementation IViewLoader
 	
@@ -111,12 +53,11 @@ typedef enum{
 	return view;
 }
 
-	
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
 	NSArray *arr = [IStyleUtil parsePath:url];
 	NSString *rootPath = [arr objectAtIndex:0];
 	NSString *basePath = [arr objectAtIndex:1];
-	log_debug(@"root: %@ base: %@", rootPath, basePath);
+	log_debug(@"URL root: %@ base: %@", rootPath, basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
@@ -234,6 +175,44 @@ typedef enum{
 	return tagName != nil && [auto_close_tags containsObject:tagName];
 }
 
+- (IImage *)buildImageWithAttributes:(NSDictionary *)attributeDict{
+	NSString *src = [attributeDict objectForKey:@"src"];
+	IImage *img = [[IImage alloc] init];
+	if(src){
+		if([IStyleUtil isHttpUrl:_basePath]){
+			src = [IStyleUtil buildPath:_basePath src:src];
+		}
+		img.src = src;
+	}
+	
+	NSString *width = [attributeDict objectForKey:@"width"];
+	NSString *height = [attributeDict objectForKey:@"height"];
+	if(width){
+		[img.style set:[NSString stringWithFormat:@"width: %@", width]];
+	}
+	if(height){
+		[img.style set:[NSString stringWithFormat:@"height: %@", height]];
+	}
+	return img;
+}
+
+- (IInput *)buildInputWithAttributes:(NSDictionary *)attributeDict{
+	NSString *placeholder = [attributeDict objectForKey:@"placeholder"];
+	NSString *type = [attributeDict objectForKey:@"type"];
+	NSString *value = [attributeDict objectForKey:@"value"];
+	IInput *input = [[IInput alloc] init];
+	if(placeholder){
+		input.placeholder = placeholder;
+	}
+	if(type && [type isEqualToString:@"password"]){
+		input.isPasswordInput = YES;
+	}
+	if(value){
+		input.value = value;
+	}
+	return input;
+}
+
 // 对于不支持的标签, 转成纯文本
 
 - (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
@@ -268,40 +247,9 @@ typedef enum{
 
 	IView *view;
 	if([tagName isEqualToString:@"img"]){
-		NSString *src = [attributeDict objectForKey:@"src"];
-		IImage *img = [[IImage alloc] init];
-		if(src){
-			if([IStyleUtil isHttpUrl:_basePath]){
-				src = [IStyleUtil buildPath:_basePath src:src];
-			}
-			img.src = src;
-		}
-		
-		NSString *width = [attributeDict objectForKey:@"width"];
-		NSString *height = [attributeDict objectForKey:@"height"];
-		if(width){
-			[img.style set:[NSString stringWithFormat:@"width: %@", width]];
-		}
-		if(height){
-			[img.style set:[NSString stringWithFormat:@"height: %@", height]];
-		}
-		
-		view = img;
+		view = [self buildImageWithAttributes:attributeDict];
 	}else if([tagName isEqualToString:@"input"]){
-		NSString *placeholder = [attributeDict objectForKey:@"placeholder"];
-		NSString *type = [attributeDict objectForKey:@"type"];
-		NSString *value = [attributeDict objectForKey:@"value"];
-		IInput *input = [[IInput alloc] init];
-		if(placeholder){
-			input.placeholder = placeholder;
-		}
-		if(type && [type isEqualToString:@"password"]){
-			input.isPasswordInput = YES;
-		}
-		if(value){
-			input.value = value;
-		}
-		view = input;
+		view = [self buildInputWithAttributes:attributeDict];
 	}else{
 		Class clz = [IViewLoader getClassForTag:tagName];
 		if(clz){

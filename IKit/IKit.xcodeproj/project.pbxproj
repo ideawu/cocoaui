@@ -99,6 +99,8 @@
 		31B69C581BF5AE8500EC1908 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31B69C571BF5AE8500EC1908 /* libxml2.tbd */; };
 		31B69CAD1BF5AFC400EC1908 /* DTHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */; settings = {ASSET_TAGS = (); }; };
 		31B69CAE1BF5AFC400EC1908 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAC1BF5AFC400EC1908 /* IViewLoader.m */; settings = {ASSET_TAGS = (); }; };
+		31B69CB11BF5B28C00EC1908 /* INSXmlViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB01BF5B28C00EC1908 /* INSXmlViewLoader.m */; settings = {ASSET_TAGS = (); }; };
+		31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB31BF5B29B00EC1908 /* IDTHTMLViewLoader.m */; settings = {ASSET_TAGS = (); }; };
 		31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254C61A63A8760095EC77 /* Http.h */; };
 		31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254881A5E71BD0095EC77 /* Text.h */; };
 		31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0854925F1A8092CC00F0563C /* RSA.h */; };
@@ -273,6 +275,10 @@
 		31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTHTMLParser.m; sourceTree = "<group>"; };
 		31B69CAB1BF5AFC400EC1908 /* IViewLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IViewLoader.h; sourceTree = "<group>"; };
 		31B69CAC1BF5AFC400EC1908 /* IViewLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IViewLoader.m; sourceTree = "<group>"; };
+		31B69CAF1BF5B28C00EC1908 /* INSXmlViewLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSXmlViewLoader.h; sourceTree = "<group>"; };
+		31B69CB01BF5B28C00EC1908 /* INSXmlViewLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSXmlViewLoader.m; sourceTree = "<group>"; };
+		31B69CB21BF5B29B00EC1908 /* IDTHTMLViewLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTHTMLViewLoader.h; sourceTree = "<group>"; };
+		31B69CB31BF5B29B00EC1908 /* IDTHTMLViewLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDTHTMLViewLoader.m; sourceTree = "<group>"; };
 		31D02F181BA814880046EE7C /* libIKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		31D02F191BA814880046EE7C /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31D02F1A1BA814880046EE7C /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIObj.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -507,10 +513,14 @@
 		31B69CA81BF5AF8B00EC1908 /* xml */ = {
 			isa = PBXGroup;
 			children = (
-				31B69CA91BF5AFC400EC1908 /* DTHTMLParser.h */,
-				31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */,
 				31B69CAB1BF5AFC400EC1908 /* IViewLoader.h */,
 				31B69CAC1BF5AFC400EC1908 /* IViewLoader.m */,
+				31B69CAF1BF5B28C00EC1908 /* INSXmlViewLoader.h */,
+				31B69CB01BF5B28C00EC1908 /* INSXmlViewLoader.m */,
+				31B69CB21BF5B29B00EC1908 /* IDTHTMLViewLoader.h */,
+				31B69CB31BF5B29B00EC1908 /* IDTHTMLViewLoader.m */,
+				31B69CA91BF5AFC400EC1908 /* DTHTMLParser.h */,
+				31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */,
 			);
 			path = xml;
 			sourceTree = "<group>";
@@ -765,7 +775,9 @@
 				31B69C551BF4717200EC1908 /* IFlowLayout.m in Sources */,
 				085492651A81CE2400F0563C /* ITable.m in Sources */,
 				31B69CAD1BF5AFC400EC1908 /* DTHTMLParser.m in Sources */,
+				31B69CB11BF5B28C00EC1908 /* INSXmlViewLoader.m in Sources */,
 				312F65351B81DF8600174F85 /* IPopover.m in Sources */,
+				31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */,
 				08A34A881A53F80B00C1B7F8 /* IView.m in Sources */,
 				312F65361B81DF8600174F85 /* IRefreshControl.m in Sources */,
 				31B69C4A1BF1E6BB00EC1908 /* IStyleDecl.m in Sources */,
