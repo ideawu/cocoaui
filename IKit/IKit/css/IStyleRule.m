@@ -69,14 +69,12 @@
 		return YES;
 	}
 	if([selector characterAtIndex:0] == '#'){
-		selector = [selector substringFromIndex:1];
-		if(view.vid && [view.vid isEqualToString:selector]){
+		if(view.vid && [view.vid isEqualToString:[selector substringFromIndex:1]]){
 			return YES;
 		}
 	}
 	if([selector characterAtIndex:0] == '.'){
-		selector = [selector substringFromIndex:1];
-		if([view.style hasClass:selector]){
+		if([view.style hasClass:[selector substringFromIndex:1]]){
 			return YES;
 		}
 	}
