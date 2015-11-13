@@ -149,7 +149,8 @@ typedef enum{
 	}else if([tagName isEqualToString:@"link"]){
 		ret = YES;
 		NSString *type = [attributeDict objectForKey:@"type"];
-		if([type isEqualToString:@"text/css"]){
+		NSString *rel = [attributeDict objectForKey:@"rel"];
+		if([type isEqualToString:@"text/css"] || [rel isEqualToString:@"stylesheet"]){
 			src = [attributeDict objectForKey:@"href"];
 		}
 	}
@@ -165,7 +166,6 @@ typedef enum{
 	}
 	return ret;
 }
-
 	
 + (BOOL)isAutoCloseTag:(NSString *)tagName{
 	static NSSet *auto_close_tags = nil;
@@ -227,10 +227,44 @@ typedef enum{
 	}
 }
 
+- (void)bindStyleToView:(IView *)view attributes:(NSDictionary *)attributeDict{
+	// 1. builtin(default) css
+	// 2. stylesheet(by style tag) css
+	// 3. inline css
+	// $: dynamically set css
+	
+	// REMEMBER to set baseUrl!
+	view.style.declBlock.baseUrl = _basePath;
+	
+	// 1.
+	NSString *defaultCss = [IViewLoader getDefaultCssForTag:view.style.tagName];
+	if(defaultCss){
+		[view.style set:defaultCss];
+	}
+	// 2.
+	[view.style.declBlock addKey:@"@" value:@""];
+	
+	// 3.
+	NSString *css = [attributeDict objectForKey:@"style"];
+	if(css){
+		[view.style set:css];
+	}
+	
+	NSString *class_ = [attributeDict objectForKey:@"class"];
+	if(class_ != nil){
+		NSMutableArray *ps = [NSMutableArray arrayWithArray:
+							  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+		[ps removeObject:@""];
+		for(NSString *clz in ps){
+			[view.style addClass:clz];
+		}
+	}
+}
+
 // 对于不支持的标签, 转成纯文本
 
 - (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
-	log_trace(@"%*s<%@>", (int)parse_stack.count*4, "", tagName);
+	//log_trace(@"%*s<%@>", (int)parse_stack.count*4, "", tagName);
 
 	tagName = [tagName lowercaseString];
 	
@@ -266,18 +300,22 @@ typedef enum{
 		view = [self buildInputWithAttributes:attributeDict];
 	}else{
 		Class clz = [IViewLoader getClassForTag:tagName];
-		if(clz){
-			// 避免嵌套的 ILabel
-			if([parentView class] == [ILabel class] && clz == [ILabel class]){
-				//
-			}else{
-				view = [[clz alloc] init];
+		// 避免嵌套的 ILabel
+		if(clz == [ILabel class]){
+			Class pclz = [parentView class];
+			if(pclz == [ILabel class] || pclz == [IButton class]){
+				clz = nil;
 			}
+		}
+		if(clz){
+			view = [[clz alloc] init];
 		}
 	}
 	
 	if(view){
+		view.style.tagName = tagName;
 		[self checkPlainTextNode];
+		[self bindStyleToView:view attributes:attributeDict];
 		
 		if(parentView){
 			[parentView addSubview:view];
@@ -285,44 +323,10 @@ typedef enum{
 		parentView = view;
 		[parse_stack addObject:view];
 		
-		view.style.tagName = tagName;
-		[view.style set:@"" baseUrl:_basePath];
-		
-		// 1. builtin(default) css
-		// 2. stylesheet(by style tag) css
-		// 3. inline css
-		// $: dynamically set css
-		
-		// 1.
-		NSString *defaultCss = [IViewLoader getDefaultCssForTag:tagName];
-		if(defaultCss){
-			[view.style set:defaultCss];
-		}
-		// 2.
-		[view.style.declBlock addKey:@"@" value:@""];
-		
-		if(attributeDict){
-			// 3.
-			NSString *css = [attributeDict objectForKey:@"style"];
-			if(css){
-				[view.style set:css];
-			}
-
-			NSString *class_ = [attributeDict objectForKey:@"class"];
-			if(class_ != nil){
-				NSMutableArray *ps = [NSMutableArray arrayWithArray:
-									  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-				[ps removeObject:@""];
-				for(NSString *clz in ps){
-					[view.style addClass:clz];
-				}
-			}
-			
-			NSString *id_ = [attributeDict objectForKey:@"id"];
-			if(id_ != nil && id_.length > 0){
-				[_viewsById setObject:view forKey:id_];
-				[view.style setId:id_];
-			}
+		NSString *id_ = [attributeDict objectForKey:@"id"];
+		if(id_ != nil && id_.length > 0){
+			view.vid = id_;
+			[_viewsById setObject:view forKey:id_];
 		}
 	}else{
 		[parse_stack addObject:@""];
@@ -330,7 +334,7 @@ typedef enum{
 }
 
 - (void)didEndElement:(NSString *)tagName{
-	log_trace(@"%*s</%@>", (int)(parse_stack.count-1)*4, "", tagName);
+	//log_trace(@"%*s</%@>", (int)(parse_stack.count-1)*4, "", tagName);
 
 	_last_tag = nil;
 	tagName = [tagName lowercaseString];
@@ -369,6 +373,7 @@ typedef enum{
 	}else{
 		[self checkPlainTextNode];
 	}
+
 	parentView = view.parent;
 	if(!parentView){
 		[_rootViews addObject:view];
@@ -405,16 +410,16 @@ typedef enum{
 		
 		tagClassTable[@"a"] = textClass;
 		tagClassTable[@"b"] = textClass;
-		tagClassTable[@"p"] = textClass;
-		tagClassTable[@"h1"] = textClass;
-		tagClassTable[@"h2"] = textClass;
-		tagClassTable[@"h3"] = textClass;
-		tagClassTable[@"h4"] = textClass;
-		tagClassTable[@"h5"] = textClass;
 		tagClassTable[@"label"] = textClass;
 		tagClassTable[@"span"] = textClass;
-		tagClassTable[@"*text*"] = textClass;
-		
+
+		tagClassTable[@"p"] = viewClass;
+		tagClassTable[@"h1"] = viewClass;
+		tagClassTable[@"h2"] = viewClass;
+		tagClassTable[@"h3"] = viewClass;
+		tagClassTable[@"h4"] = viewClass;
+		tagClassTable[@"h5"] = viewClass;
+
 		tagClassTable[@"br"] = viewClass;
 		tagClassTable[@"hr"] = viewClass;
 		tagClassTable[@"ul"] = viewClass;
@@ -436,8 +441,8 @@ typedef enum{
 		defaultCssTable[@"a"] = @"color: #00f;";
 		defaultCssTable[@"b"] = @"font-weight: bold;";
 		defaultCssTable[@"p"] = @"clear: both; width: 100%; margin: 12 0;";
-		defaultCssTable[@"br"] = @"clear: both; width: 100%%; height: 12;";
-		defaultCssTable[@"hr"] = @"clear: both; margin: 12 0; width: 100%; height: 1; background: #000;";
+		defaultCssTable[@"br"] = @"clear: both; width: 100%; height: 12;";
+		defaultCssTable[@"hr"] = @"clear: both; width: 100%; height: 1; margin: 12 0; background: #333;";
 		
 		defaultCssTable[@"ul"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
 		defaultCssTable[@"ol"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";

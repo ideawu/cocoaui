@@ -671,10 +671,12 @@
 	if(ps.count > 0){
 		border.width = [ps[0] floatValue];
 	}
-	if([ps[1] isEqualToString:@"dashed"]){
-		border.type = IStyleBorderDashed;
-	}else{
-		border.type = IStyleBorderSolid;
+	if(ps.count > 1){
+		if([ps[1] isEqualToString:@"dashed"]){
+			border.type = IStyleBorderDashed;
+		}else{
+			border.type = IStyleBorderSolid;
+		}
 	}
 	if(ps.count > 2){
 		border.color = [IKit colorFromHex:ps[2]];

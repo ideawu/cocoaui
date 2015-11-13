@@ -41,7 +41,7 @@
 
 - (void)setSrc:(NSString *)src{
 	_src = src;
-	log_debug(@"load image element: %@", src);
+	log_debug(@"%@ load image element: %@", self.name, src);
 	UIImage *img = [IStyleUtil loadImageFromPath:src];
 	[self setImage:img];
 }
