@@ -32,7 +32,7 @@ typedef enum{
 
 @interface IViewLoader () <NSXMLParserDelegate, DTHTMLParserDelegate>{
 	ParseState state;
-	IView *currentView;
+	IView *parentView;
 	IStyleSheet *_styleSheet;
 	NSMutableArray *parse_stack;
 	NSMutableString *_text;
@@ -87,7 +87,7 @@ typedef enum{
 - (IView *)loadXml:(NSString *)str{
 	//log_trace(@"%@", str);
 	state = ParseInit;
-	currentView = nil;
+	parentView = nil;
 	_styleSheet = [[IStyleSheet alloc] init];
 	
 	_rootViews = [[NSMutableArray alloc] init];
@@ -124,7 +124,7 @@ typedef enum{
 	}
 	_rootViews = nil;
 	parse_stack = nil;
-	currentView = nil;
+	parentView = nil;
 	_text = nil;
 	
 	// 之前设置的 class 属性并没有立即生效
@@ -213,14 +213,30 @@ typedef enum{
 	return input;
 }
 
+- (void)checkPlainTextNode{
+	if(_text.length > 0){
+		NSString *str = [self getAndResetText];
+		if(str.length > 0){
+			ILabel *textView = [ILabel labelWithText:str];
+			if(parentView){
+				[parentView addSubview:textView];
+			}else{
+				[_rootViews addObject:textView];
+			}
+		}
+	}
+}
+
 // 对于不支持的标签, 转成纯文本
 
 - (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
+	log_trace(@"%*s<%@>", (int)parse_stack.count*4, "", tagName);
+
 	tagName = [tagName lowercaseString];
-	//NSLog(@"<%@>", tagName);
 	
 	// 兼容不闭合的标签
 	if([IViewLoader isAutoCloseTag:_last_tag]){
+		log_debug(@"auto close tag: %@", _last_tag);
 		[self didEndElement:_last_tag];
 	}
 	_last_tag = tagName; // 在 didEndElement 时清除
@@ -243,8 +259,6 @@ typedef enum{
 		}
 	}
 
-	//log_trace(@"<%@> %d", tagName, (int)parse_stack.count);
-
 	IView *view;
 	if([tagName isEqualToString:@"img"]){
 		view = [self buildImageWithAttributes:attributeDict];
@@ -254,7 +268,7 @@ typedef enum{
 		Class clz = [IViewLoader getClassForTag:tagName];
 		if(clz){
 			// 避免嵌套的 ILabel
-			if([currentView class] == [ILabel class] && clz == [ILabel class]){
+			if([parentView class] == [ILabel class] && clz == [ILabel class]){
 				//
 			}else{
 				view = [[clz alloc] init];
@@ -263,30 +277,16 @@ typedef enum{
 	}
 	
 	if(view){
-		NSString *str = [self getAndResetText];
-		if(str.length > 0){
-			ILabel *textView = [ILabel labelWithText:str];
-			[currentView addSubview:textView];
+		[self checkPlainTextNode];
+		
+		if(parentView){
+			[parentView addSubview:view];
 		}
+		parentView = view;
+		[parse_stack addObject:view];
 		
 		view.style.tagName = tagName;
 		[view.style set:@"" baseUrl:_basePath];
-		
-		if(currentView){
-			if([currentView class] == [IView class]){
-				[currentView addSubview:view];
-			}else{
-				IView *parent = currentView.parent;
-				if(!parent){
-					parent = [[IView alloc] init];
-					[parent addSubview:currentView];
-					[_rootViews addObject:parent];
-				}
-				[parent addSubview:view];
-			}
-		}
-		currentView = view;
-		[parse_stack addObject:view];
 		
 		// 1. builtin(default) css
 		// 2. stylesheet(by style tag) css
@@ -330,8 +330,9 @@ typedef enum{
 }
 
 - (void)didEndElement:(NSString *)tagName{
+	log_trace(@"%*s</%@>", (int)(parse_stack.count-1)*4, "", tagName);
+
 	_last_tag = nil;
-	//log_trace(@"</%@> %d", tagName, (int)parse_stack.count);
 	tagName = [tagName lowercaseString];
 	if([tagName isEqualToString:@"script"]){
 		_text = [[NSMutableString alloc] init];
@@ -348,38 +349,29 @@ typedef enum{
 	}
 	
 	if(parse_stack.count == 0){
-		NSString *str = [self getAndResetText];
-		if(str.length > 0){
-			ILabel *textView = [ILabel labelWithText:str];
-			[_rootViews addObject:textView];
-		}
+		[self checkPlainTextNode];
 		return;
 	}
 	
-	id view = [parse_stack lastObject];
+	id last_parse = [parse_stack lastObject];
 	[parse_stack removeLastObject];
 	
-	if([view isKindOfClass:[NSString class]]){
+	if([last_parse isKindOfClass:[NSString class]]){
 		return;
 	}
 	
-	Class viewClass = [view class];
+	IView *view = (IView *)last_parse;
+	Class viewClass = [last_parse class];
 	if(viewClass == [ILabel class]){
-		[(ILabel *)currentView setText:[self getAndResetText]];
+		[(ILabel *)view setText:[self getAndResetText]];
 	}else if(viewClass == [IButton class]){
-		[(IButton *)currentView setText:[self getAndResetText]];
+		[(IButton *)view setText:[self getAndResetText]];
 	}else{
-		NSString *str = [self getAndResetText];
-		if(str.length > 0){
-			ILabel *textView = [ILabel labelWithText:str];
-			[currentView addSubview:textView];
-		}
+		[self checkPlainTextNode];
 	}
-	if(currentView.parent){
-		currentView = currentView.parent;
-	}else{
-		[_rootViews addObject:currentView];
-		currentView = nil;
+	parentView = view.parent;
+	if(!parentView){
+		[_rootViews addObject:view];
 	}
 }
 
@@ -387,7 +379,7 @@ typedef enum{
 	if(_text.length == 0){
 		return @"";
 	}
-	// TODO: 对文本进行处理
+	// TODO: 根据相临节点的类型(是否是文本节点), 保留末尾的空白字符.
 	NSString *str = [_text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	_text = [[NSMutableString alloc] init];
 	return str;
