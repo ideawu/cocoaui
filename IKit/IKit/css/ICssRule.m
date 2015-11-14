@@ -12,11 +12,14 @@
 #import "IStyleInternal.h"
 #import "ICssBlock.h"
 
+@interface ICssRule()
+@property (nonatomic, readonly) NSMutableArray *selectors;
+@end
+
 @implementation ICssRule
 
 - (id)init{
 	self = [super init];
-	_selectors = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -27,9 +30,31 @@
 	return ret;
 }
 
-- (void)parseRule:(NSString *)rule css:(NSString *)css baseUrl:(NSString *)baseUrl{
++ (ICssRule *)fromSelector:(NSString *)sel css:(NSString *)css baseUrl:(NSString *)baseUrl{
+	ICssRule *ret = [[ICssRule alloc] init];
+	if(![ret parseSelector:sel css:css baseUrl:baseUrl]){
+		return nil;
+	}
+	return ret;
+}
+
+- (BOOL)parseSelector:(NSString *)sel css:(NSString *)css baseUrl:(NSString *)baseUrl{
+	[self parseSelector:sel];
+	if(_selectors.count == 0){
+		return NO;
+	}
+	_declBlock = [ICssBlock fromCss:css baseUrl:baseUrl];
+	if(_declBlock.decls.count == 0){
+		return NO;
+	}
+	return YES;
+}
+
+- (void)parseSelector:(NSString *)sel{
 	_weight = 0;
-	NSArray *ps = [rule componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	_selectors = [[NSMutableArray alloc] init];
+	
+	NSArray *ps = [sel componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	for(NSString *p in ps){
 		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if(key.length == 0){
@@ -59,9 +84,6 @@
 		}
 		[_selectors addObject:key];
 	}
-	
-	_baseUrl = baseUrl;
-	_declBlock = [ICssBlock fromCss:css baseUrl:_baseUrl];
 }
 
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{
@@ -81,7 +103,7 @@
 	return NO;
 }
 
-- (BOOL)match:(IView *)view{
+- (BOOL)matchView:(IView *)view{
 	IView *curr_view = view;
 	NSEnumerator *iter = [_selectors reverseObjectEnumerator];
 	

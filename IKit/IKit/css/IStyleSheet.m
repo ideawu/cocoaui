@@ -123,7 +123,7 @@
 		searchRange.length = css.length - searchRange.location;
 
 		//NSLog(@"%@ = %@", key,val);
-		[self setCssValue:val forSelector:selector baseUrl:baseUrl];
+		[self setCss:val forSelector:selector baseUrl:baseUrl];
 	}
 	
 	// 按优先级排序样式规则列表
@@ -147,18 +147,14 @@
 	}
 }
 
-- (void)setCssValue:(id)val forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{
-	// grouped rule
+- (void)setCss:(NSString *)css forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{
+	// grouping rule
 	NSArray *ps = [selector componentsSeparatedByString:@","];
-	for(NSString *p in ps){
-		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		if(key.length == 0){
-			continue;
+	for(NSString *sel in ps){
+		ICssRule *rule = [ICssRule fromSelector:sel css:css baseUrl:baseUrl];
+		if(rule){
+			[_rules addObject:rule];
 		}
-		
-		ICssRule *rule = [[ICssRule alloc] init];
-		[rule parseRule:key css:val baseUrl:baseUrl];
-		[_rules addObject:rule];
 	}
 }
 

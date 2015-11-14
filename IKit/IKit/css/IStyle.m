@@ -356,7 +356,7 @@
 				for(ICssRule *rule in sheet.rules){
 					//NSLog(@"RULE: %@", rule);
 					//NSLog(@" %@ match?: %d", _tagName, [rule match:_view]);
-					if([rule match:_view]){
+					if([rule matchView:_view]){
 						for(ICssDecl *decl in rule.declBlock.decls){
 							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
