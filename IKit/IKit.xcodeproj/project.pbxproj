@@ -46,6 +46,7 @@
 		089C7BFE1B986488003CEA7F /* libIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFA1B98645A003CEA7F /* libIKit.a */; };
 		089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
 		089C7C161BF3AF00003CEA7F /* ITablePullRefreshItem.css in Resources */ = {isa = PBXBuildFile; fileRef = 089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */; };
+		089C7C171BF79BA5003CEA7F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31344D491AE0BE810035FEA5 /* libxml2.dylib */; };
 		08A0F14B1A7281AE007A8D2A /* IPullRefresh.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08EAD7101A6AF54B00A0822A /* IPullRefresh.h */; };
 		08A34A4A1A53F36300C1B7F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A491A53F36300C1B7F8 /* main.m */; };
 		08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */; };
@@ -92,14 +93,13 @@
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
-		31B69C521BF4414500EC1908 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C511BF4414500EC1908 /* icon@2x.png */; settings = {ASSET_TAGS = (); }; };
-		31B69C551BF4717200EC1908 /* IFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C541BF4717200EC1908 /* IFlowLayout.m */; settings = {ASSET_TAGS = (); }; };
-		31B69C581BF5AE8500EC1908 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31B69C571BF5AE8500EC1908 /* libxml2.tbd */; };
-		31B69CAD1BF5AFC400EC1908 /* DTHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */; settings = {ASSET_TAGS = (); }; };
-		31B69CAE1BF5AFC400EC1908 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAC1BF5AFC400EC1908 /* IViewLoader.m */; settings = {ASSET_TAGS = (); }; };
-		31B69CB11BF5B28C00EC1908 /* INSXmlViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB01BF5B28C00EC1908 /* INSXmlViewLoader.m */; settings = {ASSET_TAGS = (); }; };
-		31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB31BF5B29B00EC1908 /* IDTHTMLViewLoader.m */; settings = {ASSET_TAGS = (); }; };
-		31B69CB71BF70C1200EC1908 /* ICssBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB61BF70C1200EC1908 /* ICssBlock.m */; settings = {ASSET_TAGS = (); }; };
+		31B69C521BF4414500EC1908 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C511BF4414500EC1908 /* icon@2x.png */; };
+		31B69C551BF4717200EC1908 /* IFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C541BF4717200EC1908 /* IFlowLayout.m */; };
+		31B69CAD1BF5AFC400EC1908 /* DTHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */; };
+		31B69CAE1BF5AFC400EC1908 /* IViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CAC1BF5AFC400EC1908 /* IViewLoader.m */; };
+		31B69CB11BF5B28C00EC1908 /* INSXmlViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB01BF5B28C00EC1908 /* INSXmlViewLoader.m */; };
+		31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB31BF5B29B00EC1908 /* IDTHTMLViewLoader.m */; };
+		31B69CB71BF70C1200EC1908 /* ICssBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB61BF70C1200EC1908 /* ICssBlock.m */; };
 		31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254C61A63A8760095EC77 /* Http.h */; };
 		31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254881A5E71BD0095EC77 /* Text.h */; };
 		31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0854925F1A8092CC00F0563C /* RSA.h */; };
@@ -266,7 +266,6 @@
 		31B69C511BF4414500EC1908 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		31B69C531BF4717200EC1908 /* IFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFlowLayout.h; sourceTree = "<group>"; };
 		31B69C541BF4717200EC1908 /* IFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFlowLayout.m; sourceTree = "<group>"; };
-		31B69C571BF5AE8500EC1908 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		31B69CA91BF5AFC400EC1908 /* DTHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTHTMLParser.h; sourceTree = "<group>"; };
 		31B69CAA1BF5AFC400EC1908 /* DTHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTHTMLParser.m; sourceTree = "<group>"; };
 		31B69CAB1BF5AFC400EC1908 /* IViewLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IViewLoader.h; sourceTree = "<group>"; };
@@ -335,9 +334,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089C7C171BF79BA5003CEA7F /* libxml2.dylib in Frameworks */,
 				089C7BFE1B986488003CEA7F /* libIKit.a in Frameworks */,
 				089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */,
-				31B69C581BF5AE8500EC1908 /* libxml2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,7 +542,6 @@
 		31D2C7691B69E90B009C1C97 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				31B69C571BF5AE8500EC1908 /* libxml2.tbd */,
 				31D2C79A1B69EBDE009C1C97 /* PrefixHeader.pch */,
 				31D2C7981B69EBDE009C1C97 /* Images.xcassets */,
 				31D2C7781B69E90B009C1C97 /* LaunchScreen.xib */,
