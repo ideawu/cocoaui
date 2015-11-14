@@ -7,6 +7,7 @@
 		- Act more compatible with CSS specification(2015-11-13)
 		- Support malformed HTML(2015-11-13)
 	* Incompatible changes:
+		- Remove IStyleUtil(2015-11-14)
 		- Act more compatible with CSS specification(2015-11-13)
 		- Treats unknown tag more friendly(2015-11-13)
 * 1.2.3

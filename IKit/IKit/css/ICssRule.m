@@ -7,12 +7,12 @@
  @website: http://www.cocoaui.com/
  */
 
-#import "IStyleRule.h"
+#import "ICssRule.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
-#import "IStyleDecl.h"
+#import "ICssBlock.h"
 
-@implementation IStyleRule
+@implementation ICssRule
 
 - (id)init{
 	self = [super init];
@@ -61,7 +61,7 @@
 	}
 	
 	_baseUrl = baseUrl;
-	_declBlock = [IStyleDeclBlock fromCss:css baseUrl:_baseUrl];
+	_declBlock = [ICssBlock fromCss:css baseUrl:_baseUrl];
 }
 
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{

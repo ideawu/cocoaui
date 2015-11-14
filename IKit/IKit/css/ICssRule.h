@@ -10,12 +10,12 @@
 #import <Foundation/Foundation.h>
 
 @class IView;
-@class IStyleDeclBlock;
+@class ICssBlock;
 
-@interface IStyleRule : NSObject
+@interface ICssRule : NSObject
 
 @property (nonatomic, readonly) NSMutableArray *selectors;
-@property (nonatomic, readonly) IStyleDeclBlock *declBlock;
+@property (nonatomic, readonly) ICssBlock *declBlock;
 @property (nonatomic, readonly) NSString *baseUrl;
 @property (nonatomic, readonly) int weight;
 

@@ -7,14 +7,10 @@
  @website: http://www.cocoaui.com/
  */
 
-#import "IStyleDecl.h"
-#import "IStyleInternal.h"
+#import "ICssBlock.h"
+#import "ICssDecl.h"
 
-@implementation IStyleDecl
-@end
-
-
-@implementation IStyleDeclBlock
+@implementation ICssBlock
 
 - (id)init{
 	self = [super init];
@@ -25,15 +21,15 @@
 - (NSString *)description{
 	NSMutableString *ret = [[NSMutableString alloc] init];
 	[ret appendString:@"{ "];
-	for(IStyleDecl *decl in _decls){
+	for(ICssDecl *decl in _decls){
 		[ret appendFormat:@"%@: %@; ", decl.key, decl.val];
 	}
 	[ret appendString:@"}"];
 	return ret;
 }
 
-+ (IStyleDeclBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl{
-	IStyleDeclBlock *ret = [[IStyleDeclBlock alloc] init];
++ (ICssBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl{
+	ICssBlock *ret = [[ICssBlock alloc] init];
 	ret.baseUrl = baseUrl;
 	if(!css){
 		return ret;
@@ -58,13 +54,13 @@
 	return ret;
 }
 
-- (void)addDecl:(IStyleDecl *)decl{
+- (void)addDecl:(ICssDecl *)decl{
 	[self removeKey:decl.key];
 	[_decls addObject:decl];
 }
 
 - (void)addKey:(NSString *)key value:(NSString *)val{
-	IStyleDecl *decl = [[IStyleDecl alloc] init];
+	ICssDecl *decl = [[ICssDecl alloc] init];
 	decl.key = key;
 	decl.val = val;
 	[self addDecl:decl];
@@ -72,7 +68,7 @@
 
 - (void)removeKey:(NSString *)key{
 	NSUInteger idx = 0;
-	for(IStyleDecl *decl in _decls){
+	for(ICssDecl *decl in _decls){
 		if([decl.key isEqualToString:key]){
 			[_decls removeObjectAtIndex:idx];
 			break;
@@ -93,7 +89,7 @@
 
 - (BOOL)hasClass:(NSString *)clz{
 	NSString *key = [NSString stringWithFormat:@".%@", clz];
-	for(IStyleDecl *decl in _decls){
+	for(ICssDecl *decl in _decls){
 		if([decl.key isEqualToString:key]){
 			return YES;
 		}

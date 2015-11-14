@@ -8,10 +8,10 @@
  */
 
 #import "IStyleSheet.h"
-#import "IStyleUtil.h"
+#import "IKitUtil.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
-#import "IStyleRule.h"
+#import "ICssRule.h"
 
 @interface IStyleSheet()
 @end
@@ -28,10 +28,10 @@
 	if(!src){
 		return;
 	}
-	NSArray *arr = [IStyleUtil parsePath:src];
+	NSArray *arr = [IKitUtil parsePath:src];
 	NSString *baseUrl = [arr objectAtIndex:1];
 	
-	if([IStyleUtil isHttpUrl:src]){
+	if([IKitUtil isHttpUrl:src]){
 		NSString *text = nil;
 		NSError *err;
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -62,7 +62,7 @@
 				[cache setObject:sheet forKey:src];
 			}
 		}
-		for(IStyleRule *rule in sheet.rules){
+		for(ICssRule *rule in sheet.rules){
 			[_rules addObject:rule];
 		}
 	}
@@ -128,8 +128,8 @@
 	
 	// 按优先级排序样式规则列表
 	[_rules sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-		IStyleRule *a = (IStyleRule *)obj1;
-		IStyleRule *b = (IStyleRule *)obj2;
+		ICssRule *a = (ICssRule *)obj1;
+		ICssRule *b = (ICssRule *)obj2;
 		if(a.weight > b.weight){
 			return 1;
 		}else if(a.weight < b.weight){
@@ -142,7 +142,7 @@
 }
 
 - (void)debugRules{
-	for(IStyleRule *rule in _rules){
+	for(ICssRule *rule in _rules){
 		NSLog(@"%10d: %@", rule.weight, rule);
 	}
 }
@@ -156,7 +156,7 @@
 			continue;
 		}
 		
-		IStyleRule *rule = [[IStyleRule alloc] init];
+		ICssRule *rule = [[ICssRule alloc] init];
 		[rule parseRule:key css:val baseUrl:baseUrl];
 		[_rules addObject:rule];
 	}

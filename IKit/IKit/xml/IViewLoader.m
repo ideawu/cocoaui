@@ -12,8 +12,9 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IStyleSheet.h"
-#import "IStyleDecl.h"
-#import "IStyleUtil.h"
+#import "ICssDecl.h"
+#import "ICssBlock.h"
+#import "IKitUtil.h"
 #import "ILabel.h"
 #import "IInput.h"
 #import "IButton.h"
@@ -54,7 +55,7 @@ typedef enum{
 }
 
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
-	NSArray *arr = [IStyleUtil parsePath:url];
+	NSArray *arr = [IKitUtil parsePath:url];
 	NSString *rootPath = [arr objectAtIndex:0];
 	NSString *basePath = [arr objectAtIndex:1];
 	log_debug(@"URL root: %@ base: %@", rootPath, basePath);
@@ -95,7 +96,7 @@ typedef enum{
 	_viewsById = [[NSMutableDictionary alloc] init];
 	_text = [[NSMutableString alloc] init];
 	
-	if([IStyleUtil isHTML:str]){
+	if([IKitUtil isHTML:str]){
 		log_trace(@"parse using DTHTML");
 		IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
 		[loader parseXml:str viewLoader:self];
@@ -155,8 +156,8 @@ typedef enum{
 		}
 	}
 	if(src){
-		if([IStyleUtil isHttpUrl:_basePath]){
-			src = [IStyleUtil buildPath:_basePath src:src];
+		if([IKitUtil isHttpUrl:_basePath]){
+			src = [IKitUtil buildPath:_basePath src:src];
 		}else{
 			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
 			//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
@@ -179,8 +180,8 @@ typedef enum{
 	NSString *src = [attributeDict objectForKey:@"src"];
 	IImage *img = [[IImage alloc] init];
 	if(src){
-		if([IStyleUtil isHttpUrl:_basePath]){
-			src = [IStyleUtil buildPath:_basePath src:src];
+		if([IKitUtil isHttpUrl:_basePath]){
+			src = [IKitUtil buildPath:_basePath src:src];
 		}
 		img.src = src;
 	}
@@ -234,7 +235,7 @@ typedef enum{
 	// $: dynamically set css
 	
 	// REMEMBER to set baseUrl!
-	view.style.declBlock.baseUrl = _basePath;
+	view.style.cssBlock.baseUrl = _basePath;
 	
 	// 1.
 	NSString *defaultCss = [IViewLoader getDefaultCssForTag:view.style.tagName];
@@ -242,7 +243,7 @@ typedef enum{
 		[view.style set:defaultCss];
 	}
 	// 2.
-	[view.style.declBlock addKey:@"@" value:@""];
+	[view.style.cssBlock addKey:@"@" value:@""];
 	
 	// 3.
 	NSString *css = [attributeDict objectForKey:@"style"];

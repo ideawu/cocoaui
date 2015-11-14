@@ -10,7 +10,7 @@
 #import "IImage.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
-#import "IStyleUtil.h"
+#import "IKitUtil.h"
 
 @interface IImage (){
 	NSString *_src;
@@ -42,7 +42,7 @@
 - (void)setSrc:(NSString *)src{
 	_src = src;
 	log_debug(@"%@ load image element: %@", self.name, src);
-	UIImage *img = [IStyleUtil loadImageFromPath:src];
+	UIImage *img = [IKitUtil loadImageFromPath:src];
 	[self setImage:img];
 }
 

@@ -10,12 +10,12 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IKitUtil.h"
-#import "IStyleUtil.h"
 #import "IStyleSheet.h"
 #import "IViewInternal.h"
 #import "IViewLoader.h"
-#import "IStyleDecl.h"
-#import "IStyleRule.h"
+#import "ICssDecl.h"
+#import "ICssBlock.h"
+#import "ICssRule.h"
 
 @implementation IStyleBorder
 
@@ -66,7 +66,7 @@
 - (id)init{
 	self = [super init];
 	[self reset];
-	_declBlock = [[IStyleDeclBlock alloc] init];
+	_cssBlock = [[ICssBlock alloc] init];
 	_classes = [[NSMutableSet alloc] init];
 	return self;
 }
@@ -323,13 +323,13 @@
 	needsLayout = NO;
 	
 	if(baseUrl){
-		_declBlock.baseUrl = baseUrl;
+		_cssBlock.baseUrl = baseUrl;
 	}
 	
-	IStyleDeclBlock *set = [IStyleDeclBlock fromCss:css baseUrl:_declBlock.baseUrl];
-	for(IStyleDecl *decl in set.decls){
+	ICssBlock *set = [ICssBlock fromCss:css baseUrl:_cssBlock.baseUrl];
+	for(ICssDecl *decl in set.decls){
 		[self applyDecl:decl baseUrl:set.baseUrl];
-		[_declBlock addDecl:decl];
+		[_cssBlock addDecl:decl];
 	}
 
 	if(needsDisplay && _view){
@@ -345,19 +345,19 @@
 	[self reset];
 	
 	// 对于手工创建的控件, 加上对 stylesheet 的引用
-	if(_declBlock.decls.count == 0){
-		[_declBlock addKey:@"@" value:@""];
+	if(_cssBlock.decls.count == 0){
+		[_cssBlock addKey:@"@" value:@""];
 	}
 	
-	for(IStyleDecl *decl in _declBlock.decls){
+	for(ICssDecl *decl in _cssBlock.decls){
 		if([decl.key isEqualToString:@"@"]){
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
-				for(IStyleRule *rule in sheet.rules){
+				for(ICssRule *rule in sheet.rules){
 					//NSLog(@"RULE: %@", rule);
 					//NSLog(@" %@ match?: %d", _tagName, [rule match:_view]);
 					if([rule match:_view]){
-						for(IStyleDecl *decl in rule.declBlock.decls){
+						for(ICssDecl *decl in rule.declBlock.decls){
 							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
 						}
@@ -365,7 +365,7 @@
 				}
 			}
 		}else{
-			[self applyDecl:decl baseUrl:_declBlock.baseUrl];
+			[self applyDecl:decl baseUrl:_cssBlock.baseUrl];
 		}
 	}
 	
@@ -378,7 +378,7 @@
 	}
 }
 
-- (void)applyDecl:(IStyleDecl *)decl baseUrl:(NSString *)baseUrl{
+- (void)applyDecl:(ICssDecl *)decl baseUrl:(NSString *)baseUrl{
 	NSString *k = decl.key;
 	NSString *v = decl.val;
 	//NSLog(@"    %@: %@;", k, v);
@@ -541,7 +541,7 @@
 		if([v isEqualToString:@"none"]){
 			_color = nil;
 		}else{
-			_color = [IKit colorFromHex:v];
+			_color = [IKitUtil colorFromHex:v];
 		}
 		//log_trace(@"color: %@", color);
 	}else if([k isEqualToString:@"font-family"]){
@@ -579,7 +579,7 @@
 	NSString *src = nil;
 	for(NSString *p in ps){
 		if([p characterAtIndex:0] == '#'){
-			_backgroundColor = [IKit colorFromHex:p];
+			_backgroundColor = [IKitUtil colorFromHex:p];
 		}else if([p rangeOfString:@"url("].location != NSNotFound){
 			src = [p substringFromIndex:4];
 			static NSCharacterSet *cs = nil;
@@ -598,11 +598,11 @@
 		}
 	}
 	if(src){
-		if([IStyleUtil isHttpUrl:baseUrl]){
-			src = [IStyleUtil buildPath:baseUrl src:src];
+		if([IKitUtil isHttpUrl:baseUrl]){
+			src = [IKitUtil buildPath:baseUrl src:src];
 		}
 		log_debug(@"%@ load background image: %@", _view.name, src);
-		_backgroundImage = [IStyleUtil loadImageFromPath:src];
+		_backgroundImage = [IKitUtil loadImageFromPath:src];
 	}
 }
 
@@ -679,7 +679,7 @@
 		}
 	}
 	if(ps.count > 2){
-		border.color = [IKit colorFromHex:ps[2]];
+		border.color = [IKitUtil colorFromHex:ps[2]];
 	}
 	return border;
 }

@@ -9,27 +9,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IStyleDecl : NSObject
+@class ICssDecl;
 
-@property (nonatomic) NSString *key;
-@property (nonatomic) NSString *val;
-
-@end
-
-
-@interface IStyleDeclBlock : NSObject
+@interface ICssBlock : NSObject
 
 @property (nonatomic) NSString *baseUrl;
 @property (nonatomic, readonly) NSMutableArray *decls;
 
-- (void)addDecl:(IStyleDecl *)decl;
+- (void)addDecl:(ICssDecl *)decl;
 - (void)addKey:(NSString *)key value:(NSString *)val;
 - (void)addClass:(NSString *)clz;
 - (void)removeClass:(NSString *)clz;
 - (BOOL)hasClass:(NSString *)clz;
 
-+ (IStyleDeclBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
++ (ICssBlock *)fromCss:(NSString *)css baseUrl:(NSString *)baseUrl;
 
 @end
-
-
