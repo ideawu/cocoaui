@@ -4,7 +4,7 @@
 		- Fix "background: url(a.png)" image not showing on iOS 7.0.3(2015-11-11)
 		- Fix addClass() bug, now addClass/removeClass work in the right way(2015-11-10)
 	* New features:
-		- Act more compatible with CSS specification(2015-11-13)
+		- More compatible with CSS specification(2015-11-13)
 		- Support malformed HTML(2015-11-13)
 	* Incompatible changes:
 		- Remove IStyleUtil(2015-11-14)
