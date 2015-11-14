@@ -9,7 +9,7 @@
 	* Incompatible changes:
 		- Remove IStyleUtil(2015-11-14)
 		- More compatible with CSS specification(2015-11-13)
-		- Treats unknown tag more friendly(2015-11-13)
+		- Treats unknown tags more friendly(2015-11-13)
 * 1.2.3
 	* Bug fixes:
 		- Fix memory leak(2015-10-22)
