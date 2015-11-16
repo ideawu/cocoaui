@@ -105,6 +105,7 @@
 	_visibleCellIndexMin = NSUIntegerMax;
 	_visibleCellIndexMax = 0;
 	_contentFrame.size.height = 0;
+	[self reload];
 }
 
 - (void)reload{

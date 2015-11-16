@@ -112,15 +112,6 @@
 	}
 #endif
 	
-#if 0
-	[IView loadUrl:@"http://127.0.0.1/cocoaui.xml" callback:^(IView *view) {
-		NSLog(@"reload");
-		[self addIViewRow:view];
-		[self reload];
-	}];
-	return;
-#endif
-
 	/*
 	{
 		http_get_raw(@"http://www.cocoaui.com/", nil, ^(NSData *data) {

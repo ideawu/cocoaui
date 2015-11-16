@@ -28,6 +28,7 @@ typedef enum{
 	IRefreshBegin,
 }IRefreshState;
 
+@class ITable;
 
 @interface IView : UIView
 
@@ -38,7 +39,13 @@ typedef enum{
 
 + (IView *)namedView:(NSString *)name;
 + (IView *)viewFromXml:(NSString *)xml;
-+ (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
+
+/**
+ * Return the ITable which this view is in, if and only if this view is
+ * an instance of the view class registered by ITable.registerViewClass.
+ * NOTICE: become nil after this view is removed from ITable.
+ */
+- (ITable *)table;
 
 - (id)data;
 /**
