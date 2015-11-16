@@ -2,7 +2,7 @@
 
 Build adaptive UI for iOS Apps with Flow-Layout mechanism and CSS properties.
 
-[![Platform](https://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://github.com/ideawu/cocoaui) ![Language](https://img.shields.io/badge/language-Objective%20C-blue.svg) [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg?style=flat)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://github.com/ideawu/cocoaui) [![Language](https://img.shields.io/badge/language-Objective--C,%20Swift-blue.svg)](https://github.com/ideawu/cocoaui) [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg?style=flat)](LICENSE)
 
 | AAA | BBB |
 | ----| --- |
