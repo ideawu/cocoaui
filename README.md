@@ -18,6 +18,15 @@ __Demos:__
 
  * libxml2
  
+## Setup
+
+ 1. Download the source files from GitHub: [git](https://github.com/ideawu/cocoaui.git), [.zip](https://github.com/ideawu/cocoaui/archive/dev.zip)
+ 1. Use Xcode the open the IKit Project
+ 1. Build the schema IKit-universal, set the schema Build Configuration to Release(default is Debug)
+ 1. Add the header files folder and static library to you own project(see [Quick Start](http://www.cocoaui.com/en/docs/quickstart)):
+   * header files folder: `build/release-universal/include/IKit`
+   * static libarry file: `build/release-universal/include/libIKit.a`
+ 
 ## Usage
 
 ### Sample Code(Objective-C)
