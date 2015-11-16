@@ -108,4 +108,4 @@ Demo app for CocoaUI
 
 ### CocoaUIViewer
 
-A __What You See Is What You Get__ tool helps you easily develop XML UI.
+A __Write and Seen__ tool helps you easily develop XML UI.
