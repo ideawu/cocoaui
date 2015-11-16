@@ -113,10 +113,6 @@
 	return [IViewLoader viewFromXml:xml];
 }
 
-+ (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
-	[IViewLoader loadUrl:url callback:callback];
-}
-
 - (IView *)getViewById:(NSString *)vid{
 	if(_viewLoader){
 		return [_viewLoader getViewById:vid];
@@ -145,6 +141,10 @@
 
 - (void)setDataInternal:(id)data{
 	_data = data;
+}
+
+- (ITable *)table{
+	return _cell.table;
 }
 
 - (void)addUIView:(UIView *)view{

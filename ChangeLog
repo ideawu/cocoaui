@@ -1,5 +1,6 @@
 * 1.2.4
 	* New features:
+		- Add IView.table property(2015-11-17)
 		- More compatible with CSS specification(2015-11-13)
 		- Support malformed HTML(2015-11-13)
 	* Bug fixes:
