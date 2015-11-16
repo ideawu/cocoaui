@@ -5,10 +5,10 @@
 		<img src="icon.png" width="40" />
 		<button class="btn" id="btn_2">+</button>
 	</div>
-	<div id="div" style="margin: 10 0; background: #eee; width: 300; float: center; border: 2 solid #3000;">
-		<span style="width: 100%; width: 33.3%; background: #cc3; valign: bottom; border: 0 solid #f00;">bottom</span>
+	<div id="div">
+		<span style="width: 33.3%; background: #cc3; valign: bottom;">bottom</span>
 		<span id="seq" style="text-align: center; width: 50%; background: #3c3;">-</span>
-		<span style="width: 100%; width: 100%; background: #39f; valign: middle;">middle</span>
+		<span style="width: 100%; background: #39f; valign: middle;">middle</span>
 	</div>
 	<div id="div2">
 		<button class="btn" id="btn_3" style="float: left; width: auto;">left</button>
