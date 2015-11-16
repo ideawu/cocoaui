@@ -78,6 +78,10 @@ CocoaUI supports most CSS layout and styling feature, the key of CocoaUI is Flow
  * [Quick Start](http://www.cocoaui.com/en/docs/quickstart)
  * [Tutorial - Pull Down to Refresh and Pull Up to Load More](http://www.cocoaui.com/en/docs/examples/pullToRefresh)
 
+### Documentation
+
+[http://www.cocoaui.com/en/docs](http://www.cocoaui.com/en/docs)
+
 
 ## About Source Code
 
@@ -95,4 +99,4 @@ Demo app for CocoaUI
 
 ### CocoaUIViewer
 
-The CocoaUI Viewer helps you easily develop XML UI.
+A __What You See Is What You Get__ tool helps you easily develop XML UI.
