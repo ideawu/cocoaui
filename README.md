@@ -27,7 +27,7 @@ The CocoaUI library.
 
 ### IObj
 
-A dynamic object library for Objective-C.
+A dynamic JSON object/model library for Objective-C.
 
 ### Test
 
