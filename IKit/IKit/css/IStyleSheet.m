@@ -8,17 +8,12 @@
  */
 
 #import "IStyleSheet.h"
-#import "IStyleUtil.h"
+#import "IKitUtil.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
-#import "IStyleRule.h"
+#import "ICssRule.h"
 
-@interface IStyleSheet(){
-	NSString *_baseUrl;
-}
-
-@property (nonatomic) NSMutableArray *rules;
-
+@interface IStyleSheet()
 @end
 
 @implementation IStyleSheet
@@ -29,27 +24,14 @@
 	return self;
 }
 
-- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl{
+- (void)parseCssFile:(NSString *)src{
 	if(!src){
 		return;
 	}
-	_baseUrl = baseUrl;
-	if(![IStyleUtil isHttpUrl:src]){
-		if(baseUrl){
-			src = [baseUrl stringByAppendingString:src];
-		}else{
-			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-		}
-	}
+	NSArray *arr = [IKitUtil parsePath:src];
+	NSString *baseUrl = [arr objectAtIndex:1];
 	
-	static NSMutableDictionary *cache = nil;
-	if(cache == nil){
-		cache = [[NSMutableDictionary alloc] init];
-	}
-	IStyleSheet *sheet;
-	
-	if([IStyleUtil isHttpUrl:src]){
-		sheet = [[IStyleSheet alloc] init];
+	if([IKitUtil isHttpUrl:src]){
 		NSString *text = nil;
 		NSError *err;
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -58,27 +40,31 @@
 		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
 		if(data){
 			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			[sheet parseCss:text];
+			[self parseCss:text baseUrl:baseUrl];
 		}
 	}else{
-		sheet = [cache objectForKey:src];
+		static NSMutableDictionary *cache = nil;
+		if(cache == nil){
+			cache = [[NSMutableDictionary alloc] init];
+		}
+		
+		IStyleSheet *sheet = [cache objectForKey:src];
 		if(sheet){
-			log_debug(@"load css resource from cache: %@", src);
+			log_debug(@"load css file from cache: %@", src);
 		}else{
-			log_debug(@"load css resource: %@", src);
+			//log_debug(@"load css file: %@", src);
 			sheet = [[IStyleSheet alloc] init];
 			NSString *text = nil;
 			NSError *err;
 			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
 			if(!err){
-				[sheet parseCss:text];
+				[sheet parseCss:text baseUrl:baseUrl];
 				[cache setObject:sheet forKey:src];
 			}
 		}
-	}
-
-	for(IStyleRule *rule in sheet.rules){
-		[_rules addObject:rule];
+		for(ICssRule *rule in sheet.rules){
+			[_rules addObject:rule];
+		}
 	}
 }
 
@@ -109,8 +95,11 @@
 	return ret;
 }
 
-- (void)parseCss:(NSString *)css{
+- (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl{
 	css = [self stripComment:css];
+	if(css.length == 0){
+		return;
+	}
 	
 	NSRange searchRange = NSMakeRange(0, css.length);
 	while (searchRange.length > 0) {
@@ -134,59 +123,38 @@
 		searchRange.length = css.length - searchRange.location;
 
 		//NSLog(@"%@ = %@", key,val);
-		[self setValue:val forSelector:selector];
+		[self setCss:val forSelector:selector baseUrl:baseUrl];
+	}
+	
+	// 按优先级排序样式规则列表
+	[_rules sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		ICssRule *a = (ICssRule *)obj1;
+		ICssRule *b = (ICssRule *)obj2;
+		if(a.weight > b.weight){
+			return 1;
+		}else if(a.weight < b.weight){
+			return -1;
+		}else{
+			return 0;
+		}
+	}];
+	//[self debugRules];
+}
+
+- (void)debugRules{
+	for(ICssRule *rule in _rules){
+		NSLog(@"%10d: %@", rule.weight, rule);
 	}
 }
 
-- (void)setValue:(id)val forSelector:(NSString *)selector{
-	// grouped rule
+- (void)setCss:(NSString *)css forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{
+	// grouping rule
 	NSArray *ps = [selector componentsSeparatedByString:@","];
-	for(NSString *p in ps){
-		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		if(key.length == 0){
-			continue;
+	for(NSString *sel in ps){
+		ICssRule *rule = [ICssRule fromSelector:sel css:css baseUrl:baseUrl];
+		if(rule){
+			[_rules addObject:rule];
 		}
-		
-		IStyleRule *rule = [[IStyleRule alloc] init];
-		[rule parseRule:key];
-		rule.css = val;
-		[_rules addObject:rule];
-	}
-}
-
-- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs{
-	[view.style reset];
-
-	if(attrs){
-		NSString *class_ = [attrs objectForKey:@"class"];
-		if(class_ != nil){
-			NSMutableArray *ps = [NSMutableArray arrayWithArray:
-								  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-			[ps removeObject:@""];
-			for(NSString *clz in ps){
-				[view.style addClass:clz];
-			}
-		}
-	}
-	
-	for(IStyleRule *rule in _rules){
-		if([rule match:view]){
-			//NSLog(@"%@{%@}", rule.selectors, rule.css);
-			[view.style set:rule.css baseUrl:_baseUrl];
-		}
-	}
-	
-	if(attrs){
-		NSString *css = [attrs objectForKey:@"style"];
-		if(css){
-			view.style.inlineCss = [NSString stringWithFormat:@"%@;%@", view.style.inlineCss, css];
-		}
-	}
-	[view.style set:view.style.inlineCss baseUrl:_baseUrl];
-	
-	// 重新应用子节点的样式
-	for(IView *sub in view.subs){
-		[self applyCssForView:sub attributes:nil];
 	}
 }
 

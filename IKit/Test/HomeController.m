@@ -45,7 +45,7 @@
 - (void)viewDidLoad {
 	NSString *css = @"   .a \n{\n    width: 100%; } ";
 	IStyleSheet *sheet = [[IStyleSheet alloc] init];
-	[sheet parseCss:css];
+	[sheet parseCss:css baseUrl:nil];
 	
 	[super viewDidLoad];
 	
@@ -187,10 +187,12 @@
 	if([text isEqualToString:@"Detect memory leak"]){
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
 		NSLog(@"start");
+		IView *parent = [[IView alloc] init];
 		for(int i=0; i<1000; i++){
 			IView *view = [IView viewFromXml:xml];
-			view = nil;
+			[parent addSubview:view];
 		}
+		parent = nil;
 		NSLog(@"end");
 		return;
 	}

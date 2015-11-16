@@ -218,13 +218,18 @@ void _cdataBlock(void *context, const xmlChar *value, int len)
 	}
 	else
 	{
+		/* BAD!!!
 		// convert the encoding
 		// TODO: proper mapping from _encoding to xmlCharEncoding
 		CFStringEncoding cfenc = CFStringConvertNSStringEncodingToEncoding(_encoding);
 		CFStringRef cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc);
 		const char *enc = CFStringGetCStringPtr(cfencstr, 0);
-		
 		charEnc = xmlParseCharEncoding(enc);
+		*/
+
+		CFStringEncoding cfEnc = CFStringConvertNSStringEncodingToEncoding(_encoding);
+		NSString *name = (NSString *)CFStringConvertEncodingToIANACharSetName(cfEnc);
+		charEnc = xmlParseCharEncoding([name UTF8String]);
 	}
 	
 	// create a parse context

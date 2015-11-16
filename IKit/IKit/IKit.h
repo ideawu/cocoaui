@@ -7,11 +7,13 @@
  @website: http://www.cocoaui.com/
  */
 
+#ifndef IKit_h
+#define IKit_h
+
 #import <UIKit/UIKit.h>
 
 #import "IKit/IKitUtil.h"
 #import "IKit/IStyle.h"
-#import "IKit/IStyleUtil.h"
 #import "IKit/IView.h"
 #import "IKit/ITable.h"
 #import "IKit/ITableRow.h"
@@ -22,3 +24,5 @@
 #import "IKit/IImage.h"
 #import "IKit/IPullRefresh.h"
 #import "IKit/IRefreshControl.h"
+
+#endif

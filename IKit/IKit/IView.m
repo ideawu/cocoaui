@@ -49,8 +49,8 @@
 }
 
 - (id)initWithFrame:(CGRect)frame{
-	self = [self init];
-	self.frame = frame;
+	self = [super initWithFrame:frame];
+	[self construct];
 
 	if(frame.size.width > 0){
 		[_style set:[NSString stringWithFormat:@"width: %f", frame.size.width]];
@@ -62,6 +62,13 @@
 }
 
 - (id)init{
+	// 宽高不能同时为0, 否则 layoutSubviews 不会被调用, 就没有机会显示了
+	self = [super initWithFrame:CGRectMake(0, 0, 1, 0)];
+	[self construct];
+	return self;
+}
+
+- (void)construct{
 	static BOOL inited = NO;
 	if(!inited){
 		inited = YES;
@@ -71,21 +78,17 @@
 		//NSString* appid = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
 		//NSLog(@"%@", appid);
 	}
-	
-	// 宽高不能同时为0, 否则 layoutSubviews 不会被调用, 就没有机会显示了
-	self = [super initWithFrame:CGRectMake(0, 0, 1, 0)];
-
 	self.backgroundColor = [UIColor clearColor];
 	//self.userInteractionEnabled = NO;
 	
 	_style = [[IStyle alloc] init];
 	_style.view = self;
+	_style.tagName = @"view";
 	
 	static int id_incr = 0;
 	self.seq = id_incr++;
 	
 	_need_layout = true;
-	return self;
 }
 
 + (IView *)namedView:(NSString *)name{
@@ -156,9 +159,6 @@
 	}else{
 		sub = [IView viewWithUIView:view];
 	}
-	if(css){
-		[sub.style set:css];
-	}
 	if(!_subs){
 		_subs = [[NSMutableArray alloc] init];
 	}
@@ -167,7 +167,12 @@
 	[_subs addObject:sub];
 	[super addSubview:sub];
 
-	[self.inheritedStyleSheet applyCssForView:sub attributes:nil];
+	if(css){
+		[sub.style set:css];
+	}
+	if(self.inheritedStyleSheet){
+		[sub.style renderAllCss];
+	}
 }
 
 - (void)addSubview:(UIView *)view{
@@ -192,7 +197,7 @@
 }
 
 - (NSString *)name{
-	return [NSString stringWithFormat:@"%*s%-2d", self.level*3, "", self.seq];
+	return [NSString stringWithFormat:@"%*s%-2d.%@", self.level*2, "", self.seq, self.style.tagName];
 }
 
 - (void)show{
@@ -327,7 +332,7 @@
 }
 
 - (void)layout{
-	log_debug(@"%@ %s begin %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%@ layout begin %@", self.name, NSStringFromCGRect(_style.rect));
 	_need_layout = false;
 	
 	if(self.isRootView){
@@ -358,7 +363,7 @@
 		}
 	}
 	
-	log_debug(@"%@ %s end %@", self.name, __FUNCTION__, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%@ layout end %@", self.name, NSStringFromCGRect(_style.rect));
 }
 
 #pragma mark - Events

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014 ideawu. All rights reserved.
+ Copyright (c) 2014-2015 ideawu. All rights reserved.
  Use of this source code is governed by a license that can be
  found in the LICENSE file.
  
@@ -14,7 +14,6 @@
 
 @interface IViewLoader : NSObject
 
-@property (nonatomic) NSString *baseUrl;
 @property (nonatomic, readonly) IStyleSheet *styleSheet;
 
 + (IView *)viewFromXml:(NSString *)xml;
@@ -22,6 +21,9 @@
 
 - (IView *)getViewById:(NSString *)id_;
 
-- (void)duplicate;
+
+- (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict;
+- (void)didEndElement:(NSString *)tagName;
+- (void)foundCharacters:(NSString *)str;
 
 @end

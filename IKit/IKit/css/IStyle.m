@@ -10,10 +10,12 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IKitUtil.h"
-#import "IStyleUtil.h"
 #import "IStyleSheet.h"
 #import "IViewInternal.h"
 #import "IViewLoader.h"
+#import "ICssDecl.h"
+#import "ICssBlock.h"
+#import "ICssRule.h"
 
 @implementation IStyleBorder
 
@@ -32,62 +34,18 @@
 	UIFont *_font;
 	UIColor *_color;
 	IStyleTextAlign _textAlign;
+	BOOL needsDisplay, needsLayout;
 }
 @property (nonatomic) CGFloat ratioWidth;
 @property (nonatomic) CGFloat ratioHeight;
 @property (nonatomic) UIFont *font;
 @property (nonatomic) UIColor *color;
 @property (nonatomic) IStyleTextAlign textAlign;
-
-@property (nonatomic) NSMutableArray *classes;
+@property (nonatomic) NSMutableSet *classes;
 @end
 
 
 @implementation IStyle
-
-- (void)copyFrom:(IStyle *)style{
-	_top = style.top;
-	_left = style.left;
-	_x = style.x;
-	_y = style.y;
-	_w = style.w;
-	_h = style.h;
-	_ratioWidth = style.ratioWidth;
-	_ratioHeight = style.ratioHeight;
-	
-	_displayType = style.displayType;
-	_overflowType = style.overflowType;
-	_clearType = style.clearType;
-	_floatType = style.floatType;
-	_resizeType = style.resizeType;
-	
-	_margin = style.margin;
-	_padding = style.padding;
-	
-	_borderDrawType = style.borderDrawType;
-	_borderRadius = style.borderRadius;
-	_borderLeft.width = style.borderLeft.width;
-	_borderLeft.type = style.borderLeft.type;
-	_borderLeft.color = style.borderLeft.color;
-	_borderRight.width = style.borderRight.width;
-	_borderRight.type = style.borderRight.type;
-	_borderRight.color = style.borderRight.color;
-	_borderTop.width = style.borderTop.width;
-	_borderTop.type = style.borderTop.type;
-	_borderTop.color = style.borderTop.color;
-	_borderBottom.width = style.borderBottom.width;
-	_borderBottom.type = style.borderBottom.type;
-	_borderBottom.color = style.borderBottom.color;
-	
-	_fontSize = style.fontSize;
-	_fontWeight = style.fontWeight;
-	_fontFamily = style.fontFamily;
-	_textAlign = style.textAlign;
-	
-	_font = style.font;
-	_color = style.color;
-	_backgroundColor = style.backgroundColor;
-}
 
 + (CGFloat)smallFontSize{
 	return [UIFont smallSystemFontSize];
@@ -108,7 +66,8 @@
 - (id)init{
 	self = [super init];
 	[self reset];
-	_classes = [[NSMutableArray alloc] init];
+	_cssBlock = [[ICssBlock alloc] init];
+	_classes = [[NSMutableSet alloc] init];
 	return self;
 }
 
@@ -126,21 +85,6 @@
 	_textAlign = IStyleTextAlignNone;
 	_fontSize = [UIFont systemFontSize];
 	_backgroundColor = [UIColor clearColor];
-}
-
-- (void)addClass:(NSString *)clz{
-	[_classes removeObject:clz];
-	[_classes addObject:clz];
-	[_view.inheritedStyleSheet applyCssForView:_view attributes:nil];
-}
-
-- (void)removeClass:(NSString *)clz{
-	[_classes removeObject:clz];
-	[_view.inheritedStyleSheet applyCssForView:_view attributes:nil];
-}
-
-- (BOOL)hasClass:(NSString *)clz{
-	return [_classes containsObject:clz];
 }
 
 - (BOOL)hidden{
@@ -332,6 +276,41 @@
 	}
 }
 
+- (void)setClass:(NSString *)clz{
+	[_classes removeAllObjects];
+	[self addClass:clz];
+}
+
+- (void)addClass:(NSString *)clz{
+	//NSLog(@"%s %@", __func__, clz);
+	clz = [clz lowercaseString];
+	[_classes addObject:clz];
+	if(_view.inheritedStyleSheet){
+		[self renderAllCss];
+	}
+}
+
+- (void)removeClass:(NSString *)clz{
+	clz = [clz lowercaseString];
+	[_classes removeObject:clz];
+	if(_view.inheritedStyleSheet){
+		[self renderAllCss];
+	}
+}
+
+- (BOOL)hasClass:(NSString *)clz{
+	clz = [clz lowercaseString];
+	return [_classes containsObject:clz];
+}
+
+// 该方法只被 IViewLoader 使用
+- (void)setId:(NSString *)ident{
+	_view.vid = ident;
+	if(_view.inheritedStyleSheet){
+		[self renderAllCss];
+	}
+}
+
 - (void)set:(NSString *)css{
 	[self set:css baseUrl:nil];
 }
@@ -340,217 +319,255 @@
 	if(!css){
 		return;
 	}
-	css = [css stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	NSArray *kvs = [css componentsSeparatedByString:@";"];
-	BOOL needsDisplay = NO;
-	BOOL needsLayout = NO;
+	needsDisplay = NO;
+	needsLayout = NO;
 	
-	for(NSString *s in kvs){
-		NSArray *kv = [s componentsSeparatedByString:@":"];
-		if(kv.count != 2){
-			continue;
-		}
-		NSString *k = [kv objectAtIndex:0];
-		NSString *v = [kv objectAtIndex:1];
-		k = [k stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		v = [v stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		k = [k lowercaseString];
-		v = [v lowercaseString];
-		
-		if([k isEqualToString:@"display"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"auto"]){
-				_displayType = IStyleDisplayAuto;
-			}else if([v isEqualToString:@"none"]){
-				_displayType = IStyleDisplayNone;
-			}
-		}else if([k isEqualToString:@"float"] || [k isEqualToString:@"align"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"left"]){
-				_floatType = IStyleFloatLeft;
-			}else if([v isEqualToString:@"right"]){
-				_floatType = IStyleFloatRight;
-			}else if([v isEqualToString:@"center"]){
-				_floatType = IStyleFloatCenter;
-			}
-			//log_trace(@"floatType = %d", self.floatType);
-		}else if([k isEqualToString:@"valign"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"top"]){
-				_valignType = IStyleValignTop;
-			}else if([v isEqualToString:@"bottom"]){
-				_valignType = IStyleValignBottom;
-			}else if([v isEqualToString:@"middle"]){
-				_valignType = IStyleValignMiddle;
-			}
-		}else if([k isEqualToString:@"clear"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"left"]){
-				_clearType = IStyleClearLeft;
-			}else if([v isEqualToString:@"right"]){
-				_clearType = IStyleClearRight;
-			}else if([v isEqualToString:@"both"]){
-				_clearType = IStyleClearBoth;
-			}else if([v isEqualToString:@"none"]){
-				_clearType = IStyleClearNone;
-			}
-			//log_trace(@"clearType = %d", self.clearType);
-		}else if([k isEqualToString:@"width"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"auto"]){
-				// 默认 width: 100%
-				_ratioWidth = 0;
-				_resizeType |= IStyleResizeWidth;
-				continue;
-			}
-			
-			float f = [v floatValue];
-			if([v rangeOfString:@"%"].location == NSNotFound){
-				[self setWidth:f];
-			}else{
-				[self setRatioWidth:f/100];
-			}
-			//log_trace(@"w = %f, ratioW = %f", self.w, self.ratioW);
-		}else if([k isEqualToString:@"height"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"auto"]){
-				// 默认 height: auto grow
-				_ratioHeight = 0;
-				_resizeType |= IStyleResizeHeight;
-				continue;
-			}
-			
-			float f = [v floatValue];
-			if([v rangeOfString:@"%"].location == NSNotFound){
-				[self setHeight:f];
-			}else{
-				[self setRatioHeight:f/100];
-			}
-			//log_trace(@"h = %f, ratioH = %f", self.h, self.ratioH);
-		}else if([k isEqualToString:@"margin"]){
-			needsLayout = YES;
-			_margin = [self parseEdge:v];
-			//log_trace(@"margin: %f %f %f %f", _margin.top, _margin.right, _margin.bottom, _margin.left);
-		}else if([k isEqualToString:@"margin-top"]){
-			needsLayout = YES;
-			_margin.top = [v floatValue];
-		}else if([k isEqualToString:@"margin-right"]){
-			needsLayout = YES;
-			_margin.right = [v floatValue];
-		}else if([k isEqualToString:@"margin-bottom"]){
-			needsLayout = YES;
-			_margin.bottom = [v floatValue];
-		}else if([k isEqualToString:@"margin-left"]){
-			needsLayout = YES;
-			_margin.left = [v floatValue];
-		}else if([k isEqualToString:@"padding"]){
-			needsLayout = YES;
-			_padding = [self parseEdge:v];
-			//log_trace(@"padding: %f %f %f %f", _padding.top, _padding.right, _padding.bottom, _padding.left);
-		}else if([k isEqualToString:@"padding-top"]){
-			needsLayout = YES;
-			_padding.top = [v floatValue];
-		}else if([k isEqualToString:@"padding-right"]){
-			needsLayout = YES;
-			_padding.right = [v floatValue];
-		}else if([k isEqualToString:@"padding-bottom"]){
-			needsLayout = YES;
-			_padding.bottom = [v floatValue];
-		}else if([k isEqualToString:@"padding-left"]){
-			needsLayout = YES;
-			_padding.left = [v floatValue];
-		}else if([k isEqualToString:@"border"]){
-			needsDisplay = YES;
-			_borderLeft = [self parseBorder:v];
-			_borderRight = _borderTop = _borderBottom = _borderLeft;
-			_borderDrawType = IStyleBorderDrawAll;
-		}else if([k isEqualToString:@"border-top"]){
-			needsDisplay = YES;
-			_borderTop = [self parseBorder:v];
-			[self determineBorderDrawType];
-		}else if([k isEqualToString:@"border-right"]){
-			needsDisplay = YES;
-			_borderRight = [self parseBorder:v];
-			[self determineBorderDrawType];
-		}else if([k isEqualToString:@"border-bottom"]){
-			needsDisplay = YES;
-			_borderBottom = [self parseBorder:v];
-			[self determineBorderDrawType];
-		}else if([k isEqualToString:@"border-left"]){
-			needsDisplay = YES;
-			_borderLeft = [self parseBorder:v];
-			[self determineBorderDrawType];
-		}else if([k isEqualToString:@"border-radius"]){
-			needsDisplay = YES;
-			_borderRadius = [v floatValue];
-			//log_trace(@"border-radius: %f", _borderRadius);
-		}else if([k isEqualToString:@"text-align"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"left"]){
-				_textAlign = IStyleTextAlignLeft;
-			}else if([v isEqualToString:@"right"]){
-				_textAlign = IStyleTextAlignRight;
-			}else if([v isEqualToString:@"center"]){
-				_textAlign = IStyleTextAlignCenter;
-			}else if([v isEqualToString:@"justify"]){
-				_textAlign = IStyleTextAlignJustify;
-			}
-		}else if([k isEqualToString:@"font-size"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"small"]){
-				_fontSize = [IStyle smallFontSize];
-			}else if([v isEqualToString:@"large"]){
-				_fontSize = [IStyle largeFontSize];
-			}else if([v isEqualToString:@"normal"]){
-				_fontSize = [IStyle normalFontSize];
-			}else{
-				_fontSize = [v floatValue];
-				if([v rangeOfString:@"%"].location != NSNotFound){
-					_fontSize = [IStyle normalFontSize] * (_fontSize/100);
-				}
-			}
-			[self applyFont];
-		}else if([k isEqualToString:@"color"]){
-			needsDisplay = YES;
-			if([v isEqualToString:@"none"]){
-				_color = nil;
-			}else{
-				_color = [IKit colorFromHex:v];
-			}
-			//log_trace(@"color: %@", color);
-		}else if([k isEqualToString:@"font-family"]){
-			needsLayout = YES;
-			_fontFamily = v;
-			[self applyFont];
-		}else if([k isEqualToString:@"font-weight"]){
-			needsLayout = YES;
-			if([v isEqualToString:@"bold"]){
-				_fontWeight = @"bold";
-			}else{
-				_fontWeight = @"normal";
-			}
-			[self applyFont];
-		}else if([k isEqualToString:@"background"]){
-			needsDisplay = YES;
-			[self parseBackground:v baseUrl:baseUrl];
-			//log_trace(@"background: %@", self.backgroundColor);
-		}else if([k isEqualToString:@"left"]){
-			needsLayout = YES;
-			_left = [v floatValue];
-		}else if([k isEqualToString:@"top"]){
-			needsLayout = YES;
-			_top = [v floatValue];
-		}else if([k isEqualToString:@"www"]){
-			NSLog(@"www for c*ui");
-		}
+	if(baseUrl){
+		_cssBlock.baseUrl = baseUrl;
 	}
-	_inlineCss = [NSString stringWithFormat:@"%@;%@", _inlineCss, css];
 	
+	ICssBlock *set = [ICssBlock fromCss:css baseUrl:_cssBlock.baseUrl];
+	for(ICssDecl *decl in set.decls){
+		[self applyDecl:decl baseUrl:set.baseUrl];
+		[_cssBlock addDecl:decl];
+	}
+
 	if(needsDisplay && _view){
 		[_view setNeedsDisplay];
 	}
 	if(needsLayout && _view){
 		[_view setNeedsLayout];
+	}
+}
+
+- (void)renderAllCss{
+	//NSLog(@"%@ %@ %s", _view.name, _tagName, __func__);
+	[self reset];
+	
+	// 对于手工创建的控件, 加上对 stylesheet 的引用
+	if(_cssBlock.decls.count == 0){
+		[_cssBlock addKey:@"@" value:@""];
+	}
+	
+	for(ICssDecl *decl in _cssBlock.decls){
+		if([decl.key isEqualToString:@"@"]){
+			IStyleSheet *sheet = _view.inheritedStyleSheet;
+			if(sheet){
+				for(ICssRule *rule in sheet.rules){
+					//NSLog(@"RULE: %@", rule);
+					//NSLog(@" %@ match?: %d", _tagName, [rule match:_view]);
+					if([rule matchView:_view]){
+						for(ICssDecl *decl in rule.declBlock.decls){
+							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
+							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
+						}
+					}
+				}
+			}
+		}else{
+			[self applyDecl:decl baseUrl:_cssBlock.baseUrl];
+		}
+	}
+	
+	[_view setNeedsDisplay];
+	[_view setNeedsLayout];
+	
+	// 重新应用子节点的样式
+	for(IView *sub in _view.subs){
+		[sub.style renderAllCss];
+	}
+}
+
+- (void)applyDecl:(ICssDecl *)decl baseUrl:(NSString *)baseUrl{
+	NSString *k = decl.key;
+	NSString *v = decl.val;
+	//NSLog(@"    %@: %@;", k, v);
+	
+	if([k isEqualToString:@"display"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"auto"]){
+			_displayType = IStyleDisplayAuto;
+		}else if([v isEqualToString:@"none"]){
+			_displayType = IStyleDisplayNone;
+		}
+	}else if([k isEqualToString:@"float"] || [k isEqualToString:@"align"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"left"]){
+			_floatType = IStyleFloatLeft;
+		}else if([v isEqualToString:@"right"]){
+			_floatType = IStyleFloatRight;
+		}else if([v isEqualToString:@"center"]){
+			_floatType = IStyleFloatCenter;
+		}
+		//log_trace(@"floatType = %d", self.floatType);
+	}else if([k isEqualToString:@"valign"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"top"]){
+			_valignType = IStyleValignTop;
+		}else if([v isEqualToString:@"bottom"]){
+			_valignType = IStyleValignBottom;
+		}else if([v isEqualToString:@"middle"]){
+			_valignType = IStyleValignMiddle;
+		}
+	}else if([k isEqualToString:@"clear"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"left"]){
+			_clearType = IStyleClearLeft;
+		}else if([v isEqualToString:@"right"]){
+			_clearType = IStyleClearRight;
+		}else if([v isEqualToString:@"both"]){
+			_clearType = IStyleClearBoth;
+		}else if([v isEqualToString:@"none"]){
+			_clearType = IStyleClearNone;
+		}
+		//log_trace(@"clearType = %d", self.clearType);
+	}else if([k isEqualToString:@"width"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"auto"]){
+			// 默认 width: 100%
+			_ratioWidth = 0;
+			_resizeType |= IStyleResizeWidth;
+			return;
+		}
+		
+		float f = [v floatValue];
+		if([v rangeOfString:@"%"].location == NSNotFound){
+			[self setWidth:f];
+		}else{
+			[self setRatioWidth:f/100];
+		}
+		//log_trace(@"w = %f, ratioW = %f", self.w, self.ratioWidth);
+	}else if([k isEqualToString:@"height"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"auto"]){
+			// 默认 height: auto grow
+			_ratioHeight = 0;
+			_resizeType |= IStyleResizeHeight;
+			return;
+		}
+		
+		float f = [v floatValue];
+		if([v rangeOfString:@"%"].location == NSNotFound){
+			[self setHeight:f];
+		}else{
+			[self setRatioHeight:f/100];
+		}
+		//log_trace(@"h = %f, ratioH = %f", self.h, self.ratioH);
+	}else if([k isEqualToString:@"margin"]){
+		needsLayout = YES;
+		_margin = [self parseEdge:v];
+		//log_trace(@"margin: %f %f %f %f", _margin.top, _margin.right, _margin.bottom, _margin.left);
+	}else if([k isEqualToString:@"margin-top"]){
+		needsLayout = YES;
+		_margin.top = [v floatValue];
+	}else if([k isEqualToString:@"margin-right"]){
+		needsLayout = YES;
+		_margin.right = [v floatValue];
+	}else if([k isEqualToString:@"margin-bottom"]){
+		needsLayout = YES;
+		_margin.bottom = [v floatValue];
+	}else if([k isEqualToString:@"margin-left"]){
+		needsLayout = YES;
+		_margin.left = [v floatValue];
+	}else if([k isEqualToString:@"padding"]){
+		needsLayout = YES;
+		_padding = [self parseEdge:v];
+		//log_trace(@"padding: %f %f %f %f", _padding.top, _padding.right, _padding.bottom, _padding.left);
+	}else if([k isEqualToString:@"padding-top"]){
+		needsLayout = YES;
+		_padding.top = [v floatValue];
+	}else if([k isEqualToString:@"padding-right"]){
+		needsLayout = YES;
+		_padding.right = [v floatValue];
+	}else if([k isEqualToString:@"padding-bottom"]){
+		needsLayout = YES;
+		_padding.bottom = [v floatValue];
+	}else if([k isEqualToString:@"padding-left"]){
+		needsLayout = YES;
+		_padding.left = [v floatValue];
+	}else if([k isEqualToString:@"border"]){
+		needsDisplay = YES;
+		_borderLeft = [self parseBorder:v];
+		_borderRight = _borderTop = _borderBottom = _borderLeft;
+		_borderDrawType = IStyleBorderDrawAll;
+	}else if([k isEqualToString:@"border-top"]){
+		needsDisplay = YES;
+		_borderTop = [self parseBorder:v];
+		[self determineBorderDrawType];
+	}else if([k isEqualToString:@"border-right"]){
+		needsDisplay = YES;
+		_borderRight = [self parseBorder:v];
+		[self determineBorderDrawType];
+	}else if([k isEqualToString:@"border-bottom"]){
+		needsDisplay = YES;
+		_borderBottom = [self parseBorder:v];
+		[self determineBorderDrawType];
+	}else if([k isEqualToString:@"border-left"]){
+		needsDisplay = YES;
+		_borderLeft = [self parseBorder:v];
+		[self determineBorderDrawType];
+	}else if([k isEqualToString:@"border-radius"]){
+		needsDisplay = YES;
+		_borderRadius = [v floatValue];
+		//log_trace(@"border-radius: %f", _borderRadius);
+	}else if([k isEqualToString:@"text-align"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"left"]){
+			_textAlign = IStyleTextAlignLeft;
+		}else if([v isEqualToString:@"right"]){
+			_textAlign = IStyleTextAlignRight;
+		}else if([v isEqualToString:@"center"]){
+			_textAlign = IStyleTextAlignCenter;
+		}else if([v isEqualToString:@"justify"]){
+			_textAlign = IStyleTextAlignJustify;
+		}
+	}else if([k isEqualToString:@"font-size"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"small"]){
+			_fontSize = [IStyle smallFontSize];
+		}else if([v isEqualToString:@"large"]){
+			_fontSize = [IStyle largeFontSize];
+		}else if([v isEqualToString:@"normal"]){
+			_fontSize = [IStyle normalFontSize];
+		}else{
+			_fontSize = [v floatValue];
+			if([v rangeOfString:@"%"].location != NSNotFound){
+				_fontSize = [IStyle normalFontSize] * (_fontSize/100);
+			}
+		}
+		[self applyFont];
+	}else if([k isEqualToString:@"color"]){
+		needsDisplay = YES;
+		if([v isEqualToString:@"none"]){
+			_color = nil;
+		}else{
+			_color = [IKitUtil colorFromHex:v];
+		}
+		//log_trace(@"color: %@", color);
+	}else if([k isEqualToString:@"font-family"]){
+		needsLayout = YES;
+		_fontFamily = v;
+		[self applyFont];
+	}else if([k isEqualToString:@"font-weight"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"bold"]){
+			_fontWeight = @"bold";
+		}else{
+			_fontWeight = @"normal";
+		}
+		[self applyFont];
+	}else if([k isEqualToString:@"background"]){
+		needsDisplay = YES;
+		[self parseBackground:v baseUrl:baseUrl];
+		//log_trace(@"background: %@", self.backgroundColor);
+	}else if([k isEqualToString:@"left"]){
+		needsLayout = YES;
+		_left = [v floatValue];
+	}else if([k isEqualToString:@"top"]){
+		needsLayout = YES;
+		_top = [v floatValue];
+	}else if([k isEqualToString:@"www"]){
+		NSLog(@"www for c*ui");
 	}
 }
 
@@ -562,13 +579,12 @@
 	NSString *src = nil;
 	for(NSString *p in ps){
 		if([p characterAtIndex:0] == '#'){
-			_backgroundColor = [IKit colorFromHex:p];
+			_backgroundColor = [IKitUtil colorFromHex:p];
 		}else if([p rangeOfString:@"url("].location != NSNotFound){
 			src = [p substringFromIndex:4];
-			static NSMutableCharacterSet *cs = nil;
+			static NSCharacterSet *cs = nil;
 			if(!cs){
-				cs = [[NSMutableCharacterSet alloc] init];
-				[cs addCharactersInString:@"\")"];
+				cs = [NSCharacterSet characterSetWithCharactersInString:@"'\")"];
 			}
 			src = [src stringByTrimmingCharactersInSet:cs];
 		}else if([p isEqualToString:@"none"]){
@@ -582,27 +598,11 @@
 		}
 	}
 	if(src){
-		if(![IStyleUtil isHttpUrl:src]){
-			if(baseUrl){
-				src = [baseUrl stringByAppendingString:src];
-			}else{
-				src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-			}
+		if([IKitUtil isHttpUrl:baseUrl]){
+			src = [IKitUtil buildPath:baseUrl src:src];
 		}
-		if(src){
-			log_debug(@"load background image: %@", src);
-			if([IStyleUtil isHttpUrl:src]){
-				NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-				[request setHTTPMethod:@"GET"];
-				[request setURL:[NSURL URLWithString:src]];
-				NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-				if(data){
-					_backgroundImage = [UIImage imageWithData:data];
-				}
-			}else{
-				_backgroundImage = [UIImage imageNamed:src];
-			}
-		}
+		log_debug(@"%@ load background image: %@", _view.name, src);
+		_backgroundImage = [IKitUtil loadImageFromPath:src];
 	}
 }
 
@@ -671,13 +671,15 @@
 	if(ps.count > 0){
 		border.width = [ps[0] floatValue];
 	}
-	if([ps[1] isEqualToString:@"dashed"]){
-		border.type = IStyleBorderDashed;
-	}else{
-		border.type = IStyleBorderSolid;
+	if(ps.count > 1){
+		if([ps[1] isEqualToString:@"dashed"]){
+			border.type = IStyleBorderDashed;
+		}else{
+			border.type = IStyleBorderSolid;
+		}
 	}
 	if(ps.count > 2){
-		border.color = [IKit colorFromHex:ps[2]];
+		border.color = [IKitUtil colorFromHex:ps[2]];
 	}
 	return border;
 }

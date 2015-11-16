@@ -14,6 +14,7 @@
 
 @class IView;
 @class IStyleBorder;
+@class ICssBlock;
 
 typedef struct{
 	CGFloat x, y, w, h;
@@ -94,7 +95,6 @@ typedef enum{
 
 @property (nonatomic, weak) IView *view;
 @property (nonatomic) NSString *tagName;
-@property (nonatomic) NSString *inlineCss;
 
 // TODO:
 @property (nonatomic) CGFloat top;
@@ -130,16 +130,18 @@ typedef enum{
 @property (nonatomic, readonly) UIImage *backgroundImage;
 @property (nonatomic, readonly) BOOL backgroundRepeat;
 
+@property (nonatomic) ICssBlock *cssBlock;
+
 + (CGFloat)smallFontSize;
 + (CGFloat)normalFontSize;
 + (CGFloat)largeFontSize;
 
 - (void)reset;
+- (void)renderAllCss;
 
+- (void)setId:(NSString *)ident;
 - (void)set:(NSString *)css baseUrl:(NSString *)baseUrl;
 
-
-- (void)copyFrom:(IStyle *)style;
 
 - (UIColor *)inheritedColor;
 - (UIFont *)inheritedFont;

@@ -1,25 +1,8 @@
 <div style="padding: 5 0; border-bottom: 1 solid #ccc; background: #fff; width: 100%;">
-	<style>
-		.btn{
-		margin: 4 8;
-		padding: 4;
-		width: 30;
-		color: #fff;
-		font-weight: bold;
-		font-size: 16px;
-		background: #f33;
-		border: 1 solid #999;
-		}
-		.a .btn{
-			background: #3f3;
-		}
-		label{margin:5 5 5 0; padding: 5;}
-		.x{background: #f33;}
-		.y{background: #3f3;}
-		.z{background: #ff3;}
-	</style>
+	<style href="ITablePullRefreshItem.css" />
 	<div style="float: center; clear: both;">
 		<button class="btn" id="btn_1">-</button>
+		<img src="icon.png" width="40" />
 		<button class="btn" id="btn_2">+</button>
 	</div>
 	<div id="div" style="margin: 10 0; background: #eee; width: 300; float: center; border: 2 solid #3000;">

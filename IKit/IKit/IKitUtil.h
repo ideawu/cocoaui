@@ -11,11 +11,20 @@
 #define IKit_IKitUtil_h
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface IKit : NSObject
+@interface IKitUtil : NSObject
 
 + (UIColor *) colorFromHex:(NSString *)hex;
-+ (void)alert:(NSString *)msg;
+
++ (BOOL)isHTML:(NSString *)str;
++ (BOOL)isHttpUrl:(NSString *)src;
+
++ (NSArray *)parsePath:(NSString *)path;
+// combine basePath + src, src may be URL or absolute file path
++ (NSString *)buildPath:(NSString *)basePath src:(NSString *)src;
+
++ (UIImage *)loadImageFromPath:(NSString *)path;
 
 @end
 

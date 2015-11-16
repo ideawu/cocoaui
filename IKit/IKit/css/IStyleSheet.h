@@ -25,9 +25,10 @@
 
 @interface IStyleSheet : NSObject
 
-- (void)parseCss:(NSString *)css;
-- (void)parseCssResource:(NSString *)src baseUrl:(NSString *)baseUrl;
+@property (nonatomic, readonly) NSMutableArray *rules;
 
-- (void)applyCssForView:(IView *)view attributes:(NSDictionary *)attrs;
+- (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl;
+// path 必须是绝对路径
+- (void)parseCssFile:(NSString *)path;
 
 @end

@@ -56,6 +56,13 @@
  */
 - (void)set:(NSString *)css;
 
+/**
+ * remove current classes(if any), and set the new one
+ */
+- (void)setClass:(NSString *)clz;
+/**
+ * add a new class
+ */
 - (void)addClass:(NSString *)clz;
 - (void)removeClass:(NSString *)clz;
 - (BOOL)hasClass:(NSString *)clz;
