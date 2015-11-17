@@ -48,6 +48,10 @@
 	return ret;
 }
 
++ (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
+	[IViewLoader loadUrl:url callback:callback];
+}
+
 - (id)initWithFrame:(CGRect)frame{
 	self = [super initWithFrame:frame];
 	[self construct];

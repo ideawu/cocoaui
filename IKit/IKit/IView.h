@@ -39,6 +39,7 @@ typedef enum{
 
 + (IView *)namedView:(NSString *)name;
 + (IView *)viewFromXml:(NSString *)xml;
++ (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
 
 /**
  * Return the ITable which this view is in, if and only if this view is
