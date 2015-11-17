@@ -180,10 +180,15 @@ typedef enum{
 	NSString *src = [attributeDict objectForKey:@"src"];
 	IImage *img = [[IImage alloc] init];
 	if(src){
-		if([IKitUtil isHttpUrl:_basePath]){
-			src = [IKitUtil buildPath:_basePath src:src];
+		if([IKitUtil isDataURI:src]){
+			log_debug(@"load image element from data URI");
+			img.image = [IKitUtil loadImageFromDataURI:src];
+		}else{
+			if([IKitUtil isHttpUrl:_basePath]){
+				src = [IKitUtil buildPath:_basePath src:src];
+			}
+			img.src = src;
 		}
-		img.src = src;
 	}
 	
 	NSString *width = [attributeDict objectForKey:@"width"];

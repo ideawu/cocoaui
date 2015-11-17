@@ -34,6 +34,90 @@
 	if(!css){
 		return ret;
 	}
+	
+#define PARSE_KEY  0
+#define PARSE_VAL  1
+	
+	NSString *k, *v;
+	NSUInteger spos = 0;
+	NSUInteger epos = 0;
+	int state = PARSE_KEY;
+	while(epos <= css.length){
+		unichar c;
+		if(epos == css.length){
+			c = '\0';
+		}else{
+			c = [css characterAtIndex:epos];
+		}
+		epos ++;
+		
+		switch(c){
+			case ':':{
+				if(state == PARSE_KEY){
+					NSRange range = NSMakeRange(spos, epos - spos - 1);
+					k = [css substringWithRange:range];
+					spos = epos;
+					state = PARSE_VAL;
+				}
+				break;
+			}
+			case '\0':
+			case ';':{
+				if(state == PARSE_VAL){
+					NSRange range = NSMakeRange(spos, epos - spos - 1);
+					v = [css substringWithRange:range];
+					spos = epos;
+					state = PARSE_KEY;
+					
+					if(k && v){
+						k = [k stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+						v = [v stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+						k = [k lowercaseString];
+						if(![k isEqualToString:@"background"]){
+							v = [v lowercaseString];
+						}
+						//NSLog(@"%@: %@;", k, v);
+						if(k.length > 0 && v.length > 0){
+							[ret addKey:k value:v];
+						}
+					}
+					k = nil;
+					v = nil;
+				}else{
+					// syntax error
+					k = nil;
+					v = nil;
+				}
+				break;
+			}
+			case '(':{
+				NSRange srange = NSMakeRange(epos, css.length - epos);
+				NSRange range = [css rangeOfString:@")" options:NSLiteralSearch range:srange];
+				if(range.length > 0){
+					epos = range.location + 1;
+				}
+				break;
+			}
+			case '\"':{
+				NSRange srange = NSMakeRange(epos, css.length - epos);
+				NSRange range = [css rangeOfString:@"\"" options:NSLiteralSearch range:srange];
+				if(range.length > 0){
+					epos = range.location + 1;
+				}
+				break;
+			}
+			case '\'':{
+				NSRange srange = NSMakeRange(epos, css.length - epos);
+				NSRange range = [css rangeOfString:@"\'" options:NSLiteralSearch range:srange];
+				if(range.length > 0){
+					epos = range.location + 1;
+				}
+				break;
+			}
+		}
+	}
+	
+	/*
 	css = [css stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSArray *kvs = [css componentsSeparatedByString:@";"];
 	for(NSString *s in kvs){
@@ -51,6 +135,7 @@
 		}
 		[ret addKey:k value:v];
 	}
+	*/
 	return ret;
 }
 
