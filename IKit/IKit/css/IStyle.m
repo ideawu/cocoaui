@@ -598,11 +598,15 @@
 		}
 	}
 	if(src){
-		if([IKitUtil isHttpUrl:baseUrl]){
-			src = [IKitUtil buildPath:baseUrl src:src];
+		if([IKitUtil isDataURI:src]){
+			_backgroundImage = [IKitUtil loadImageFromDataURI:src];
+		}else{
+			if([IKitUtil isHttpUrl:baseUrl]){
+				src = [IKitUtil buildPath:baseUrl src:src];
+			}
+			log_debug(@"%@ load background image: %@", _view.name, src);
+			_backgroundImage = [IKitUtil loadImageFromPath:src];
 		}
-		log_debug(@"%@ load background image: %@", _view.name, src);
-		_backgroundImage = [IKitUtil loadImageFromPath:src];
 	}
 }
 

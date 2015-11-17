@@ -26,6 +26,9 @@
 
 + (UIImage *)loadImageFromPath:(NSString *)path;
 
++ (BOOL)isDataURI:(NSString *)src;
++ (UIImage *)loadImageFromDataURI:(NSString *)src;
+
 @end
 
 #endif

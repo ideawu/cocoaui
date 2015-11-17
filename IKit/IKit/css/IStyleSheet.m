@@ -142,9 +142,11 @@
 }
 
 - (void)debugRules{
+	NSLog(@"<<<<<<<<<<");
 	for(ICssRule *rule in _rules){
 		NSLog(@"%10d: %@", rule.weight, rule);
 	}
+	NSLog(@">>>>>>>>>>");
 }
 
 - (void)setCss:(NSString *)css forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{
