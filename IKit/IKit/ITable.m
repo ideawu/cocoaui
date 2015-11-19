@@ -93,16 +93,15 @@
 	}
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-	// make sure there is last call
-	[self layoutViews];
-}
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+//	[self layoutViews];
+//}
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-	fps = (int)(duration / 0.01); // each frame takes 0.01s, so it is 100fps
-	for(int i=3; i<fps; i++){
-		NSNumber *num = [NSNumber numberWithInt:i+1];
-		[self performSelector:@selector(func:) withObject:num afterDelay:(i+1) * duration/fps];
+	fps = MAX(1, (int)(duration / 0.01)); // each frame takes 0.01s, so it is 100fps
+	for(int i=1; i<=fps; i++){
+		NSNumber *num = [NSNumber numberWithInt:i];
+		[self performSelector:@selector(func:) withObject:num afterDelay:i * duration/fps];
 	}
 }
 
