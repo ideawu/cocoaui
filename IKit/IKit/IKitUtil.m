@@ -8,7 +8,6 @@
  */
 
 #import "IKitUtil.h"
-#import "Text.h"
 
 @implementation IKitUtil
 
@@ -171,7 +170,7 @@ static CGFloat colorVal(NSString *hex){
 	NSRange range = [src rangeOfString:@";base64,"];
 	if(range.length > 0){
 		NSString *str = [src substringFromIndex:range.location + range.length];
-		NSData *data = base64_decode(str);
+		NSData *data = [[NSData alloc] initWithBase64EncodedString:str options:NSDataBase64DecodingIgnoreUnknownCharacters];
 		//NSLog(@"%@", str);
 		return [UIImage imageWithData:data];
 	}
