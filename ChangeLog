@@ -1,5 +1,6 @@
 * 1.2.4
 	* New features:
+		- Automatically refresh UI when device rotates(2015-11-19)
 		- Support data URI image(2015-11-17)
 		- Add IView.table property(2015-11-17)
 		- More compatible with CSS specification(2015-11-13)

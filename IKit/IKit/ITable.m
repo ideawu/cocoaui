@@ -92,6 +92,10 @@
 	}
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+	[self layoutViews];
+}
+
 #pragma mark - datasource manipulating
 
 - (void)clear{
@@ -355,7 +359,12 @@
 		_contentFrame.origin.y += _headerView.style.outerHeight;
 	}
 	if(self.view.superview){
-		_contentFrame.size.width = self.view.superview.frame.size.width;
+		_contentFrame.size.width = self.view.superview.bounds.size.width;
+		if(_scrollView.frame.size.width != self.view.superview.frame.size.width){
+			CGRect frame = _scrollView.frame;
+			frame.size.width = self.view.superview.bounds.size.width;
+			_scrollView.frame = frame;
+		}
 	}
 	_contentView.frame = _contentFrame;
 	
@@ -410,9 +419,13 @@
 	[UIView setAnimationsEnabled:NO];
 	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
 		ICell *cell = [_cells objectAtIndex:i];
+		CGRect old_frame = cell.view.frame;
 		CGRect frame = CGRectMake(cell.x, cell.y, _scrollView.contentSize.width, cell.height);
-		cell.view.frame = frame;
-		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.uiview.frame));
+		if(cell.contentView && !CGRectEqualToRect(old_frame, frame)){
+			cell.view.frame = frame;
+			[cell.contentView setNeedsLayout];
+		}
+		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
 		//NSLog(@"cell#%d y=%.1f", (int)i, cell.y);
 		
 		if(cell.data && cell.contentView && !cell.contentView.data){
@@ -500,18 +513,26 @@
 			y = 0;
 		}
 		CGRect frame = _headerView.frame;
+		//frame.size.width = _scrollView.contentSize.width;
 		frame.origin.y = y;
 		_headerView.frame = frame;
+		
+		if(_headerView.frame.size.width != _scrollView.contentSize.width){
+			[_headerView setNeedsLayout];
+		}
 	}
 	if(_footerView){
-		CGRect frame = _footerView.frame;
 		// 锚定底部
-		//CGPoint offset = _scrollView.contentOffset;
-		//frame.origin.y = offset.y + _scrollView.frame.size.height - frame.size.height;
-		//NSLog(@"offset: %.1f, %.1f", offset.y, frame.origin.y);
+		//CGFloat y = _scrollView.contentOffset.y + _scrollView.frame.size.height - _footerView.frame.size.height;
 		// 不锚定底部
-		frame.origin.y = _contentFrame.size.height + _contentFrame.origin.y;
-		_footerView.frame = frame;
+		CGFloat y = _contentFrame.size.height + _contentFrame.origin.y;
+		if(_footerView.style.top != y){
+			[_footerView.style set:[NSString stringWithFormat:@"top: %f", y]];
+		}
+
+		if(_footerView.frame.size.width != _scrollView.contentSize.width){
+			[_footerView setNeedsLayout];
+		}
 	}
 }
 
@@ -618,14 +639,23 @@
 			y = 0;
 		}
 		CGRect frame = _headerRefreshControl.frame;
+		frame.size.width = _scrollView.contentSize.width;
 		frame.origin.y = y - _headerRefreshControl.frame.size.height;
 		_headerRefreshWrapper.frame = frame;
+		
+		if(_headerRefreshControl.frame.size.width != _scrollView.contentSize.width){
+			[_headerRefreshControl setNeedsLayout];
+		}
 	}
 	
 	if(_footerRefreshControl){
 		CGFloat y = _scrollView.contentSize.height;
 		if(_footerRefreshControl.style.top != y){
 			[_footerRefreshControl.style set:[NSString stringWithFormat:@"top: %f", y]];
+		}
+		
+		if(_footerRefreshControl.frame.size.width != _scrollView.contentSize.width){
+			[_footerRefreshControl setNeedsLayout];
 		}
 	}
 }
