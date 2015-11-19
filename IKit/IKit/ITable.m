@@ -91,6 +91,22 @@
 	if([UIDevice currentDevice].systemVersion.floatValue >= 9.0){
 		[self layoutViews];
 	}
+
+	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
+}
+
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+	if(!self.view.superview){
+		CGFloat width = [UIScreen mainScreen].bounds.size.width;
+		_contentFrame.size.width = width;
+		if(_scrollView.frame.size.width != width){
+			CGRect frame = _scrollView.frame;
+			frame.size.width = width;
+			_scrollView.frame = frame;
+		}
+		[self layoutViews];
+	}
 }
 
 //- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
