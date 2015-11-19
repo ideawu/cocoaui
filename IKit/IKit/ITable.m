@@ -37,6 +37,7 @@
 	NSMutableArray *_cellSelectionEvents;
 	
 	UIView *_headerRefreshWrapper;
+	int fps;
 }
 @end
 
@@ -93,7 +94,39 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+	// make sure there is last call
 	[self layoutViews];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+	fps = (int)(duration / 0.01); // each frame takes 0.01s, so it is 100fps
+	for(int i=3; i<fps; i++){
+		NSNumber *num = [NSNumber numberWithInt:i+1];
+		[self performSelector:@selector(func:) withObject:num afterDelay:(i+1) * duration/fps];
+	}
+}
+
+- (void)func:(NSNumber *)arg{
+	int num = [arg intValue];
+
+	if(num != fps){
+		CGRect old_bounds = self.view.superview.bounds;
+		CGRect bounds = self.view.superview.bounds;
+		CGFloat width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
+		/*
+		if(UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)){
+			width = bounds.size.width + (bounds.size.height - bounds.size.width)/fps * (fps - num);
+		}else{
+			width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
+		}
+		*/
+		bounds.size.width = width;
+		self.view.superview.bounds = bounds;
+		[self layoutViews];
+		self.view.superview.bounds = old_bounds;
+	}else{
+		[self layoutViews];
+	}
 }
 
 #pragma mark - datasource manipulating
