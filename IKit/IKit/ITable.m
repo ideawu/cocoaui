@@ -114,6 +114,7 @@
 //}
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	fps = MAX(1, (int)(duration / 0.01));
 	for(int i=1; i<=fps; i++){
 		NSNumber *num = [NSNumber numberWithInt:i];
