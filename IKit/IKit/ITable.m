@@ -114,7 +114,7 @@
 //}
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-	fps = MAX(1, (int)(duration / 0.01)); // each frame takes 0.01s, so it is 100fps
+	fps = MAX(1, (int)(duration / 0.01));
 	for(int i=1; i<=fps; i++){
 		NSNumber *num = [NSNumber numberWithInt:i];
 		[self performSelector:@selector(func:) withObject:num afterDelay:i * duration/fps];
@@ -127,15 +127,12 @@
 	if(num != fps){
 		CGRect old_bounds = self.view.superview.bounds;
 		CGRect bounds = self.view.superview.bounds;
-		CGFloat width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
-		/*
-		if(UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)){
-			width = bounds.size.width + (bounds.size.height - bounds.size.width)/fps * (fps - num);
-		}else{
-			width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
-		}
-		*/
+		//CGFloat width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
+		CGFloat width = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.width;
+		CGFloat height = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.height;
+		//NSLog(@"%2d %.1f", num, width);
 		bounds.size.width = width;
+		bounds.size.height = height;
 		self.view.superview.bounds = bounds;
 		[self layoutViews];
 		self.view.superview.bounds = old_bounds;
