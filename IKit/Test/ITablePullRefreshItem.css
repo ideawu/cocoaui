@@ -16,5 +16,5 @@ label{margin:5 5 5 0; padding: 5;}
 .y{background: #3f3;}
 .z{background: #ff3;}
 
-#div{margin: 10 0; background: #eee; width: 300; float: center; border: 2 solid #3000;}
+#div{margin: 10; background: #eee; width: 100%; float: center; border: 2 solid #3000;}
 #div2{background: url(icon.png) no-repeat;}
