@@ -114,6 +114,7 @@
 //}
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	fps = MAX(1, (int)(duration / 0.01));
 	for(int i=1; i<=fps; i++){
 		NSNumber *num = [NSNumber numberWithInt:i];
@@ -130,12 +131,14 @@
 		//CGFloat width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
 		CGFloat width = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.width;
 		CGFloat height = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.height;
-		//NSLog(@"%2d %.1f", num, width);
-		bounds.size.width = width;
-		bounds.size.height = height;
-		self.view.superview.bounds = bounds;
-		[self layoutViews];
-		self.view.superview.bounds = old_bounds;
+		if(_contentFrame.size.width != width){
+			//NSLog(@"%2d %.1f", num, width);
+			bounds.size.width = width;
+			bounds.size.height = height;
+			self.view.superview.bounds = bounds;
+			[self layoutViews];
+			self.view.superview.bounds = old_bounds;
+		}
 	}else{
 		[self layoutViews];
 	}
