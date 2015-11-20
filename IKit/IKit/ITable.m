@@ -115,6 +115,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	// TODO: nstimer/performselector is not accurate on time
 	fps = MAX(1, (int)(duration / 0.01));
 	for(int i=1; i<=fps; i++){
 		NSNumber *num = [NSNumber numberWithInt:i];
@@ -140,6 +141,7 @@
 			self.view.superview.bounds = old_bounds;
 		}
 	}else{
+		fps = 0;
 		[self layoutViews];
 	}
 }
