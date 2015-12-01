@@ -19,6 +19,7 @@
 
 + (ICssRule *)fromSelector:(NSString *)sel css:(NSString *)css baseUrl:(NSString *)baseUrl;
 
+- (BOOL)containsPseudoClass;
 - (BOOL)matchView:(IView *)view;
 
 @end

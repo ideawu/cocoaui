@@ -14,6 +14,7 @@
 #import "ICell.h"
 #import "IViewLoader.h"
 #import "IStyleSheet.h"
+#import "ICssRule.h"
 
 @interface IView (){
 	id _data;
@@ -26,6 +27,7 @@
 	
 	IMaskUIView *maskView;
 	UIView *contentView;
+	BOOL _needRenderOnUnhighlight;
 }
 @property (nonatomic) BOOL need_layout;
 @property (nonatomic) UIView *backgroundView;
@@ -389,12 +391,28 @@
 }
 
 - (BOOL)fireEvent:(IEventType)event{
+	_event = event;
 	void (^handler)(IEventType, IView *);
 	if(event == IEventHighlight){
 		handler = _highlightHandler;
+
+		_needRenderOnUnhighlight = NO;
+		IStyleSheet *sheet = self.inheritedStyleSheet;
+		if(sheet){
+			for(ICssRule *rule in sheet.rules){
+				if([rule containsPseudoClass] && [rule matchView:self]){
+					_needRenderOnUnhighlight = YES;
+					[self.style renderAllCss];
+					break;
+				}
+			}
+		}
 	}
 	if(event == IEventUnhighlight){
 		handler = _unhighlightHandler;
+		if(_needRenderOnUnhighlight){
+			[self.style renderAllCss];
+		}
 	}
 	if(event == IEventClick){
 		handler = _clickHandler;

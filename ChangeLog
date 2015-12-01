@@ -1,5 +1,7 @@
 * 1.2.4
 	* New features:
+		- ITable cells with 100% height will fills the screen(2015-12-01) 
+		- Supports :hover :active(both are the same)(2015-12-01)
 		- Automatically refresh UI when device rotates(2015-11-19)
 		- Support data URI image(2015-11-17)
 		- Add IView.table property(2015-11-17)

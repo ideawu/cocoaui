@@ -1,4 +1,4 @@
-<div style="padding: 5 0; border-bottom: 1 solid #ccc; background: #fff; width: 100%;">
+<div id="container" style="padding: 5 0; border-bottom: 1 solid #ccc; width: 100%;">
 	<style href="ITablePullRefreshItem.css" />
 	<div style="float: center; clear: both;">
 		<button class="btn" id="btn_1">-</button>
