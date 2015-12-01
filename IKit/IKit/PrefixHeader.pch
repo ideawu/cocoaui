@@ -10,7 +10,7 @@
 #ifndef IKit_PrefixHeader_pch
 #define IKit_PrefixHeader_pch
 
-#define VER_NUM  "1.2.4"
+#define VER_NUM  "1.2.5"
 
 #ifdef DEBUG
 #	define VERSION  VER_NUM "(for development only)"
