@@ -113,6 +113,8 @@
 		31D2C7A01B69EBDE009C1C97 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7971B69EBDE009C1C97 /* icon.png */; };
 		31D2C7A11B69EBDE009C1C97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7981B69EBDE009C1C97 /* Images.xcassets */; };
 		31D2C7A31B69EBDE009C1C97 /* ViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C79C1B69EBDE009C1C97 /* ViewerController.m */; };
+		31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E0ED241C0D4A6A00331C0D /* TestController.m */; settings = {ASSET_TAGS = (); }; };
+		31E0ED271C0D4AB300331C0D /* Test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31E0ED261C0D4AB300331C0D /* Test.xml */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -296,6 +298,9 @@
 		31D2C79A1B69EBDE009C1C97 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		31D2C79B1B69EBDE009C1C97 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		31D2C79C1B69EBDE009C1C97 /* ViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewerController.m; sourceTree = "<group>"; };
+		31E0ED231C0D4A6A00331C0D /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
+		31E0ED241C0D4A6A00331C0D /* TestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestController.m; sourceTree = "<group>"; };
+		31E0ED261C0D4AB300331C0D /* Test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +401,9 @@
 				08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */,
 				085492771A8342F700F0563C /* HomeController.h */,
 				085492781A8342F700F0563C /* HomeController.m */,
+				31E0ED231C0D4A6A00331C0D /* TestController.h */,
+				31E0ED241C0D4A6A00331C0D /* TestController.m */,
+				31E0ED261C0D4AB300331C0D /* Test.xml */,
 				0875F0D51A6A80E900870619 /* LoginController.h */,
 				0875F0D61A6A80E900870619 /* LoginController.m */,
 				08914B891A70C7A1004A93EF /* ITableFixedHeaderDemo.h */,
@@ -705,6 +713,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31D2C75E1B689DA4009C1C97 /* ITablePullRefreshItem.xml in Resources */,
+				31E0ED271C0D4AB300331C0D /* Test.xml in Resources */,
 				31B69C521BF4414500EC1908 /* icon@2x.png in Resources */,
 				08A34A581A53F36300C1B7F8 /* LaunchScreen.xib in Resources */,
 				31B69C3F1BCF970700EC1908 /* icon.png in Resources */,
@@ -801,6 +810,7 @@
 				08914B8B1A70C7A1004A93EF /* ITableFixedHeaderDemo.m in Sources */,
 				085492791A8342F700F0563C /* HomeController.m in Sources */,
 				08AEEF901A7C94FD0015D2D6 /* ITablePullRefreshDemo.m in Sources */,
+				31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */,
 				08A34A4A1A53F36300C1B7F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

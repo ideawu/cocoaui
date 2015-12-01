@@ -1,0 +1,5 @@
+<div style="height: 100%; border: 2px solid #000;">
+	<div style="padding: 15; align: center; valign: middle; color: #fff; background: #3cf;">
+		<span style="font-size: 32;">Hello World!</span>
+	</div>
+</div>
