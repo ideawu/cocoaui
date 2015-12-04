@@ -53,19 +53,20 @@
 - (void)parseSelector:(NSString *)sel{
 	_weight = 0;
 	_selectors = [[NSMutableArray alloc] init];
-	
+
+	sel = [sel stringByReplacingOccurrencesOfString:@">" withString:@" > "];
+	sel = [sel stringByReplacingOccurrencesOfString:@":" withString:@" : "];
 	NSArray *ps = [sel componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	for(NSString *p in ps){
 		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if(key.length == 0){
 			continue;
 		}
-		if([key characterAtIndex:0] == '>'){
-			[_selectors addObject:@">"];
-			key = [key substringFromIndex:1];
-			key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-			if(key.length == 0){
-				continue;
+		if(_selectors.count > 0 && [_selectors.lastObject isEqualToString:@":"]){
+			[_selectors removeLastObject];
+			if(_selectors.lastObject){
+				key = [NSString stringWithFormat:@"%@:%@", _selectors.lastObject, key];
+				[_selectors removeLastObject];
 			}
 		}
 		unichar c = [key characterAtIndex:0];
@@ -73,6 +74,7 @@
 			case '#': // ID
 				_weight += 1 * 1000 * 1000;
 				break;
+			case ':': // Class
 			case '.': // Class
 				_weight += 1 * 1000;
 				key = [key lowercaseString];
@@ -89,6 +91,17 @@
 - (BOOL)selector:(NSString *)selector matchView:(IView *)view{
 	if([selector isEqualToString:@"*"]){
 		return YES;
+	}else if([selector rangeOfString:@":"].length > 0){
+		if(view.event == IEventHighlight){
+			NSArray *ps = [selector componentsSeparatedByString:@":"];
+			if(![self selector:ps[0] matchView:view]){
+				return NO;
+			}
+			if([ps[1] isEqualToString:@"hover"] || [ps[1] isEqualToString:@"active"]){
+				return YES;
+			}
+		}
+		return NO;
 	}else if([selector characterAtIndex:0] == '#'){
 		if(view.vid && [view.vid isEqualToString:[selector substringFromIndex:1]]){
 			return YES;
@@ -99,6 +112,15 @@
 		}
 	}else if(view.style.tagName && [view.style.tagName isEqualToString:selector]){
 		return YES;
+	}
+	return NO;
+}
+
+- (BOOL)containsPseudoClass{
+	for(NSString *selector in _selectors){
+		if([selector rangeOfString:@":"].length > 0){
+			return YES;
+		}
 	}
 	return NO;
 }
@@ -132,7 +154,7 @@
 			}
 			continue;
 		}
-		
+
 		while(1){
 			if([self selector:selector matchView:curr_view]){
 				break;

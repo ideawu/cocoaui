@@ -13,6 +13,7 @@
 #import "ITablePullRefreshDemo.h"
 #import "ITableClickToRefresh.h"
 #import "IPopoverDemo.h"
+#import "TestController.h"
 #import "IStyleSheet.h"
 #import "Http.h"
 
@@ -128,6 +129,7 @@
 	[self add_btn:@"ITableFixedHeaderDemo"];
 	[self add_btn:@"ITablePullRefreshDemo"];
 	[self add_btn:@"ITableClickToRefresh"];
+	[self add_btn:@"Test"];
 	[self add_btn:@"IPopoverDemo"];
 
 	[self addSeparator:@"height: 8;"];
@@ -171,6 +173,9 @@
 	}
 	if([text isEqualToString:@"ITableClickToRefresh"]){
 		controller = [[ITableClickToRefresh alloc] init];
+	}
+	if([text isEqualToString:@"Test"]){
+		controller = [[TestController alloc] init];
 	}
 	if([text isEqualToString:@"IPopoverDemo"]){
 		controller = [[IPopoverDemo alloc] init];

@@ -1,0 +1,28 @@
+<div style="height: 100%; border: 2px solid #3cf;">
+	<style>
+		.a{
+		background: #3cf;
+		}
+		.a:hover{
+		background: #000;
+		}
+		.b > .c{
+		color: #f00;
+		}
+	</style>
+	<div class="a" style="padding: 15; align: center; valign: middle; color: #fff;">
+		<span style="font-size: 32;">Hello World!</span>
+	</div>
+	<div style="background: #eee;">
+		a
+		<div class="b">
+			b
+			<div class="c">
+				c
+			</div>
+			<div>
+				<div class="c">ccc</div>
+			</div>
+		</div>
+	</div>
+</div>

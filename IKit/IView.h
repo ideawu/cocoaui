@@ -14,8 +14,8 @@
 #import "IStyle.h"
 
 typedef enum{
-	IEventHighlight    = 1<<0,
-	IEventUnhighlight  = 1<<1,
+	IEventUnhighlight  = 1<<0,
+	IEventHighlight    = 1<<1,
 	IEventClick        = 1<<2,
 	IEventTap          = IEventClick,
 	IEventChange       = 1<<3,

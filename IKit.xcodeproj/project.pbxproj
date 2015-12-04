@@ -90,6 +90,7 @@
 		312F65401B81DFD300174F85 /* ITableRow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F652F1B81DF8600174F85 /* ITableRow.h */; };
 		312F65431B81E30600174F85 /* ICssRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65421B81E30600174F85 /* ICssRule.m */; };
 		31344D4B1AE0BE990035FEA5 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31344D491AE0BE810035FEA5 /* libxml2.dylib */; };
+		3143BE0D1C1156D200C7ACB1 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3143BE0C1C1156D200C7ACB1 /* libIObj.a */; };
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
@@ -113,9 +114,18 @@
 		31D2C7A01B69EBDE009C1C97 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7971B69EBDE009C1C97 /* icon.png */; };
 		31D2C7A11B69EBDE009C1C97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7981B69EBDE009C1C97 /* Images.xcassets */; };
 		31D2C7A31B69EBDE009C1C97 /* ViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C79C1B69EBDE009C1C97 /* ViewerController.m */; };
+		31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E0ED241C0D4A6A00331C0D /* TestController.m */; settings = {ASSET_TAGS = (); }; };
+		31E0ED271C0D4AB300331C0D /* Test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31E0ED261C0D4AB300331C0D /* Test.xml */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3143BE0F1C11574F00C7ACB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08A34A041A53EC3800C1B7F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08C254561A5E55D60095EC77;
+			remoteInfo = IObj;
+		};
 		319E68471B58F47D00ADCC14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08A34A041A53EC3800C1B7F8 /* Project object */;
@@ -200,9 +210,9 @@
 		0875F0D61A6A80E900870619 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		08914B891A70C7A1004A93EF /* ITableFixedHeaderDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableFixedHeaderDemo.h; sourceTree = "<group>"; };
 		08914B8A1A70C7A1004A93EF /* ITableFixedHeaderDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableFixedHeaderDemo.m; sourceTree = "<group>"; };
-		089C7BFA1B98645A003CEA7F /* libIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIKit.a; path = "../build/Debug-iphonesimulator/libIKit.a"; sourceTree = "<group>"; };
-		089C7BFB1B98645A003CEA7F /* libIObj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIObj.a; path = "../build/Debug-iphonesimulator/libIObj.a"; sourceTree = "<group>"; };
-		089C7C001B986488003CEA7F /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaUIViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		089C7BFA1B98645A003CEA7F /* libIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIKit.a; path = "./build/Debug-iphonesimulator/libIKit.a"; sourceTree = "<group>"; };
+		089C7BFB1B98645A003CEA7F /* libIObj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIObj.a; path = "./build/Debug-iphonesimulator/libIObj.a"; sourceTree = "<group>"; };
+		089C7C001B986488003CEA7F /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = CocoaUIViewer.app; path = "/Users/ideawu/Works/cocoaui/./build/Debug-iphoneos/CocoaUIViewer.app"; sourceTree = "<absolute>"; };
 		089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ITablePullRefreshItem.css; sourceTree = "<group>"; };
 		08A34A0F1A53EC3800C1B7F8 /* IKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKit.h; sourceTree = "<group>"; };
 		08A34A481A53F36300C1B7F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -258,6 +268,8 @@
 		312F65411B81E30600174F85 /* ICssRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICssRule.h; sourceTree = "<group>"; };
 		312F65421B81E30600174F85 /* ICssRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICssRule.m; sourceTree = "<group>"; };
 		31344D491AE0BE810035FEA5 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		3143BE0C1C1156D200C7ACB1 /* libIObj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIObj.a; path = build/Debug/libIObj.a; sourceTree = "<group>"; };
+		3143BE0E1C1156D200C7ACB1 /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestIObj; sourceTree = BUILT_PRODUCTS_DIR; };
 		3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableClickToRefresh.h; sourceTree = "<group>"; };
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
 		31B69C3E1BCF970700EC1908 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -277,9 +289,8 @@
 		31B69CB51BF70C1200EC1908 /* ICssBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICssBlock.h; sourceTree = "<group>"; };
 		31B69CB61BF70C1200EC1908 /* ICssBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICssBlock.m; sourceTree = "<group>"; };
 		31D02F181BA814880046EE7C /* libIKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D02F191BA814880046EE7C /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D02F1A1BA814880046EE7C /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIObj.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D02F1B1BA814880046EE7C /* TestIObj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestIObj; sourceTree = BUILT_PRODUCTS_DIR; };
+		31D02F191BA814880046EE7C /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Test.app; path = "/Users/ideawu/Works/cocoaui/./build/Debug-iphoneos/Test.app"; sourceTree = "<absolute>"; };
+		31D02F1A1BA814880046EE7C /* libIObj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libIObj.a; path = "/Users/ideawu/Works/cocoaui/./build/Debug-iphoneos/libIObj.a"; sourceTree = "<absolute>"; };
 		31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITablePullRefreshItem.xml; sourceTree = "<group>"; };
 		31D2C76A1B69E90B009C1C97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31D2C76B1B69E90B009C1C97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -296,6 +307,9 @@
 		31D2C79A1B69EBDE009C1C97 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		31D2C79B1B69EBDE009C1C97 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		31D2C79C1B69EBDE009C1C97 /* ViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewerController.m; sourceTree = "<group>"; };
+		31E0ED231C0D4A6A00331C0D /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
+		31E0ED241C0D4A6A00331C0D /* TestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestController.m; sourceTree = "<group>"; };
+		31E0ED261C0D4AB300331C0D /* Test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +341,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3143BE0D1C1156D200C7ACB1 /* libIObj.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,13 +366,11 @@
 				08A34A461A53F36300C1B7F8 /* Test */,
 				08C2547F1A5E60EB0095EC77 /* TestIObj */,
 				31D2C7681B69E90B009C1C97 /* CocoaUIViewer */,
-				089C7C001B986488003CEA7F /* CocoaUIViewer.app */,
 				089C7BFA1B98645A003CEA7F /* libIKit.a */,
 				089C7BFB1B98645A003CEA7F /* libIObj.a */,
 				31D02F181BA814880046EE7C /* libIKit.a */,
-				31D02F191BA814880046EE7C /* Test.app */,
-				31D02F1A1BA814880046EE7C /* libIObj.a */,
-				31D02F1B1BA814880046EE7C /* TestIObj */,
+				3143BE0C1C1156D200C7ACB1 /* libIObj.a */,
+				3143BE0E1C1156D200C7ACB1 /* TestIObj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -396,6 +409,9 @@
 				08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */,
 				085492771A8342F700F0563C /* HomeController.h */,
 				085492781A8342F700F0563C /* HomeController.m */,
+				31E0ED231C0D4A6A00331C0D /* TestController.h */,
+				31E0ED241C0D4A6A00331C0D /* TestController.m */,
+				31E0ED261C0D4AB300331C0D /* Test.xml */,
 				0875F0D51A6A80E900870619 /* LoginController.h */,
 				0875F0D61A6A80E900870619 /* LoginController.m */,
 				08914B891A70C7A1004A93EF /* ITableFixedHeaderDemo.h */,
@@ -618,10 +634,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				3143BE101C11574F00C7ACB1 /* PBXTargetDependency */,
 			);
 			name = TestIObj;
 			productName = TestIObj;
-			productReference = 31D02F1B1BA814880046EE7C /* TestIObj */;
+			productReference = 3143BE0E1C1156D200C7ACB1 /* TestIObj */;
 			productType = "com.apple.product-type.tool";
 		};
 		31D2C7661B69E90B009C1C97 /* CocoaUIViewer */ = {
@@ -705,6 +722,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31D2C75E1B689DA4009C1C97 /* ITablePullRefreshItem.xml in Resources */,
+				31E0ED271C0D4AB300331C0D /* Test.xml in Resources */,
 				31B69C521BF4414500EC1908 /* icon@2x.png in Resources */,
 				08A34A581A53F36300C1B7F8 /* LaunchScreen.xib in Resources */,
 				31B69C3F1BCF970700EC1908 /* icon.png in Resources */,
@@ -801,6 +819,7 @@
 				08914B8B1A70C7A1004A93EF /* ITableFixedHeaderDemo.m in Sources */,
 				085492791A8342F700F0563C /* HomeController.m in Sources */,
 				08AEEF901A7C94FD0015D2D6 /* ITablePullRefreshDemo.m in Sources */,
+				31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */,
 				08A34A4A1A53F36300C1B7F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -840,6 +859,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3143BE101C11574F00C7ACB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08C254561A5E55D60095EC77 /* IObj */;
+			targetProxy = 3143BE0F1C11574F00C7ACB1 /* PBXContainerItemProxy */;
+		};
 		319E68481B58F47D00ADCC14 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 08A34A0B1A53EC3800C1B7F8 /* IKit */;
@@ -967,7 +991,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = all;
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -989,7 +1013,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = all;
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1007,19 +1031,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../build/Debug-iphonesimulator/include",
+					"./build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../build/Debug-iphonesimulator",
+					"./build/Debug-iphonesimulator",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ideawu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -1033,19 +1057,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../build/Debug-iphonesimulator/include",
+					"./build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../build/Debug-iphonesimulator",
+					"./build/Debug-iphonesimulator",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ideawu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1053,7 +1077,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -1061,7 +1085,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1080,7 +1104,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -1094,7 +1118,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1102,7 +1126,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -1110,7 +1134,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1121,10 +1145,14 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Debug;
 		};
@@ -1132,10 +1160,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 			};
 			name = Release;
 		};
@@ -1154,18 +1186,18 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../build/Debug-iphonesimulator/include",
+					"./build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = CocoaUIViewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../build/Debug-iphonesimulator",
+					"./build/Debug-iphonesimulator",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ideawu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1182,18 +1214,18 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../build/Debug-iphonesimulator/include",
+					"./build/Debug-iphonesimulator/include",
 				);
 				INFOPLIST_FILE = CocoaUIViewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../build/Debug-iphonesimulator",
+					"./build/Debug-iphonesimulator",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ideawu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../build;
+				SYMROOT = ./build;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

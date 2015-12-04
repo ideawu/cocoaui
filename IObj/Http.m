@@ -7,7 +7,10 @@
  @website: http://www.cocoaui.com/
  */
 
+#include "TargetConditionals.h"
+#ifndef TARGET_OS_MAC
 #import <UIKit/UIKit.h>
+#endif
 #import "Http.h"
 #import "Text.h"
 
@@ -69,6 +72,7 @@ void http_request_raw(NSString *urlStr, id params, int method, void (^callback)(
 	//[request addValue:@"https://www.cocoaui.com/?ios" forHTTPHeaderField:@"Referer"];
 	
 	NSString *ua = @"IObj-iphone";
+#ifndef TARGET_OS_MAC
 	UIDevice *_dev = [UIDevice currentDevice];
 	ua = [ua stringByAppendingString:@"_"];
 	ua = [ua stringByAppendingString:_dev.systemName];
@@ -76,6 +80,7 @@ void http_request_raw(NSString *urlStr, id params, int method, void (^callback)(
 	ua = [ua stringByAppendingString:_dev.systemVersion];
 	ua = [ua stringByAppendingString:@"_"];
 	ua = [ua stringByAppendingString:_dev.model];
+#endif
 	[request addValue:ua forHTTPHeaderField:@"User-Agent"];
 
 	if(method == HTTP_POST){
@@ -98,9 +103,13 @@ void http_request_raw(NSString *urlStr, id params, int method, void (^callback)(
 	
 	resp_cookies = nil;
 	
+#ifndef TARGET_OS_MAC
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+#endif
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error){
+#ifndef TARGET_OS_MAC
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+#endif
 		NSHTTPURLResponse *response = (NSHTTPURLResponse *)urlresp;
 		resp_cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields]
 															  forURL:[NSURL URLWithString:@""]];

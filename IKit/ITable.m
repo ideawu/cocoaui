@@ -20,7 +20,6 @@
 	IPullRefresh *_pullRefresh;
 	ICell *possibleSelectedCell;
 
-	UIScrollView *_scrollView;
 	// contentView 包裹着全部的 cells
 	UIView *_contentView;
 	// headerView 正常情况固定在顶部, 但下拉刷新时会向下滑动
@@ -39,6 +38,7 @@
 	UIView *_headerRefreshWrapper;
 	int fps;
 }
+@property (nonatomic) UIScrollView *scrollView;
 @end
 
 @implementation ITable
@@ -74,23 +74,22 @@
 }
 
 - (void)viewDidLoad{
+	//NSLog(@"%s", __func__);
 	[super viewDidLoad];
 	self.view.backgroundColor = [UIColor whiteColor];
 	[self.view addSubview:_scrollView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-	[super viewWillAppear:animated];
 	//NSLog(@"%s", __func__);
+	[super viewWillAppear:animated];
 	[self layoutViews];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+	//NSLog(@"%s", __func__);
 	[super viewDidAppear:animated];
-	// iOS 9.0+ bug fix, _scrollView.height not correct
-	if([UIDevice currentDevice].systemVersion.floatValue >= 9.0){
-		[self layoutViews];
-	}
+	[self layoutViews];
 
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
@@ -115,6 +114,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	// TODO: nstimer/performselector is not accurate on time
 	fps = MAX(1, (int)(duration / 0.01));
 	for(int i=1; i<=fps; i++){
 		NSNumber *num = [NSNumber numberWithInt:i];
@@ -140,6 +140,7 @@
 			self.view.superview.bounds = old_bounds;
 		}
 	}else{
+		fps = 0;
 		[self layoutViews];
 	}
 }
@@ -402,15 +403,18 @@
 
 - (void)layoutViews{
 	//NSLog(@"%s", __func__);
+
 	_contentFrame.origin.y = 0;
 	if(_headerView){
 		_contentFrame.origin.y += _headerView.style.outerHeight;
 	}
 	if(self.view.superview){
 		_contentFrame.size.width = self.view.superview.bounds.size.width;
-		if(_scrollView.frame.size.width != self.view.superview.frame.size.width){
+
+		if(!CGSizeEqualToSize(_scrollView.frame.size, self.view.frame.size)){
+			//NSLog(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, self.view.frame.size.width, _scrollView.frame.size.height, self.view.frame.size.height);
 			CGRect frame = _scrollView.frame;
-			frame.size.width = self.view.superview.bounds.size.width;
+			frame.size = self.view.frame.size;
 			_scrollView.frame = frame;
 		}
 	}
@@ -424,26 +428,61 @@
 		scrollSize.height += _footerView.style.outerHeight;
 	}
 	_scrollView.contentSize = scrollSize;
-	//NSLog(@"scroll.height: %.1f", scrollSize.height);
-
-	if(_scrollView.frame.size.height != self.view.frame.size.height){
-		CGRect frame = _scrollView.frame;
-		frame.size.height = self.view.frame.size.height;
-		_scrollView.frame = frame;
-	}
 
 	//log_debug(@"%s frame: %.1f, offset: %.1f, size: %.1f, inset: %@", __func__, _scrollView.frame.size.height, _scrollView.contentOffset.y, _contentFrame.size.height, NSStringFromUIEdgeInsets(_scrollView.contentInset));
-	
+
+	[self constructVisibleCells];
+
+	// 必须禁用动画
+	[UIView setAnimationsEnabled:NO];
+	[self layoutVisibleCells];
+	[self layoutHeaderFooterRefreshControl];
+	[self layoutHeaderFooterView];
+	[UIView setAnimationsEnabled:YES];
+}
+
+- (void)layoutVisibleCells{
+	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
+		ICell *cell = [_cells objectAtIndex:i];
+		CGRect old_frame = cell.view.frame;
+		CGRect frame = CGRectMake(cell.x, cell.y, _scrollView.contentSize.width, cell.height);
+		if(cell.contentView && !CGRectEqualToRect(old_frame, frame)){
+			cell.view.frame = frame;
+			[cell.contentView setNeedsLayout];
+		}
+		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
+		//NSLog(@"cell#%d y=%.1f", (int)i, cell.y);
+
+		if(cell.data && cell.contentView && !cell.contentView.data){
+			[cell.contentView setDataInternal:cell.data];
+			cell.contentView.data = cell.data;
+		}
+
+		if(cell.contentView && cell.contentView.style.ratioHeight > 0){
+			CGRect frame = cell.view.frame;
+			//UIEdgeInsets insets = cell.table.scrollView.contentInset;
+			//frame.size.height = cell.table.scrollView.frame.size.height - insets.top - insets.bottom;
+			frame.size.height = cell.table.view.frame.size.height;
+			if(cell.view.frame.size.height != frame.size.height){
+				cell.view.frame = frame;
+				[cell.contentView setNeedsLayout];
+				//NSLog(@"%.1f=>%.1f", cell.height, frame.size.height);
+			}
+		}
+	}
+}
+
+- (void)constructVisibleCells{
 	CGFloat visibleHeight = _scrollView.frame.size.height - _scrollView.contentInset.top;
 	CGFloat minVisibleY = _scrollView.contentOffset.y + _scrollView.contentInset.top - _contentView.frame.origin.y;
 	CGFloat maxVisibleY = minVisibleY + visibleHeight;
-	NSUInteger minVisibleIndex = NSUIntegerMax;
-	NSUInteger maxVisibleIndex = 0;
-	
+	NSUInteger minIndex = NSUIntegerMax;
+	NSUInteger maxIndex = 0;
+
 	//NSLog(@"visible: %.1f, min: %.1f, max: %.1f", visibleHeight, minVisibleY, maxVisibleY);
 	//_scrollView.layer.borderWidth = 2;
 	//_scrollView.layer.borderColor = [UIColor yellowColor].CGColor;
-	
+
 	// 可优化, 不需要从0开始, 如二分查找
 	for(NSUInteger i=0; i<_cells.count; i++){
 		ICell *cell = [_cells objectAtIndex:i];
@@ -456,41 +495,14 @@
 		if(max_y < minVisibleY){
 			// not visible
 		}else{
-			minVisibleIndex = MIN(minVisibleIndex, i);
-			maxVisibleIndex = MAX(maxVisibleIndex, i);
+			minIndex = MIN(minIndex, i);
+			maxIndex = MAX(maxIndex, i);
 		}
 	}
-	
-	[self layoutVisibleCellsMinIndex:minVisibleIndex maxIndex:maxVisibleIndex];
-	
-	// 必须禁用动画
-	[UIView setAnimationsEnabled:NO];
-	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
-		ICell *cell = [_cells objectAtIndex:i];
-		CGRect old_frame = cell.view.frame;
-		CGRect frame = CGRectMake(cell.x, cell.y, _scrollView.contentSize.width, cell.height);
-		if(cell.contentView && !CGRectEqualToRect(old_frame, frame)){
-			cell.view.frame = frame;
-			[cell.contentView setNeedsLayout];
-		}
-		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
-		//NSLog(@"cell#%d y=%.1f", (int)i, cell.y);
-		
-		if(cell.data && cell.contentView && !cell.contentView.data){
-			[cell.contentView setDataInternal:cell.data];
-			cell.contentView.data = cell.data;
-		}
-	}
-	[UIView setAnimationsEnabled:YES];
-	
-	[self layoutHeaderFooterRefreshControl];
-	[self layoutHeaderFooterView];
-}
-
-- (void)layoutVisibleCellsMinIndex:(NSUInteger)minIndex maxIndex:(NSUInteger)maxIndex{
 	if(_visibleCellIndexMin == minIndex && _visibleCellIndexMax == maxIndex){
 		return;
 	}
+
 	//log_debug(@"visible.index: [%d, %d]=>[%d, %d]", (int)_visibleCellIndexMin, (int)_visibleCellIndexMax, (int)minIndex, (int)maxIndex);
 	NSUInteger low = MIN(minIndex, _visibleCellIndexMin);
 	NSUInteger high = MAX(maxIndex, _visibleCellIndexMax);
