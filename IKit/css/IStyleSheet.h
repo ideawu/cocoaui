@@ -27,8 +27,7 @@
 
 @property (nonatomic, readonly) NSMutableArray *rules;
 
+- (void)mergeWithStyleSheet:(IStyleSheet *)sheet;
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl;
-// path 必须是绝对路径
-- (void)parseCssFile:(NSString *)path;
 
 @end

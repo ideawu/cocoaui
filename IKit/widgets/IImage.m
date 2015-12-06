@@ -42,7 +42,7 @@
 - (void)setSrc:(NSString *)src{
 	_src = src;
 	//log_debug(@"%@ load image element: %@", self.name, src);
-	[[IResourceMananger sharedMananger] getImage:src callback:^(UIImage *img) {
+	[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *img) {
 		[self setImage:img];
 	}];
 }

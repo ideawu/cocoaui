@@ -9,6 +9,7 @@
 #import "ViewerController.h"
 #import "IObj/Http.h"
 #import "Config.h"
+#import "IResourceMananger.h"
 
 @interface ViewerController(){
 	BOOL loading;
@@ -74,6 +75,8 @@
 	[me reload];
 	return;
 	 */
+	
+	[IResourceMananger sharedMananger].enableCssCache = NO;
 	
 	loading = YES;
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];

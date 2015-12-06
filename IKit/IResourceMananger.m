@@ -7,13 +7,15 @@
  @website: http://www.cocoaui.com/
  */
 
+#import <CommonCrypto/CommonDigest.h>
 #import "IResourceMananger.h"
 #import "IKitUtil.h"
-#import <CommonCrypto/CommonDigest.h>
+#import "IStyleSheet.h"
 
 @interface IResourceMananger (){
 }
 @property NSCache *cache;
+@property (nonatomic) NSTimeInterval cacheTime;
 @end
 
 static IResourceMananger *_sharedMananger;
@@ -35,6 +37,8 @@ static IResourceMananger *_sharedMananger;
 	self = [super init];
 	_cache = [[NSCache alloc] init];
 	_cacheTime = 86400 * 30;
+	_enableCssCache = YES;
+	_enableImageCache = YES;
 	return self;
 }
 
@@ -132,13 +136,15 @@ static IResourceMananger *_sharedMananger;
 	[data writeToFile:data_file atomically:YES];
 }
 
-- (UIImage *)getImage:(NSString *)path callback:(void (^)(UIImage *))callback{
+- (UIImage *)loadImage:(NSString *)path callback:(void (^)(UIImage *))callback{
 	UIImage *img = nil;
 
 	if([IKitUtil isHttpUrl:path]){
-		img = [self cache_get:path];
+		if(_enableImageCache){
+			img = [self cache_get:path];
+		}
 		if(img){
-			log_debug(@"load image from cache: %@", path);
+			log_debug(@"load img from cache: %@", path);
 			if(callback){
 				callback(img);
 			}
@@ -154,10 +160,12 @@ static IResourceMananger *_sharedMananger;
 										   queue:[NSOperationQueue currentQueue]
 							   completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error)
 		{
-			log_debug(@"load image from remote: %@", path);
+			log_debug(@"load img from remote: %@", path);
 			UIImage *img = [UIImage imageWithData:data];
 			if(img){
-				[self cache_set:path val:img];
+				if(_enableImageCache){
+					[self cache_set:path val:img];
+				}
 				if(callback){
 					dispatch_async(dispatch_get_main_queue(), ^{
 						callback(img);
@@ -172,6 +180,7 @@ static IResourceMananger *_sharedMananger;
 				img = [UIImage imageWithData:data];
 			}
 		}else{
+			// Cocoa 框架已经有 cache 了
 			img = [UIImage imageNamed:path];
 		}
 		if(img){
@@ -182,6 +191,50 @@ static IResourceMananger *_sharedMananger;
 		}
 	}
 	return img;
+}
+
+- (IStyleSheet *)loadCss:(NSString *)path{
+	IStyleSheet *sheet = nil;
+	NSArray *arr = [IKitUtil parsePath:path];
+	NSString *baseUrl = [arr objectAtIndex:1];
+
+	if(_enableCssCache){
+		sheet = [_cache objectForKey:path];
+		if(sheet){
+			log_debug(@"load css from cache: %@", path);
+			return sheet;
+		}
+	}
+
+	NSString *text = nil;
+	NSError *err;
+	if([IKitUtil isHttpUrl:path]){
+		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+		[request setHTTPMethod:@"GET"];
+		[request setURL:[NSURL URLWithString:path]];
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
+		if(data){
+			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			if(text){
+				log_debug(@"load css from remote: %@", path);
+				sheet = [[IStyleSheet alloc] init];
+				[sheet parseCss:text baseUrl:baseUrl];
+			}
+		}
+	}else{
+		text = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+		if(!err){
+			log_debug(@"load css from local: %@", path);
+			sheet = [[IStyleSheet alloc] init];
+			[sheet parseCss:text baseUrl:baseUrl];
+		}
+	}
+
+	if(_enableCssCache && sheet){
+		[_cache setObject:sheet forKey:path];
+	}
+
+	return sheet;
 }
 
 @end

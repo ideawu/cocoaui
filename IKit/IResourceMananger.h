@@ -10,15 +10,18 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class IStyleSheet;
+
 @interface IResourceMananger : NSObject
 
-@property (nonatomic) NSTimeInterval cacheTime;
+@property (nonatomic) BOOL enableCssCache;
+@property (nonatomic) BOOL enableImageCache;
 
 + (IResourceMananger *)sharedMananger;
 + (void)setSharedManager:(IResourceMananger *)mananger;
 
-//- (void)getXml:(NSString *)name url:(NSString *)url callback:(void (^)(NSString *))callback;
-
-- (UIImage *)getImage:(NSString *)path callback:(void (^)(UIImage *))callback;
+- (UIImage *)loadImage:(NSString *)path callback:(void (^)(UIImage *))callback;
+// TODO: 如果要支持异步加载 css, 需要对 IStyle 进行改造
+- (IStyleSheet *)loadCss:(NSString *)path;
 
 @end

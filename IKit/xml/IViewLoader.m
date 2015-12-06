@@ -171,10 +171,9 @@ typedef enum{
 			src = [IKitUtil buildPath:_basePath src:src];
 		}else{
 			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-			//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 		}
-		log_debug(@"load css file: %@", src);
-		[_styleSheet parseCssFile:src];
+		IStyleSheet *sheet = [[IResourceMananger sharedMananger] loadCss:src];
+		[_styleSheet mergeWithStyleSheet:sheet];
 	}
 	return ret;
 }
@@ -198,7 +197,7 @@ typedef enum{
 			if([IKitUtil isHttpUrl:_basePath]){
 				src = [IKitUtil buildPath:_basePath src:src];
 			}
-			[[IResourceMananger sharedMananger] getImage:src callback:^(UIImage *_img) {
+			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *_img) {
 				img.image = _img;
 			}];
 		}
