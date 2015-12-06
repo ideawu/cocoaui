@@ -8,10 +8,11 @@
 
 #import "IResourceMananger.h"
 #import "IKitUtil.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @interface IResourceMananger (){
 }
-//@property NSMutableDictionary *cache;
+@property NSCache *cache;
 @end
 
 static IResourceMananger *_sharedMananger;
@@ -31,19 +32,102 @@ static IResourceMananger *_sharedMananger;
 
 - (id)init{
 	self = [super init];
-	//_cache = [[NSMutableDictionary alloc] init];
+	_cache = [[NSCache alloc] init];
 	return self;
 }
 
+- (NSString *)cacheFilePrefix{
+	static NSString *ret = nil;
+	if(!ret){
+		ret = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/cocoaui."];
+	}
+	return ret;
+}
+
++ (NSString *)md5:(NSString*)input{
+	const char* str = [input UTF8String];
+	unsigned char result[CC_MD5_DIGEST_LENGTH];
+	CC_MD5(str, (CC_LONG)strlen(str), result);
+	NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH];
+	for(int i = 0; i<CC_MD5_DIGEST_LENGTH; i++) {
+		[ret appendFormat:@"%02x",result[i]];
+	}
+	return ret;
+}
+
+// TODO: 定期清理缓存
 - (id)cache_get:(NSString *)key{
-	// TODO:
-	//return [_cache objectForKey:key];
-	return nil;
+	id ret;
+	NSArray *arr = [_cache objectForKey:key];
+	if(arr){
+		NSDate *expired_date = arr[0];
+		if(expired_date.timeIntervalSince1970 < [NSDate date].timeIntervalSince1970){
+			[_cache removeObjectForKey:key];
+			return nil;
+		}
+		ret = arr[1];
+		return ret;
+	}
+
+	NSString *md5 = [IResourceMananger md5:key];
+	NSString *data_file = [self.cacheFilePrefix stringByAppendingFormat:@"%@.data", md5];
+	NSString *meta_file = [self.cacheFilePrefix stringByAppendingFormat:@"%@.meta", md5];
+
+	NSString *meta = [NSString stringWithContentsOfFile:meta_file encoding:NSUTF8StringEncoding error:nil];
+	if(!meta){
+		return nil;
+	}
+	NSArray *ps = [meta componentsSeparatedByString:@"\n"];
+	if(ps.count < 3){
+		return nil;
+	}
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+	NSDate *expired = [dateFormatter dateFromString:ps[2]];
+	if(!expired || expired.timeIntervalSince1970 < [NSDate date].timeIntervalSince1970){
+		return nil;
+	}
+
+	NSData *data = [NSData dataWithContentsOfFile:data_file];
+	if(!data){
+		return nil;
+	}
+	if([ps[0] isEqualToString:@"image"]){
+		ret = [UIImage imageWithData:data];
+	}
+
+	if(ret){
+		[_cache setObject:@[expired, ret] forKey:key];
+	}
+	return ret;
 }
 
 - (void)cache_set:(NSString *)key val:(id)obj{
-	// TODO:
-	//[_cache setObject:obj forKey:key];
+	NSDate *expired_date = [NSDate dateWithTimeIntervalSinceNow:86400*30];
+
+	[_cache setObject:@[expired_date, obj] forKey:key];
+
+	// persistent
+	NSMutableString *meta = [[NSMutableString alloc] init];
+	NSData *data;
+	if([obj isKindOfClass:[UIImage class]]){
+		[meta appendString:@"image\n"];
+		data = UIImagePNGRepresentation((UIImage *)obj);
+	}else{
+		return;
+	}
+
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+	NSString *created = [dateFormatter stringFromDate:[NSDate date]];
+	NSString *expired = [dateFormatter stringFromDate:expired_date];
+	[meta appendFormat:@"%@\n%@\n", created, expired];
+
+	NSString *md5 = [IResourceMananger md5:key];
+	NSString *data_file = [self.cacheFilePrefix stringByAppendingFormat:@"%@.data", md5];
+	NSString *meta_file = [self.cacheFilePrefix stringByAppendingFormat:@"%@.meta", md5];
+	[meta writeToFile:meta_file atomically:YES encoding:NSUTF8StringEncoding error:nil];
+	[data writeToFile:data_file atomically:YES];
 }
 
 - (UIImage *)getImage:(NSString *)path callback:(void (^)(UIImage *))callback{
