@@ -2,8 +2,8 @@
 *.swp
 *.xcuserstate
 build
-IKit/IKit.xcodeproj/project.xcworkspace/xcshareddata/IKit.xccheckout
-IKit/IKit.xcodeproj/project.xcworkspace/xcuserdata/
-IKit/IKit.xcodeproj/xcuserdata/
+IKit.xcodeproj/project.xcworkspace/xcshareddata/IKit.xccheckout
+IKit.xcodeproj/project.xcworkspace/xcuserdata/
+IKit.xcodeproj/xcuserdata/
 UserInterfaceState.xcuserstate
 
