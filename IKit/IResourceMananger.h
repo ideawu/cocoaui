@@ -11,6 +11,8 @@
 
 @interface IResourceMananger : NSObject
 
+@property (nonatomic) NSTimeInterval cacheTime;
+
 + (IResourceMananger *)sharedMananger;
 + (void)setSharedManager:(IResourceMananger *)mananger;
 

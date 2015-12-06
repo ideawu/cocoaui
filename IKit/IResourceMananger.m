@@ -33,6 +33,7 @@ static IResourceMananger *_sharedMananger;
 - (id)init{
 	self = [super init];
 	_cache = [[NSCache alloc] init];
+	_cacheTime = 86400 * 30;
 	return self;
 }
 
@@ -103,7 +104,7 @@ static IResourceMananger *_sharedMananger;
 }
 
 - (void)cache_set:(NSString *)key val:(id)obj{
-	NSDate *expired_date = [NSDate dateWithTimeIntervalSinceNow:86400*30];
+	NSDate *expired_date = [NSDate dateWithTimeIntervalSinceNow:_cacheTime];
 
 	[_cache setObject:@[expired_date, obj] forKey:key];
 
