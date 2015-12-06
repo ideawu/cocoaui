@@ -22,6 +22,7 @@
 #import "IImage.h"
 #import "INSXmlViewLoader.h"
 #import "IDTHTMLViewLoader.h"
+#import "IResourceMananger.h"
 
 typedef enum{
 	ParseInit,
@@ -49,7 +50,17 @@ typedef enum{
 @implementation IViewLoader
 	
 + (IView *)viewFromXml:(NSString *)xml{
+	return [IViewLoader viewFromXml:xml basePath:nil];
+}
+
++ (IView *)viewFromXml:(NSString *)xml basePath:(NSString *)basePath{
 	IViewLoader *viewLoader = [[IViewLoader alloc] init];
+	if(basePath){
+		NSArray *arr = [IKitUtil parsePath:basePath];
+		NSString *rootPath = [arr objectAtIndex:0];
+		viewLoader.rootPath = rootPath;
+		viewLoader.basePath = basePath;
+	}
 	IView *view = [viewLoader loadXml:xml];
 	return view;
 }
@@ -187,7 +198,9 @@ typedef enum{
 			if([IKitUtil isHttpUrl:_basePath]){
 				src = [IKitUtil buildPath:_basePath src:src];
 			}
-			img.src = src;
+			[[IResourceMananger sharedMananger] getImage:src callback:^(UIImage *_img) {
+				img.image = _img;
+			}];
 		}
 	}
 	

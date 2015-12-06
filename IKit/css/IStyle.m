@@ -10,6 +10,7 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IKitUtil.h"
+#import "IResourceMananger.h"
 #import "IStyleSheet.h"
 #import "IViewInternal.h"
 #import "IViewLoader.h"
@@ -605,8 +606,11 @@
 			if([IKitUtil isHttpUrl:baseUrl]){
 				src = [IKitUtil buildPath:baseUrl src:src];
 			}
-			log_debug(@"%@ load background image: %@", _view.name, src);
-			_backgroundImage = [IKitUtil loadImageFromPath:src];
+			//log_debug(@"%@ load background image: %@", _view.name, src);
+			[[IResourceMananger sharedMananger] getImage:src callback:^(UIImage *img) {
+				_backgroundImage = img;
+				[_view setNeedsDisplay];
+			}];
 		}
 	}
 }

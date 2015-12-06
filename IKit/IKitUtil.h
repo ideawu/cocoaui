@@ -24,8 +24,6 @@
 // combine basePath + src, src may be URL or absolute file path
 + (NSString *)buildPath:(NSString *)basePath src:(NSString *)src;
 
-+ (UIImage *)loadImageFromPath:(NSString *)path;
-
 + (BOOL)isDataURI:(NSString *)src;
 + (UIImage *)loadImageFromDataURI:(NSString *)src;
 

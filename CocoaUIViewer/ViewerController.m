@@ -76,26 +76,16 @@
 	 */
 	
 	loading = YES;
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[IView loadUrl:url callback:^(IView *view) {
 		[me clear];
 		[me addIViewRow:view];
 		[me reload];
 		
 		loading = NO;
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	}];
-	/*
-	http_get_raw(url, nil, ^(NSData *data) {
-		NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		//NSLog(@"%@", str);
-		
-		IView *view = [IView viewFromXml:str];
-		[me clear];
-		[me addIViewRow:view];
-		[me reload];
-		
-		loading = NO;
-	});
-	 */
+
 }
 
 @end

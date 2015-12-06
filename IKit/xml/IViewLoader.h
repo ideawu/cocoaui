@@ -17,6 +17,7 @@
 @property (nonatomic, readonly) IStyleSheet *styleSheet;
 
 + (IView *)viewFromXml:(NSString *)xml;
++ (IView *)viewFromXml:(NSString *)xml basePath:(NSString *)basePath;
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
 
 - (IView *)getViewById:(NSString *)id_;
