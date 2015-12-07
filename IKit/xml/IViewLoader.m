@@ -106,7 +106,8 @@ typedef enum{
 	parse_stack = [[NSMutableArray alloc] init];
 	_viewsById = [[NSMutableDictionary alloc] init];
 	_text = [[NSMutableString alloc] init];
-	
+
+	/*
 	if([IKitUtil isHTML:str]){
 		log_trace(@"parse using DTHTML");
 		IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
@@ -116,6 +117,9 @@ typedef enum{
 		INSXmlViewLoader *loader = [[INSXmlViewLoader alloc] init];
 		[loader parseXml:str viewLoader:self];
 	}
+	*/
+	IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
+	[loader parseXml:str viewLoader:self];
 	log_trace(@"views: %d", (int)_rootViews.count);
 	
 	IView *retView;
