@@ -184,7 +184,7 @@ static IResourceMananger *_sharedMananger;
 			img = [UIImage imageNamed:path];
 		}
 		if(img){
-			log_debug(@"load image from local: %@", path);
+			log_debug(@"load img from local: %@", path);
 			if(callback){
 				callback(img);
 			}

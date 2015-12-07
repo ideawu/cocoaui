@@ -120,7 +120,7 @@ typedef enum{
 	*/
 	IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
 	[loader parseXml:str viewLoader:self];
-	log_trace(@"views: %d", (int)_rootViews.count);
+	//log_trace(@"views: %d", (int)_rootViews.count);
 	
 	IView *retView;
 	if(_rootViews.count == 1){
