@@ -13,7 +13,9 @@
 #import "IStyleInternal.h"
 #import "ICssRule.h"
 
-@interface IStyleSheet()
+@interface IStyleSheet(){
+	NSMutableArray *_rules;
+}
 @end
 
 @implementation IStyleSheet
