@@ -14,6 +14,7 @@
 		<span style="font-size: 32;">Hello World!</span>
 	</div>
 	<div style="background: #eee;">
+		<img src="icon.png" />
 		a
 		<div class="b">
 			b

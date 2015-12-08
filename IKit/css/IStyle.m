@@ -603,9 +603,7 @@
 		if([IKitUtil isDataURI:src]){
 			_backgroundImage = [IKitUtil loadImageFromDataURI:src];
 		}else{
-			if([IKitUtil isHttpUrl:baseUrl]){
-				src = [IKitUtil buildPath:baseUrl src:src];
-			}
+			src = [IKitUtil buildPath:baseUrl src:src];
 			//log_debug(@"%@ load background image: %@", _view.name, src);
 			IEventType event = _view.event;
 			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *img) {

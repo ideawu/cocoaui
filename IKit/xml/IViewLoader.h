@@ -18,6 +18,8 @@
 
 + (IView *)viewFromXml:(NSString *)xml;
 + (IView *)viewFromXml:(NSString *)xml basePath:(NSString *)basePath;
++ (IView *)viewWithContentsOfFile:(NSString *)path;
+
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback;
 
 - (IView *)getViewById:(NSString *)id_;

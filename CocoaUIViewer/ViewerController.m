@@ -10,6 +10,7 @@
 #import "IObj/Http.h"
 #import "Config.h"
 #import "IResourceMananger.h"
+#import "IViewLoader.h"
 
 @interface ViewerController(){
 	BOOL loading;
@@ -67,24 +68,16 @@
 	}
 
 	__weak typeof(self) me = self;
-
-	/*
-	IView *view = [IView namedView:@"datasource"];
-	[me clear];
-	[me addIViewRow:view];
-	[me reload];
-	return;
-	 */
 	
 	[IResourceMananger sharedMananger].enableCssCache = NO;
 	
 	loading = YES;
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[IView loadUrl:url callback:^(IView *view) {
+	[IViewLoader loadUrl:url callback:^(IView *view) {
 		[me clear];
 		[me addIViewRow:view];
 		[me reload];
-		
+
 		loading = NO;
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	}];
