@@ -14,7 +14,7 @@
 @interface ICssBlock : NSObject
 
 @property (nonatomic) NSString *baseUrl;
-@property (nonatomic, readonly) NSMutableArray *decls;
+@property (nonatomic, readonly) NSArray *decls;
 
 - (void)addDecl:(ICssDecl *)decl;
 - (void)addKey:(NSString *)key value:(NSString *)val;

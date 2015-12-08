@@ -10,7 +10,7 @@
 #import "IImage.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
-#import "IKitUtil.h"
+#import "IResourceMananger.h"
 
 @interface IImage (){
 	NSString *_src;
@@ -41,9 +41,10 @@
 
 - (void)setSrc:(NSString *)src{
 	_src = src;
-	log_debug(@"%@ load image element: %@", self.name, src);
-	UIImage *img = [IKitUtil loadImageFromPath:src];
-	[self setImage:img];
+	//log_debug(@"%@ load image element: %@", self.name, src);
+	[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *img) {
+		[self setImage:img];
+	}];
 }
 
 - (UIImage *)image{

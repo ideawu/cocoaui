@@ -25,10 +25,9 @@
 
 @interface IStyleSheet : NSObject
 
-@property (nonatomic, readonly) NSMutableArray *rules;
+@property (nonatomic, readonly) NSArray *rules;
 
+- (void)mergeWithStyleSheet:(IStyleSheet *)sheet;
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl;
-// path 必须是绝对路径
-- (void)parseCssFile:(NSString *)path;
 
 @end

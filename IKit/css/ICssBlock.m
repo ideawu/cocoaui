@@ -10,6 +10,11 @@
 #import "ICssBlock.h"
 #import "ICssDecl.h"
 
+@interface ICssBlock(){
+	NSMutableArray *_decls;
+}
+@end
+
 @implementation ICssBlock
 
 - (id)init{

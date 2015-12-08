@@ -22,6 +22,7 @@
 #import "IImage.h"
 #import "INSXmlViewLoader.h"
 #import "IDTHTMLViewLoader.h"
+#import "IResourceMananger.h"
 
 typedef enum{
 	ParseInit,
@@ -49,7 +50,17 @@ typedef enum{
 @implementation IViewLoader
 	
 + (IView *)viewFromXml:(NSString *)xml{
+	return [IViewLoader viewFromXml:xml basePath:nil];
+}
+
++ (IView *)viewFromXml:(NSString *)xml basePath:(NSString *)basePath{
 	IViewLoader *viewLoader = [[IViewLoader alloc] init];
+	if(basePath){
+		NSArray *arr = [IKitUtil parsePath:basePath];
+		NSString *rootPath = [arr objectAtIndex:0];
+		viewLoader.rootPath = rootPath;
+		viewLoader.basePath = basePath;
+	}
 	IView *view = [viewLoader loadXml:xml];
 	return view;
 }
@@ -95,7 +106,8 @@ typedef enum{
 	parse_stack = [[NSMutableArray alloc] init];
 	_viewsById = [[NSMutableDictionary alloc] init];
 	_text = [[NSMutableString alloc] init];
-	
+
+	/*
 	if([IKitUtil isHTML:str]){
 		log_trace(@"parse using DTHTML");
 		IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
@@ -105,7 +117,10 @@ typedef enum{
 		INSXmlViewLoader *loader = [[INSXmlViewLoader alloc] init];
 		[loader parseXml:str viewLoader:self];
 	}
-	log_trace(@"views: %d", (int)_rootViews.count);
+	*/
+	IDTHTMLViewLoader *loader = [[IDTHTMLViewLoader alloc] init];
+	[loader parseXml:str viewLoader:self];
+	//log_trace(@"views: %d", (int)_rootViews.count);
 	
 	IView *retView;
 	if(_rootViews.count == 1){
@@ -160,10 +175,9 @@ typedef enum{
 			src = [IKitUtil buildPath:_basePath src:src];
 		}else{
 			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-			//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
 		}
-		log_debug(@"load css file: %@", src);
-		[_styleSheet parseCssFile:src];
+		IStyleSheet *sheet = [[IResourceMananger sharedMananger] loadCss:src];
+		[_styleSheet mergeWithStyleSheet:sheet];
 	}
 	return ret;
 }
@@ -187,7 +201,9 @@ typedef enum{
 			if([IKitUtil isHttpUrl:_basePath]){
 				src = [IKitUtil buildPath:_basePath src:src];
 			}
-			img.src = src;
+			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *_img) {
+				img.image = _img;
+			}];
 		}
 	}
 	

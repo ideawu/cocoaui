@@ -134,29 +134,6 @@ static CGFloat colorVal(NSString *hex){
 	return src;
 }
 
-+ (UIImage *)loadImageFromPath:(NSString *)path{
-	UIImage *img;
-	if([IKitUtil isHttpUrl:path]){
-		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-		[request setHTTPMethod:@"GET"];
-		[request setURL:[NSURL URLWithString:path]];
-		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-		if(data){
-			img = [UIImage imageWithData:data];
-		}
-	}else{
-		if([path characterAtIndex:0] == '/'){
-			NSData *data = [NSData dataWithContentsOfFile:path];
-			if(data){
-				img = [UIImage imageWithData:data];
-			}
-		}else{
-			img = [UIImage imageNamed:path];
-		}
-	}
-	return img;
-}
-
 + (BOOL)isDataURI:(NSString *)src{
 	NSRange range = [src rangeOfString:@"data:"];
 	if(range.location == 0 && range.length > 0){

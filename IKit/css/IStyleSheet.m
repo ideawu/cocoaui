@@ -13,7 +13,9 @@
 #import "IStyleInternal.h"
 #import "ICssRule.h"
 
-@interface IStyleSheet()
+@interface IStyleSheet(){
+	NSMutableArray *_rules;
+}
 @end
 
 @implementation IStyleSheet
@@ -24,48 +26,11 @@
 	return self;
 }
 
-- (void)parseCssFile:(NSString *)src{
-	if(!src){
-		return;
+- (void)mergeWithStyleSheet:(IStyleSheet *)sheet{
+	for(ICssRule *rule in sheet.rules){
+		[_rules addObject:rule];
 	}
-	NSArray *arr = [IKitUtil parsePath:src];
-	NSString *baseUrl = [arr objectAtIndex:1];
-	
-	if([IKitUtil isHttpUrl:src]){
-		NSString *text = nil;
-		NSError *err;
-		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-		[request setHTTPMethod:@"GET"];
-		[request setURL:[NSURL URLWithString:src]];
-		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
-		if(data){
-			text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			[self parseCss:text baseUrl:baseUrl];
-		}
-	}else{
-		static NSMutableDictionary *cache = nil;
-		if(cache == nil){
-			cache = [[NSMutableDictionary alloc] init];
-		}
-		
-		IStyleSheet *sheet = [cache objectForKey:src];
-		if(sheet){
-			log_debug(@"load css file from cache: %@", src);
-		}else{
-			//log_debug(@"load css file: %@", src);
-			sheet = [[IStyleSheet alloc] init];
-			NSString *text = nil;
-			NSError *err;
-			text = [NSString stringWithContentsOfFile:src encoding:NSUTF8StringEncoding error:&err];
-			if(!err){
-				[sheet parseCss:text baseUrl:baseUrl];
-				[cache setObject:sheet forKey:src];
-			}
-		}
-		for(ICssRule *rule in sheet.rules){
-			[_rules addObject:rule];
-		}
-	}
+	[self sortRules];
 }
 
 - (NSString *)stripComment:(NSString *)css{
@@ -125,7 +90,11 @@
 		//NSLog(@"%@ = %@", key,val);
 		[self setCss:val forSelector:selector baseUrl:baseUrl];
 	}
-	
+	[self sortRules];
+	//[self debugRules];
+}
+
+- (void)sortRules{
 	// 按优先级排序样式规则列表
 	[_rules sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 		ICssRule *a = (ICssRule *)obj1;
@@ -138,7 +107,6 @@
 			return 0;
 		}
 	}];
-	//[self debugRules];
 }
 
 - (void)debugRules{
