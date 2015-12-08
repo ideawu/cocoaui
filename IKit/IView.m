@@ -50,8 +50,25 @@
 	return ret;
 }
 
-+ (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
-	[IViewLoader loadUrl:url callback:callback];
++ (IView *)namedView:(NSString *)name{
+	NSString *path;
+	NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
+	if(range.location != NSNotFound){
+		NSString *ext = [[name substringFromIndex:range.location + 1] lowercaseString];
+		name = [name substringToIndex:range.location];
+		path = [[NSBundle mainBundle] pathForResource:name ofType:ext];
+	}else{
+		path = [[NSBundle mainBundle] pathForResource:name ofType:@"xml"];
+	}
+	return [IViewLoader viewWithContentsOfFile:path];
+}
+
++ (IView *)viewFromXml:(NSString *)xml{
+	return [IViewLoader viewFromXml:xml];
+}
+
++ (IView *)viewWithContentsOfFile:(NSString *)path{
+	return [IViewLoader viewWithContentsOfFile:path];
 }
 
 - (id)initWithFrame:(CGRect)frame{
@@ -95,28 +112,6 @@
 	self.seq = id_incr++;
 	
 	_need_layout = true;
-}
-
-+ (IView *)namedView:(NSString *)name{
-	NSError *err;
-	NSString *path;
-	NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
-	if(range.location != NSNotFound){
-		NSString *ext = [[name substringFromIndex:range.location + 1] lowercaseString];
-		name = [name substringToIndex:range.location];
-		path = [[NSBundle mainBundle] pathForResource:name ofType:ext];
-	}else{
-		path = [[NSBundle mainBundle] pathForResource:name ofType:@"xml"];
-	}
-	NSString *xml = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
-	if(err != nil){
-		return [[IView alloc] init];
-	}
-	return [IView viewFromXml:xml];
-}
-
-+ (IView *)viewFromXml:(NSString *)xml{
-	return [IViewLoader viewFromXml:xml];
 }
 
 - (IView *)getViewById:(NSString *)vid{

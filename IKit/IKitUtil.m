@@ -82,6 +82,16 @@ static CGFloat colorVal(NSString *hex){
 	return NO;
 }
 
++ (NSString *)getBasePath:(NSString *)url{
+	NSArray *arr = [IKitUtil parsePath:url];
+	return arr[1];
+}
+
++ (NSString *)getRootPath:(NSString *)url{
+	NSArray *arr = [IKitUtil parsePath:url];
+	return arr[0];
+}
+
 + (NSArray *)parsePath:(NSString *)url{
 	NSString *basePath, *rootPath;
 	NSRange r1 = [url rangeOfString:@"http://"];
@@ -91,10 +101,10 @@ static CGFloat colorVal(NSString *hex){
 	NSRange r2 = [url rangeOfString:@"/" options:NSBackwardsSearch];
 	if(r1.location != 0){ // File path
 		if(r2.location == NSNotFound){
-			rootPath = [NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
+			rootPath = [NSBundle mainBundle].resourcePath;
 			basePath = rootPath;
 		}else{
-			rootPath = [url substringToIndex:r2.location + 1];
+			rootPath = [url substringToIndex:r2.location];
 			basePath = rootPath;
 		}
 	}else{ // HTTP URL
@@ -117,19 +127,21 @@ static CGFloat colorVal(NSString *hex){
 }
 
 + (NSString *)buildPath:(NSString *)basePath src:(NSString *)src{
+	if([IKitUtil isHttpUrl:src]){
+		return src;
+	}
 	if([IKitUtil isHttpUrl:basePath]){
-		if([IKitUtil isHttpUrl:src]){
-			return src;
-		}
 		if([src characterAtIndex:0] == '/'){
-			NSArray *arr = [IKitUtil parsePath:basePath];
-			NSString *rootPath = [arr objectAtIndex:0];
+			NSString *rootPath = [IKitUtil getRootPath:basePath];
 			src = [rootPath stringByAppendingString:[src substringFromIndex:1]];
 		}else{
+			if([basePath characterAtIndex:basePath.length-1] != '/'){
+				[basePath stringByAppendingString:@"/"];
+			}
 			src = [basePath stringByAppendingString:src];
 		}
 	}else{
-		src = [basePath stringByAppendingString:src];
+		src = [basePath stringByAppendingPathComponent:src];
 	}
 	return src;
 }

@@ -21,6 +21,7 @@
 + (void)setSharedManager:(IResourceMananger *)mananger;
 
 - (UIImage *)loadImage:(NSString *)path callback:(void (^)(UIImage *))callback;
+// css path 必须是完整路径
 // TODO: 如果要支持异步加载 css, 需要对 IStyle 进行改造
 - (IStyleSheet *)loadCss:(NSString *)path;
 

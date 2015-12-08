@@ -42,34 +42,31 @@ typedef enum{
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
 @property (nonatomic) NSMutableArray *rootViews;
-@property (nonatomic) NSString *rootPath; // 以'/'结尾, 对于文件, 就是根目录; 对于URL, 就是根URL.
-@property (nonatomic) NSString *basePath; // 以'/'结尾
+@property (nonatomic) NSString *basePath;
 @end
 
 
 @implementation IViewLoader
 	
 + (IView *)viewFromXml:(NSString *)xml{
-	return [IViewLoader viewFromXml:xml basePath:nil];
+	return [IViewLoader viewFromXml:xml basePath:[NSBundle mainBundle].resourcePath];
 }
 
 + (IView *)viewFromXml:(NSString *)xml basePath:(NSString *)basePath{
 	IViewLoader *viewLoader = [[IViewLoader alloc] init];
-	if(basePath){
-		NSArray *arr = [IKitUtil parsePath:basePath];
-		NSString *rootPath = [arr objectAtIndex:0];
-		viewLoader.rootPath = rootPath;
-		viewLoader.basePath = basePath;
-	}
+	viewLoader.basePath = basePath;
 	IView *view = [viewLoader loadXml:xml];
 	return view;
 }
 
++ (IView *)viewWithContentsOfFile:(NSString *)path{
+	NSString *xml = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+	return [IViewLoader viewFromXml:xml basePath:[IKitUtil getBasePath:path]];
+}
+
 + (void)loadUrl:(NSString *)url callback:(void (^)(IView *view))callback{
-	NSArray *arr = [IKitUtil parsePath:url];
-	NSString *rootPath = [arr objectAtIndex:0];
-	NSString *basePath = [arr objectAtIndex:1];
-	log_debug(@"URL root: %@ base: %@", rootPath, basePath);
+	NSString *basePath = [IKitUtil getBasePath:url];
+	log_debug(@"URL basePath: %@", basePath);
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setHTTPMethod:@"GET"];
@@ -77,18 +74,14 @@ typedef enum{
 	[request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error){
 		NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		IViewLoader *viewLoader = [[IViewLoader alloc] init];
-		viewLoader.rootPath = rootPath;
-		viewLoader.basePath = basePath;
-		IView *view = [viewLoader loadXml:xml];
+		IView *view = [IViewLoader viewFromXml:xml basePath:basePath];
 		callback(view);
 	}];
 }
 
 - (id)init{
 	self = [super init];
-	_rootPath = nil;//[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]];
-	_basePath = _rootPath;
+	_basePath = nil;
 	return self;
 }
 
@@ -171,11 +164,7 @@ typedef enum{
 		}
 	}
 	if(src){
-		if([IKitUtil isHttpUrl:_basePath]){
-			src = [IKitUtil buildPath:_basePath src:src];
-		}else{
-			src = [[NSBundle mainBundle] pathForResource:src ofType:@""];
-		}
+		src = [IKitUtil buildPath:_basePath src:src];
 		IStyleSheet *sheet = [[IResourceMananger sharedMananger] loadCss:src];
 		[_styleSheet mergeWithStyleSheet:sheet];
 	}
@@ -198,9 +187,7 @@ typedef enum{
 			log_debug(@"load image element from data URI");
 			img.image = [IKitUtil loadImageFromDataURI:src];
 		}else{
-			if([IKitUtil isHttpUrl:_basePath]){
-				src = [IKitUtil buildPath:_basePath src:src];
-			}
+			src = [IKitUtil buildPath:_basePath src:src];
 			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *_img) {
 				img.image = _img;
 			}];

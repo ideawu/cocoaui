@@ -174,17 +174,17 @@ static IResourceMananger *_sharedMananger;
 			}
 		}];
 	}else{
-		if([path characterAtIndex:0] == '/'){
-			NSData *data = [NSData dataWithContentsOfFile:path];
-			if(data){
-				img = [UIImage imageWithData:data];
-			}
+		if([path characterAtIndex:0] != '/'){
+			img = [UIImage imageNamed:path]; // imageNamed 内部有 cache
+		}else if([path rangeOfString:[NSBundle mainBundle].resourcePath].length > 0){
+			path = [path substringFromIndex:[NSBundle mainBundle].resourcePath.length + 1];
+			img = [UIImage imageNamed:path]; // imageNamed 内部有 cache
 		}else{
-			// Cocoa 框架已经有 cache 了
-			img = [UIImage imageNamed:path];
+			NSData *data = [NSData dataWithContentsOfFile:path];
+			img = [UIImage imageWithData:data];
 		}
+		log_debug(@"load img from local: %@", path);
 		if(img){
-			log_debug(@"load img from local: %@", path);
 			if(callback){
 				callback(img);
 			}
@@ -195,8 +195,7 @@ static IResourceMananger *_sharedMananger;
 
 - (IStyleSheet *)loadCss:(NSString *)path{
 	IStyleSheet *sheet = nil;
-	NSArray *arr = [IKitUtil parsePath:path];
-	NSString *baseUrl = [arr objectAtIndex:1];
+	NSString *baseUrl = [IKitUtil getBasePath:path];
 
 	if(_enableCssCache){
 		sheet = [_cache objectForKey:path];
@@ -223,8 +222,8 @@ static IResourceMananger *_sharedMananger;
 		}
 	}else{
 		text = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+		log_debug(@"load css from local: %@", path);
 		if(!err){
-			log_debug(@"load css from local: %@", path);
 			sheet = [[IStyleSheet alloc] init];
 			[sheet parseCss:text baseUrl:baseUrl];
 		}

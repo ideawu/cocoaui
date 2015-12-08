@@ -20,7 +20,8 @@
 + (BOOL)isHTML:(NSString *)str;
 + (BOOL)isHttpUrl:(NSString *)src;
 
-+ (NSArray *)parsePath:(NSString *)path;
++ (NSString *)getRootPath:(NSString *)url;
++ (NSString *)getBasePath:(NSString *)url;
 // combine basePath + src, src may be URL or absolute file path
 + (NSString *)buildPath:(NSString *)basePath src:(NSString *)src;
 
