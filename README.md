@@ -35,7 +35,7 @@ __Demos:__
 
 CocoaUI makes things ass-kicking easy! -
 
-	[superview.style set:@"padding: 10"];
+	[superview.style set:@"padding: 10;"];
 
 Without CocoaUI, here's the equivalent code you'd have to write using Apple's Foundation API directly:
 

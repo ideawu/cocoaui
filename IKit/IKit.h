@@ -12,17 +12,17 @@
 
 #import <UIKit/UIKit.h>
 
-#import "IKit/IKitUtil.h"
-#import "IKit/IStyle.h"
-#import "IKit/IView.h"
-#import "IKit/ITable.h"
-#import "IKit/ITableRow.h"
-#import "IKit/ILabel.h"
-#import "IKit/IInput.h"
-#import "IKit/IButton.h"
-#import "IKit/ISwitch.h"
-#import "IKit/IImage.h"
-#import "IKit/IPullRefresh.h"
-#import "IKit/IRefreshControl.h"
+#import "IKitUtil.h"
+#import "IStyle.h"
+#import "IView.h"
+#import "ITable.h"
+#import "ITableRow.h"
+#import "ILabel.h"
+#import "IInput.h"
+#import "IButton.h"
+#import "ISwitch.h"
+#import "IImage.h"
+#import "IPullRefresh.h"
+#import "IRefreshControl.h"
 
 #endif

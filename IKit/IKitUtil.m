@@ -156,6 +156,10 @@ static CGFloat colorVal(NSString *hex){
 }
 
 + (UIImage *)loadImageFromDataURI:(NSString *)src{
+	NSURL* dataURL = [NSURL URLWithString:src];
+	NSData *data = [NSData dataWithContentsOfURL:dataURL];
+	return [UIImage imageWithData:data];
+	/*
 	NSRange range = [src rangeOfString:@";base64,"];
 	if(range.length > 0){
 		NSString *str = [src substringFromIndex:range.location + range.length];
@@ -164,6 +168,7 @@ static CGFloat colorVal(NSString *hex){
 		return [UIImage imageWithData:data];
 	}
 	return nil;
+	*/
 }
 
 @end
