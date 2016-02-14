@@ -27,7 +27,7 @@ __Demos:__
  1. Build the schema IKit-universal, set the schema Build Configuration to Release(default is Debug)
  1. Add the header files folder and static library to you own project(see [Quick Start](http://www.cocoaui.com/en/docs/quickstart)):
    * header files folder: `build/release-universal/include/IKit`
-   * static libarry file: `build/release-universal/include/libIKit.a`
+   * static libarry file: `build/release-universal/libIKit.a`
  
 ## Usage
 
