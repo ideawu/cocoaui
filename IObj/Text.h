@@ -17,6 +17,7 @@ NSString *json_encode(id obj);
 
 NSString *urlencode(NSString *str);
 NSString *urldecode(NSString *str);
+NSString *urlencode_data(NSData *data);
 
 NSString *base64_encode(NSString *str);
 NSString *base64_encode_data(NSData *data);

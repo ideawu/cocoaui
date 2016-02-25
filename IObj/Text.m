@@ -77,6 +77,34 @@ NSString *urldecode(NSString *str){
 	return str;
 }
 
+static int is_safe_char(char c){
+	if(c == '.' || c == '-' || c == '_'){
+		return 1;
+	}else if(c >= '0' && c <= '9'){
+		return 1;
+	}else if(c >= 'A' && c <= 'Z'){
+		return 1;
+	}else if(c >= 'a' && c <= 'z'){
+		return 1;
+	}
+	return 0;
+}
+
+NSString *urlencode_data(NSData *data){
+	NSMutableString *ret = [[NSMutableString alloc] init];
+	char *ptr = (char *)data.bytes;
+	int len = (int)data.length;
+	for(int i=0; i<len; i++){
+		char c = ptr[i];
+		if(is_safe_char(c)){
+			[ret appendFormat:@"%c", c];
+		}else{
+			[ret appendFormat:@"%%%02X", c];
+		}
+	}
+	return ret;
+}
+
 
 NSString *base64_encode(NSString *str){
 	NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];

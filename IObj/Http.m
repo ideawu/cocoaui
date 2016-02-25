@@ -55,10 +55,16 @@ void http_request_raw(NSString *urlStr, id params, int method, void (^callback)(
 	}else if([params isKindOfClass: [NSDictionary class]]){
 		NSUInteger n = [(NSDictionary *)params count];
 		for (NSString *key in params) {
-			NSString *val = [NSString stringWithFormat:@"%@", [params objectForKey:key]];
+			id v = [params objectForKey:key];
 			[query appendString:urlencode(key)];
 			[query appendString:@"="];
-			[query appendString:urlencode(val)];
+			NSString *val;
+			if([v class] == [NSData class]){
+				val = urlencode_data((NSData *)v);
+			}else{
+				val = urlencode([NSString stringWithFormat:@"%@", v]);
+			}
+			[query appendString:val];
 			if(--n > 0){
 				[query appendString:@"&"];
 			}
