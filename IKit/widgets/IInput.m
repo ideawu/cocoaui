@@ -66,6 +66,14 @@ typedef enum{
 	_textField.secureTextEntry = yesno;
 }
 
+- (NSString *)text{
+	return self.value;
+}
+
+- (void)setText:(NSString *)text{
+	self.value = text;
+}
+
 - (NSString *)value{
 	return _textField.text;
 }

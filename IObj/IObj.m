@@ -346,6 +346,12 @@ typedef enum{
 	return self;
 }
 
+- (id)initWithJSONData:(NSData *)data{
+	NSError *err = nil;
+	id jso = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
+	return [self initWithValue:jso];
+}
+
 - (id)initWithJSONString:(NSString *)str{
 	id res = json_decode(str);
 	//NSLog(@"%@", res);
