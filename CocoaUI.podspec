@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.source_files  = "IKit/*.{h,m}", "IKit/*/*.{m,h}", "IObj/*.{h,m}"
   #s.exclude_files = "Classes/Exclude"
 
-  s.public_header_files = "IKit/*.{h}"
+  #s.public_header_files = "IKit/*.{h}"
   s.prefix_header_contents = <<-EOS
   #ifndef IKit_PrefixHeader_pch
   #define IKit_PrefixHeader_pch
