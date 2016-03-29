@@ -19,11 +19,16 @@ typedef enum{
 }IRefreshTriggerMode;
 
 
-@protocol IPullRefreshDelegate;
+@protocol IPullRefreshDelegate <NSObject>
+//@optional
+- (void)onRefresh:(IView *)view state:(IRefreshState)state;
+@end
+
 
 @interface IPullRefresh : NSObject <UIScrollViewDelegate>
 
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id<IPullRefreshDelegate> delegate;
+
 @property (nonatomic) IView *headerView;
 @property (nonatomic) IView *footerView;
 
@@ -50,14 +55,6 @@ typedef enum{
 - (void)endRefresh:(IView *)view;
 - (void)beginHeaderRefresh;
 - (void)beginFooterRefresh;
-
-@end
-
-
-@protocol IPullRefreshDelegate <NSObject>
-
-//@optional
-- (void)onRefresh:(IView *)view state:(IRefreshState)state;
 
 @end
 

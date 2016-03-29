@@ -14,7 +14,7 @@
 #import "IPullRefresh.h"
 #import "IRefreshControl.h"
 
-@interface ITable() <UIScrollViewDelegate>{
+@interface ITable() <UIScrollViewDelegate, IPullRefreshDelegate>{
 	NSUInteger _visibleCellIndexMin;
 	NSUInteger _visibleCellIndexMax;
 	IPullRefresh *_pullRefresh;
@@ -409,13 +409,13 @@
 		_contentFrame.origin.y += _headerView.style.outerHeight;
 	}
 	if(self.view.superview){
-		_contentFrame.size.width = self.view.superview.bounds.size.width;
-
+		//_contentFrame.size.width = self.view.superview.bounds.size.width;
 		if(!CGSizeEqualToSize(_scrollView.frame.size, self.view.frame.size)){
-			//NSLog(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, self.view.frame.size.width, _scrollView.frame.size.height, self.view.frame.size.height);
+			log_debug(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, self.view.frame.size.width, _scrollView.frame.size.height, self.view.frame.size.height);
 			CGRect frame = _scrollView.frame;
 			frame.size = self.view.frame.size;
 			_scrollView.frame = frame;
+			_contentFrame.size.width = self.view.frame.size.width;
 		}
 	}
 	_contentView.frame = _contentFrame;
@@ -724,26 +724,23 @@
 
 - (void)onHighlight:(IView *)view atIndex:(NSUInteger)index{
 	[self onHighlight:view];
+	if(_delegate && [_delegate respondsToSelector:@selector(table:onHighlight:atIndex:)]){
+		[_delegate table:self onHighlight:view atIndex:index];
+	}
 }
 
 - (void)onUnhighlight:(IView *)view atIndex:(NSUInteger)index{
 	[self onUnhighlight:view];
+	if(_delegate && [_delegate respondsToSelector:@selector(table:onUnhighlight:atIndex:)]){
+		[_delegate table:self onUnhighlight:view atIndex:index];
+	}
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
 	[self onClick:view];
-}
-
-- (void)onHighlight:(IView *)view{
-	//log_trace(@"%s", __func__);
-}
-
-- (void)onUnhighlight:(IView *)view{
-	//log_trace(@"%s", __func__);
-}
-
-- (void)onClick:(IView *)view{
-	//log_trace(@"%s", __func__);
+	if(_delegate && [_delegate respondsToSelector:@selector(table:onClick:atIndex:)]){
+		[_delegate table:self onClick:view atIndex:index];
+	}
 }
 
 - (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
@@ -751,6 +748,9 @@
 	//[self layoutHeaderAndFooter];
 	if(state == IRefreshBegin){
 		[self endRefresh:refreshControl];
+	}
+	if(_delegate && [_delegate respondsToSelector:@selector(table:onRefresh:state:)]){
+		[_delegate table:self onRefresh:refreshControl state:state];
 	}
 }
 
@@ -763,6 +763,21 @@
 		} completion:^(BOOL finished){
 		}];
 	}
+}
+
+// @deprecated
+- (void)onHighlight:(IView *)view{
+	//log_trace(@"%s", __func__);
+}
+
+// @deprecated
+- (void)onUnhighlight:(IView *)view{
+	//log_trace(@"%s", __func__);
+}
+
+// @deprecated
+- (void)onClick:(IView *)view{
+	//log_trace(@"%s", __func__);
 }
 
 @end

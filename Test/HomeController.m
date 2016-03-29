@@ -16,6 +16,7 @@
 #import "TestController.h"
 #import "IStyleSheet.h"
 #import "Http.h"
+#import "ITableInUIView.h"
 
 @implementation HomeController
 
@@ -131,6 +132,7 @@
 	[self add_btn:@"ITableClickToRefresh"];
 	[self add_btn:@"Test"];
 	[self add_btn:@"IPopoverDemo"];
+	[self add_btn:@"ITableInUIView"];
 
 	[self addSeparator:@"height: 8;"];
 	[self add_btn:@"Detect memory leak"];
@@ -179,6 +181,9 @@
 	}
 	if([text isEqualToString:@"IPopoverDemo"]){
 		controller = [[IPopoverDemo alloc] init];
+	}
+	if([text isEqualToString:@"ITableInUIView"]){
+		controller = [[ITableInUIView alloc] init];
 	}
 	if([text isEqualToString:@"Detect memory leak"]){
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
