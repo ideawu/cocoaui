@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.title = @"ITablePullRefreshDemo";
+	self.navigationItem.title = @"ITableInUIView";
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
 	_table = [[ITable alloc] init];
