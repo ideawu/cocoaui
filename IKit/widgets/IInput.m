@@ -113,7 +113,7 @@ typedef enum{
 		[self.style setInnerWidth:_textField.frame.size.width];
 	}
 	if(self.style.resizeHeight){
-		//NSLog(@"%f", _textField.frame.size.height);
+		//log_debug(@"%f", _textField.frame.size.height);
 		[self.style setInnerHeight:_textField.frame.size.height];
 	}
 
@@ -160,7 +160,7 @@ typedef enum{
 	UITextPosition *cursor = [textField positionFromPosition:begin offset:(range.location + string.length)];
 
 	NSString *newStr = [textField.text stringByReplacingCharactersInRange:range withString:string];
-	//NSLog(@"old=%@, replace=%@, new=%@ range=%@", self.value, string, newStr, NSStringFromRange(range));
+	//log_debug(@"old=%@, replace=%@, new=%@ range=%@", self.value, string, newStr, NSStringFromRange(range));
 	textField.text = newStr;
 	
 	if(cursor){
@@ -172,7 +172,7 @@ typedef enum{
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	[self fireEvent:IEventReturn];
 	if(!_returnHandler){
 		[textField resignFirstResponder];

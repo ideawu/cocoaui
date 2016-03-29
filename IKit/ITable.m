@@ -74,20 +74,20 @@
 }
 
 - (void)viewDidLoad{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	[super viewDidLoad];
 	self.view.backgroundColor = [UIColor whiteColor];
 	[self.view addSubview:_scrollView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	[super viewWillAppear:animated];
 	[self layoutViews];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	[super viewDidAppear:animated];
 	[self layoutViews];
 
@@ -132,7 +132,7 @@
 		CGFloat width = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.width;
 		//CGFloat height = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.height;
 		if(_contentFrame.size.width != width){
-			//NSLog(@"%2d %.1f", num, width);
+			//log_debug(@"%2d %.1f", num, width);
 			bounds.size.width = width;
 			//bounds.size.height = height;
 			self.view.superview.bounds = bounds;
@@ -402,7 +402,7 @@
 }
 
 - (void)layoutViews{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 
 	_contentFrame.origin.y = 0;
 	if(_headerView){
@@ -450,8 +450,8 @@
 			cell.view.frame = frame;
 			[cell.contentView setNeedsLayout];
 		}
-		//NSLog(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
-		//NSLog(@"cell#%d y=%.1f", (int)i, cell.y);
+		//log_debug(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
+		//log_debug(@"cell#%d y=%.1f", (int)i, cell.y);
 
 		if(cell.data && cell.contentView && !cell.contentView.data){
 			[cell.contentView setDataInternal:cell.data];
@@ -466,7 +466,7 @@
 			if(cell.view.frame.size.height != frame.size.height){
 				cell.view.frame = frame;
 				[cell.contentView setNeedsLayout];
-				//NSLog(@"%.1f=>%.1f", cell.height, frame.size.height);
+				//log_debug(@"%.1f=>%.1f", cell.height, frame.size.height);
 			}
 		}
 	}
@@ -479,7 +479,7 @@
 	NSUInteger minIndex = NSUIntegerMax;
 	NSUInteger maxIndex = 0;
 
-	//NSLog(@"visible: %.1f, min: %.1f, max: %.1f", visibleHeight, minVisibleY, maxVisibleY);
+	//log_debug(@"visible: %.1f, min: %.1f, max: %.1f", visibleHeight, minVisibleY, maxVisibleY);
 	//_scrollView.layer.borderWidth = 2;
 	//_scrollView.layer.borderColor = [UIColor yellowColor].CGColor;
 
@@ -566,7 +566,7 @@
 }
 
 - (void)layoutHeaderFooterView{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	if(_headerView){
 		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
 		if(y < 0){

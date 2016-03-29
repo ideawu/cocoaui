@@ -133,7 +133,7 @@
 	if(![self selector:[iter nextObject] matchView:curr_view]){
 		return NO;
 	}
-	//NSLog(@"selector: %@, tag: %@", curr_view.style.tagName, curr_view.parent.style.tagName);
+	//log_debug(@"selector: %@, tag: %@", curr_view.style.tagName, curr_view.parent.style.tagName);
 	
 	NSString *selector;
 	while(1){

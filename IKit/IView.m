@@ -99,7 +99,7 @@
 		// TODO: if(md5(copyright) != ""){exit();}
 		log_info(@"%@ version: %s", copyright, VERSION);
 		//NSString* appid = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-		//NSLog(@"%@", appid);
+		//log_debug(@"%@", appid);
 	}
 	self.backgroundColor = [UIColor clearColor];
 	//self.userInteractionEnabled = NO;
@@ -265,7 +265,7 @@
 }
 
 - (void)updateFrame{
-	//NSLog(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
+	//log_debug(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
 	if(self.isPrimativeView){
 		contentView.frame = CGRectMake(0, 0, _style.w, _style.h);
 	}
@@ -278,7 +278,7 @@
 }
 
 - (void)setNeedsLayout{
-	//NSLog(@"%@ %s", self.name, __FUNCTION__);
+	//log_debug(@"%@ %s", self.name, __FUNCTION__);
 	_need_layout = true;
 	
 	if(self.isPrimativeView){
@@ -313,7 +313,7 @@
 	}
 	if(_style.resizeWidth){
 		if(!self.isRootView/* && !self.isPrimativeView*/){
-			//NSLog(@"return %@ %s parent: %@", self.name, __FUNCTION__, self.parent.name);
+			//log_debug(@"return %@ %s parent: %@", self.name, __FUNCTION__, self.parent.name);
 			return;
 		}
 	}

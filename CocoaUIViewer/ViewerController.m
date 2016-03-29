@@ -53,10 +53,10 @@
 
 - (void)load{
 	if(loading){
-		NSLog(@"loading");
+		log_debug(@"loading");
 		return;
 	}
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	
 	Config *conf = [[Config alloc] init];
 	NSString *url = conf.url;
@@ -64,7 +64,7 @@
 	
 	static int num = 0;
 	if(num ++ % 100 == 1){
-		//NSLog(@"%@ %d", url, (int)conf.interval);
+		//log_debug(@"%@ %d", url, (int)conf.interval);
 	}
 
 	__weak typeof(self) me = self;

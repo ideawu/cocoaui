@@ -61,7 +61,7 @@
 		defaultColor = [UIColor colorWithRed:0 green:0.478431 blue:1 alpha:1];
 		defaultHighlightedColor = [UIColor colorWithRed:0 green:0.478431 blue:1 alpha:0.3];
 	}
-	//NSLog(@"%@ %s", self.name, __func__);
+	//log_debug(@"%@ %s", self.name, __func__);
 	
 	UIColor *color = self.style.inheritedColor;
 	if(color){
@@ -89,7 +89,7 @@
 	[_button sizeToFit]; // iOS 7 必须先进行 button 布局
 	_button.titleLabel.text = _text;
 	[_button.titleLabel sizeToFit];
-	//NSLog(@"%s %@", __func__, NSStringFromCGSize(_button.titleLabel.frame.size));
+	//log_debug(@"%s %@", __func__, NSStringFromCGSize(_button.titleLabel.frame.size));
 
 	// 不用 UIButton 的 frame, 而是 titleLabel 的
 	if(self.style.resizeWidth){

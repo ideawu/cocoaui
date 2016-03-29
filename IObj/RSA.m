@@ -162,7 +162,7 @@ static NSData *base64_decode(NSString *str){
 						   );
 	NSString *ret = nil;
 	if (status != 0) {
-		//NSLog(@"SecKeyEncrypt fail. Error Code: %ld", status);
+		//log_debug(@"SecKeyEncrypt fail. Error Code: %ld", status);
 	}else{
 		NSData *data = [NSData dataWithBytes:outbuf length:outlen];
 		ret = base64_encode_data(data);

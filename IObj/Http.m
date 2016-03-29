@@ -131,9 +131,9 @@ void http_request(NSString *urlStr, id params, int method, void (^callback)(IObj
 	http_request_raw(urlStr, params, method, ^(NSData *data) {
 		if(callback){
 			NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			//NSLog(@"resp body: %@", str);
+			//log_debug(@"resp body: %@", str);
 			IObj *obj = [[IObj alloc] initWithJSONString:str];
-			//NSLog(@"%@", obj);
+			//log_debug(@"%@", obj);
 			dispatch_async(dispatch_get_main_queue(), ^{
 				callback(obj);
 			});

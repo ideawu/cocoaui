@@ -102,7 +102,7 @@
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
-	NSLog(@"%s %d", __func__, (int)index);
+	log_debug(@"%s %d", __func__, (int)index);
 	IObj *obj = view.data;
 	obj.strval = @"clicked\nwww\naaa";
 	[self updateDataRow:obj forTag:@"item" atIndex:index];

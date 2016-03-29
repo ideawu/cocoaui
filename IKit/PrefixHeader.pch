@@ -12,22 +12,37 @@
 
 #define VER_NUM  "1.2.5"
 
+#define L_MYLOG(level, fmt, args...) \
+	my_log((level @" %@(%d): " fmt), [@(__FILE__) lastPathComponent],  __LINE__, ##args)
+
 #ifdef DEBUG
 #	define VERSION  VER_NUM "(for development only)"
-#	define log_trace(...) NSLog(__VA_ARGS__)
-#	define log_debug(...) NSLog(__VA_ARGS__)
-#	define log_info(...) NSLog(__VA_ARGS__)
+#	define log_trace(...) L_MYLOG(@"[TRACE]", __VA_ARGS__)
+#	define log_debug(...) L_MYLOG(@"[DEBUG]", __VA_ARGS__)
 #else
 #	define VERSION  VER_NUM "(for production)"
-#if 1
 #	define log_trace(...)
 #	define log_debug(...)
-#else
-#	define log_trace(...) NSLog(__VA_ARGS__)
-#	define log_debug(...) NSLog(__VA_ARGS__)
 #endif
-#	define log_info(...) NSLog(__VA_ARGS__)
-#endif
+
+#define log_info(...)  L_MYLOG(@"[INFO] ", __VA_ARGS__)
+#define log_error(...) L_MYLOG(@"[ERROR]", __VA_ARGS__)
+
+
+#import <Foundation/Foundation.h>
+inline
+static void my_log(NSString *fmt, ...){
+	NSDateFormatter *f = [[NSDateFormatter alloc] init];
+	[f setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+	NSString *time = [f stringFromDate:[NSDate date]];
+	
+	va_list args;
+	va_start(args, fmt);
+	NSString *msg = [[NSString alloc] initWithFormat:fmt arguments:args];
+	va_end(args);
+	
+	printf("%s %s\n", time.UTF8String, msg.UTF8String);
+}
 
 
 #endif

@@ -96,13 +96,13 @@
 	
 	if(_style.resizeWidth){
 		if(_style.w != self.realWidth){
-			//NSLog(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
+			//log_debug(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
 		}
 		_style.w = self.realWidth;
 	}
 	if(_style.resizeHeight){
 		if(_style.h != self.realHeight){
-			//NSLog(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
+			//log_debug(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
 		}
 		_style.h = self.realHeight;
 	}

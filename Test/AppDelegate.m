@@ -37,7 +37,7 @@
 	//TableViewController *table = [[TableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	table = [[ITable alloc] init];
 	table.navigationItem.title = @"Table";
-	//NSLog(@"%@", table.tableView);
+	//log_debug(@"%@", table.tableView);
 	//table.tableView.backgroundColor = [UIColor blackColor];
 	
 	self.window.rootViewController = nav;

@@ -81,7 +81,7 @@
 						if(![k isEqualToString:@"background"]){
 							v = [v lowercaseString];
 						}
-						//NSLog(@"%@: %@;", k, v);
+						//log_debug(@"%@: %@;", k, v);
 						if(k.length > 0 && v.length > 0){
 							[ret addKey:k value:v];
 						}

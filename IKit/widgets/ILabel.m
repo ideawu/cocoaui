@@ -48,7 +48,7 @@
 }
 
 - (void)setText:(NSString *)text{
-	//NSLog(@"%@ %s %@", self.name, __func__, text);
+	//log_debug(@"%@ %s %@", self.name, __func__, text);
 	_label.text = text;
 	[self setNeedsLayout];
 }
@@ -111,11 +111,11 @@
 	}
 	
 	if(self.style.resizeWidth){
-		//NSLog(@"resize width %f", _label.frame.size.width);
+		//log_debug(@"resize width %f", _label.frame.size.width);
 		[self.style setInnerWidth:_label.frame.size.width];
 	}
 	if(self.style.resizeHeight){
-		//NSLog(@"resize height %f", _label.frame.size.height);
+		//log_debug(@"resize height %f", _label.frame.size.height);
 		[self.style setInnerHeight:_label.frame.size.height];
 	}
 

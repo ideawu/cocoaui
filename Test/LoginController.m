@@ -103,7 +103,7 @@
 }
 
 - (void)onSubmit:(UIButton *)btn{
-	NSLog(@"submit");
+	log_debug(@"submit");
 	[_cap_div toggle];
 }
 

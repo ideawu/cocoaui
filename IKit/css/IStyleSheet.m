@@ -87,7 +87,7 @@
 		searchRange.location = erange.location + erange.length;
 		searchRange.length = css.length - searchRange.location;
 
-		//NSLog(@"%@ = %@", key,val);
+		//log_debug(@"%@ = %@", key,val);
 		[self setCss:val forSelector:selector baseUrl:baseUrl];
 	}
 	[self sortRules];
@@ -110,11 +110,11 @@
 }
 
 - (void)debugRules{
-	NSLog(@"<<<<<<<<<<");
+	log_debug(@"<<<<<<<<<<");
 	for(ICssRule *rule in _rules){
-		NSLog(@"%10d: %@", rule.weight, rule);
+		log_debug(@"%10d: %@", rule.weight, rule);
 	}
-	NSLog(@">>>>>>>>>>");
+	log_debug(@">>>>>>>>>>");
 }
 
 - (void)setCss:(NSString *)css forSelector:(NSString *)selector baseUrl:(NSString *)baseUrl{

@@ -30,7 +30,7 @@ NSString *json_encode(id obj){
 	NSError *err = nil;
 	NSString *str = [[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]];
 	if(err){
-		NSLog(@"error for: %@", obj);
+		log_debug(@"error for: %@", obj);
 		return nil;
 	}
 	if(is_primative){
