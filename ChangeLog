@@ -1,3 +1,6 @@
+* 1.2.6
+	* New features:
+		- ITable is able to be wrapped in UIView(2016-03-29) 
 * 1.2.5
 	* New features:
 		- ITable cells with 100% height will fills the screen(2015-12-01) 
