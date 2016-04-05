@@ -242,11 +242,11 @@ typedef enum{
 		return [NSString stringWithFormat:@"%lld", (int64_t)_ival];
 	}
 	if([self is_double]){
-		//NSLog(@"### is_double: %f", _fval);
+		//log_debug(@"### is_double: %f", _fval);
 		return [NSString stringWithFormat:@"%f", _fval];
 	}
 	if([self is_string]){
-		//NSLog(@"is_string: %@", _sval);
+		//log_debug(@"is_string: %@", _sval);
 		return _sval;
 	}
 	if([self is_null]){
@@ -327,13 +327,13 @@ typedef enum{
 	if(!res){
 		_type = IObjTypeNull;
 	}else if([res isKindOfClass:[NSNull class]]){
-		//NSLog(@"null: null");
+		//log_debug(@"null: null");
 		_type = IObjTypeNull;
 	}else if([res isKindOfClass:[NSString class]]){
-		//NSLog(@"NSString: %@", res);
+		//log_debug(@"NSString: %@", res);
 		[self strval:res];
 	}else if([res isKindOfClass:[NSNumber class]]){
-		//NSLog(@"NSNumber: %@", res);
+		//log_debug(@"NSNumber: %@", res);
 		if (strcmp([res objCType], @encode(float)) == 0 || strcmp([res objCType], @encode(double)) == 0){
 			[self doubleval:[res doubleValue]];
 		}else{
@@ -341,14 +341,20 @@ typedef enum{
 		}
 	}else{
 		_type = IObjTypeNull;
-		NSLog(@"unsupported type %@", [res class]);
+		log_debug(@"unsupported type %@", [res class]);
 	}
 	return self;
 }
 
+- (id)initWithJSONData:(NSData *)data{
+	NSError *err = nil;
+	id jso = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
+	return [self initWithValue:jso];
+}
+
 - (id)initWithJSONString:(NSString *)str{
 	id res = json_decode(str);
-	//NSLog(@"%@", res);
+	//log_debug(@"%@", res);
 	return [self initWithValue:res];
 }
 
@@ -357,7 +363,7 @@ typedef enum{
 	_type = IObjTypeObject;
 	for (NSString *key in dict) {
 		id val = dict[key];
-		//NSLog(@"%@ => ", key);
+		//log_debug(@"%@ => ", key);
 		IObj *obj = [[IObj alloc] initWithValue:val];
 		[self setAttribute:key value:obj];
 	}

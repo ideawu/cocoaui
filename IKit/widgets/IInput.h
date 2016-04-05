@@ -16,6 +16,7 @@
 
 @property (nonatomic, readonly) UITextField *textField;
 @property (nonatomic) NSString *value;
+@property (nonatomic) NSString *text; // alias of value
 @property (nonatomic) NSString *placeholder;
 
 - (BOOL)isPasswordInput;

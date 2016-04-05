@@ -40,7 +40,7 @@
 	CGRect frame1 = _contentView.frame;
 	CGRect frame0 = frame1;
 	frame0.origin.y -= frame0.size.height;
-	//NSLog(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
+	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
 
 	_contentView.frame = frame0;
 	_wrapperView.layer.opacity = 0;
@@ -48,7 +48,7 @@
 		_contentView.frame = frame1;
 		_wrapperView.layer.opacity = 1;
 	} completion:^(BOOL finished) {
-		//NSLog(@"%s", __func__);
+		//log_debug(@"%s", __func__);
 	}];
 }
 

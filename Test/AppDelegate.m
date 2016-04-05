@@ -29,12 +29,15 @@
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	//UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:table];
 	UINavigationController *nav = [[UINavigationController alloc] init];
-	//[nav setNavigationBarHidden:YES];
+	nav.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
+	nav.navigationBar.translucent = NO;
+	nav.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
 	//TableViewController *table = [[TableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	table = [[ITable alloc] init];
 	table.navigationItem.title = @"Table";
-	//NSLog(@"%@", table.tableView);
+	//log_debug(@"%@", table.tableView);
 	//table.tableView.backgroundColor = [UIColor blackColor];
 	
 	self.window.rootViewController = nav;

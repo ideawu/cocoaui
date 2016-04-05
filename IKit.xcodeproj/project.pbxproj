@@ -91,7 +91,9 @@
 		312F65431B81E30600174F85 /* ICssRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65421B81E30600174F85 /* ICssRule.m */; };
 		31344D4B1AE0BE990035FEA5 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31344D491AE0BE810035FEA5 /* libxml2.dylib */; };
 		3143BE0D1C1156D200C7ACB1 /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3143BE0C1C1156D200C7ACB1 /* libIObj.a */; };
-		3143BE191C14089800C7ACB1 /* IResourceMananger.m in Sources */ = {isa = PBXBuildFile; fileRef = 3143BE181C14089800C7ACB1 /* IResourceMananger.m */; settings = {ASSET_TAGS = (); }; };
+		3143BE191C14089800C7ACB1 /* IResourceMananger.m in Sources */ = {isa = PBXBuildFile; fileRef = 3143BE181C14089800C7ACB1 /* IResourceMananger.m */; };
+		3144022D1CAA309F00A50D1D /* ITableInUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3144022C1CAA309F00A50D1D /* ITableInUIView.m */; };
+		314402301CAA314300A50D1D /* ITablePullRefreshItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3144022F1CAA314300A50D1D /* ITablePullRefreshItem.m */; };
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
@@ -115,8 +117,8 @@
 		31D2C7A01B69EBDE009C1C97 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7971B69EBDE009C1C97 /* icon.png */; };
 		31D2C7A11B69EBDE009C1C97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C7981B69EBDE009C1C97 /* Images.xcassets */; };
 		31D2C7A31B69EBDE009C1C97 /* ViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C79C1B69EBDE009C1C97 /* ViewerController.m */; };
-		31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E0ED241C0D4A6A00331C0D /* TestController.m */; settings = {ASSET_TAGS = (); }; };
-		31E0ED271C0D4AB300331C0D /* Test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31E0ED261C0D4AB300331C0D /* Test.xml */; settings = {ASSET_TAGS = (); }; };
+		31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E0ED241C0D4A6A00331C0D /* TestController.m */; };
+		31E0ED271C0D4AB300331C0D /* Test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31E0ED261C0D4AB300331C0D /* Test.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,6 +277,10 @@
 		3143BE161C1158C000C7ACB1 /* CocoaUIViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaUIViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3143BE171C14089800C7ACB1 /* IResourceMananger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceMananger.h; sourceTree = "<group>"; };
 		3143BE181C14089800C7ACB1 /* IResourceMananger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IResourceMananger.m; sourceTree = "<group>"; };
+		3144022B1CAA309F00A50D1D /* ITableInUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableInUIView.h; sourceTree = "<group>"; };
+		3144022C1CAA309F00A50D1D /* ITableInUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableInUIView.m; sourceTree = "<group>"; };
+		3144022E1CAA314300A50D1D /* ITablePullRefreshItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITablePullRefreshItem.h; sourceTree = "<group>"; };
+		3144022F1CAA314300A50D1D /* ITablePullRefreshItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITablePullRefreshItem.m; sourceTree = "<group>"; };
 		3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableClickToRefresh.h; sourceTree = "<group>"; };
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
 		31B69C3E1BCF970700EC1908 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -426,13 +432,16 @@
 				08914B8A1A70C7A1004A93EF /* ITableFixedHeaderDemo.m */,
 				08AEEF8E1A7C94FC0015D2D6 /* ITablePullRefreshDemo.h */,
 				08AEEF8F1A7C94FD0015D2D6 /* ITablePullRefreshDemo.m */,
+				3144022E1CAA314300A50D1D /* ITablePullRefreshItem.h */,
+				3144022F1CAA314300A50D1D /* ITablePullRefreshItem.m */,
 				31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */,
 				089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */,
 				3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */,
 				3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */,
 				08A49C671A76706400748605 /* IPopoverDemo.h */,
 				08A49C681A76706400748605 /* IPopoverDemo.m */,
-				08A34A561A53F36300C1B7F8 /* LaunchScreen.xib */,
+				3144022B1CAA309F00A50D1D /* ITableInUIView.h */,
+				3144022C1CAA309F00A50D1D /* ITableInUIView.m */,
 				08A34A471A53F36300C1B7F8 /* Supporting Files */,
 			);
 			path = Test;
@@ -441,6 +450,7 @@
 		08A34A471A53F36300C1B7F8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				08A34A561A53F36300C1B7F8 /* LaunchScreen.xib */,
 				08A34A481A53F36300C1B7F8 /* Info.plist */,
 				08A34A491A53F36300C1B7F8 /* main.m */,
 				31344D491AE0BE810035FEA5 /* libxml2.dylib */,
@@ -826,7 +836,9 @@
 				3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */,
 				08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */,
 				08914B8B1A70C7A1004A93EF /* ITableFixedHeaderDemo.m in Sources */,
+				314402301CAA314300A50D1D /* ITablePullRefreshItem.m in Sources */,
 				085492791A8342F700F0563C /* HomeController.m in Sources */,
+				3144022D1CAA309F00A50D1D /* ITableInUIView.m in Sources */,
 				08AEEF901A7C94FD0015D2D6 /* ITablePullRefreshDemo.m in Sources */,
 				31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */,
 				08A34A4A1A53F36300C1B7F8 /* main.m in Sources */,
@@ -1033,6 +1045,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1063,6 +1076,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1103,6 +1117,7 @@
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1121,6 +1136,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -1150,6 +1166,7 @@
 		08C254831A5E60EB0095EC77 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1169,6 +1186,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug",
@@ -1188,6 +1206,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1220,6 +1239,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

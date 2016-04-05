@@ -50,7 +50,7 @@
 			
 			__weak typeof(self) me = self;
 			[btn bindEvent:IEventClick|IEventHighlight|IEventUnhighlight handler:^(IEventType event, IView *view) {
-				NSLog(@"%d", event);
+				log_debug(@"%d", event);
 				if(event == IEventHighlight){
 					[view.style set:@"background: #333"];
 				}
@@ -88,7 +88,7 @@
 
 - (void)onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
 	NSString *n = view == self.headerRefreshControl? @"header" : @"footer";
-	NSLog(@"%@ %d", n, (int)state);
+	log_debug(@"%@ %d", n, (int)state);
 	if(state == IRefreshBegin){
 		// refresh
 		[self performSelector:@selector(afterReloadData:) withObject:view afterDelay:1.0];

@@ -164,7 +164,7 @@ static CGFloat colorVal(NSString *hex){
 	if(range.length > 0){
 		NSString *str = [src substringFromIndex:range.location + range.length];
 		NSData *data = [[NSData alloc] initWithBase64EncodedString:str options:NSDataBase64DecodingIgnoreUnknownCharacters];
-		//NSLog(@"%@", str);
+		//log_debug(@"%@", str);
 		return [UIImage imageWithData:data];
 	}
 	return nil;

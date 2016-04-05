@@ -24,6 +24,7 @@
 + (IObj *)arrayObj;
 
 - (id)initWithValue:(id)val;
+- (id)initWithJSONData:(NSData *)data;
 - (id)initWithJSONString:(NSString *)str;
 - (id)initWithDictionary:(NSDictionary *)dict;
 - (id)initWithArray:(NSArray *)array;

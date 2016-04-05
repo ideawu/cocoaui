@@ -36,7 +36,7 @@
 }
 
 - (void)drawRect:(CGRect)rect{
-	//NSLog(@"%s %@", __func__, NSStringFromCGRect(self.frame));
+	//log_debug(@"%s %@", __func__, NSStringFromCGRect(self.frame));
 	IView *view = (IView *)self.superview;
 	IStyle *_style = view.style;
 	CGFloat radius = _style.borderRadius;
@@ -48,13 +48,13 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
 	// top
-	//NSLog(@"currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
+	//log_debug(@"currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
 	CGContextAddArc(context, radius, radius, radius-_style.borderTop.width/2, M_PI*5/4, M_PI*6/4, 0);
-	//NSLog(@"arc currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
+	//log_debug(@"arc currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
 	CGContextAddLineToPoint(context, x2 - radius, y1+_style.borderTop.width/2);
-	//NSLog(@"line currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
+	//log_debug(@"line currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
 	CGContextAddArc(context, x2 - radius, y1 + radius, radius-_style.borderTop.width/2, M_PI*6/4, M_PI*7/4, 0);
-	//NSLog(@"arc currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
+	//log_debug(@"arc currentPoint: %@", NSStringFromCGPoint(CGContextGetPathCurrentPoint(context)));
 	[self strokeBorder:_style.borderTop context:context];
 	
 	// right

@@ -35,8 +35,8 @@
 }
 
 - (void)showPopover{
-	NSLog(@"%s", __func__);
-	NSLog(@"%@", NSStringFromCGRect(self.navigationController.navigationBar.frame));
+	log_debug(@"%s", __func__);
+	log_debug(@"%@", NSStringFromCGRect(self.navigationController.navigationBar.frame));
 	
 	IView *view = [[IView alloc] init];
 	//[view.style set:@"margin-top: 64;"];

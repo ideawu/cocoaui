@@ -75,7 +75,7 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-	//NSLog(@"%@ %s", self.name, __func__);
+	//log_debug(@"%@ %s", self.name, __func__);
 	[super drawRect:rect];
 }
 
@@ -85,11 +85,11 @@
 	if(_imageView){
 		[_imageView sizeToFit];
 		if(self.style.resizeWidth){
-			//NSLog(@"width: %f", _imageView.frame.size.width);
+			//log_debug(@"width: %f", _imageView.frame.size.width);
 			[self.style setInnerWidth:_imageView.frame.size.width];
 		}
 		if(self.style.resizeHeight){
-			//NSLog(@"height: %f", _imageView.frame.size.height);
+			//log_debug(@"height: %f", _imageView.frame.size.height);
 			[self.style setInnerHeight:_imageView.frame.size.height];
 		}
 		if(!self.style.resizeWidth && self.style.resizeHeight){

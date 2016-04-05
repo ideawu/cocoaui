@@ -283,7 +283,7 @@
 }
 
 - (void)addClass:(NSString *)clz{
-	//NSLog(@"%s %@", __func__, clz);
+	//log_debug(@"%s %@", __func__, clz);
 	clz = [clz lowercaseString];
 	[_classes addObject:clz];
 	if(_view.inheritedStyleSheet){
@@ -342,7 +342,7 @@
 }
 
 - (void)renderAllCss{
-	//NSLog(@"%@ %@ %s", _view.name, _tagName, __func__);
+	//log_debug(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
 	
 	// 对于手工创建的控件, 加上对 stylesheet 的引用
@@ -355,11 +355,11 @@
 			IStyleSheet *sheet = _view.inheritedStyleSheet;
 			if(sheet){
 				for(ICssRule *rule in sheet.rules){
-					//NSLog(@"RULE: %@", rule);
+					//log_debug(@"RULE: %@", rule);
 					if([rule matchView:_view]){
-						//NSLog(@" %@#%@ match?: %d", _tagName, self.view.vid, [rule matchView:_view]);
+						//log_debug(@" %@#%@ match?: %d", _tagName, self.view.vid, [rule matchView:_view]);
 						for(ICssDecl *decl in rule.declBlock.decls){
-							//NSLog(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
+							//log_debug(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
 							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
 						}
 					}
@@ -382,7 +382,7 @@
 - (void)applyDecl:(ICssDecl *)decl baseUrl:(NSString *)baseUrl{
 	NSString *k = decl.key;
 	NSString *v = decl.val;
-	//NSLog(@"    %@: %@;", k, v);
+	//log_debug(@"    %@: %@;", k, v);
 	
 	if([k isEqualToString:@"display"]){
 		needsLayout = YES;
@@ -568,7 +568,7 @@
 		needsLayout = YES;
 		_top = [v floatValue];
 	}else if([k isEqualToString:@"www"]){
-		NSLog(@"www for c*ui");
+		log_debug(@"www for c*ui");
 	}
 }
 

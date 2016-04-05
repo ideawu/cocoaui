@@ -76,7 +76,7 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-	//NSLog(@"%s", __func__);
+	//log_debug(@"%s", __func__);
 	allowRefresh = YES;
 }
 
@@ -86,7 +86,7 @@
 	if(_headerView){
 		if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self headerVisibleRate];
-			//NSLog(@"header = %f", rate);
+			//log_debug(@"header = %f", rate);
 			if(rate > _headerVisibleRateToRefresh){
 				if(headerRefreshState == IRefreshNone){
 					[self setView:_headerView state:IRefreshMaybe];
@@ -108,7 +108,7 @@
 	if(_footerView){
 		if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self footerVisibleRate];
-			//NSLog(@"footer = %f", rate);
+			//log_debug(@"footer = %f", rate);
 			if(rate > _footerVisibleRateToRefresh){
 				if(footerRefreshState == IRefreshNone){
 					[self setView:_footerView state:IRefreshMaybe];
@@ -203,9 +203,9 @@
 				offset.y = 0;
 			}
 		}
-		//NSLog(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
-		//NSLog(@"inset.top: %.1f, frame.h: %.1f", _scrollView.contentInset.top, _scrollView.frame.size.height);
-		//NSLog(@"offset.y: %.1f", offset.y);
+		//log_debug(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
+		//log_debug(@"inset.top: %.1f, frame.h: %.1f", _scrollView.contentInset.top, _scrollView.frame.size.height);
+		//log_debug(@"offset.y: %.1f", offset.y);
 		
 		_scrollView.bounces = NO;
 		[UIView animateWithDuration:0.2 animations:^(){

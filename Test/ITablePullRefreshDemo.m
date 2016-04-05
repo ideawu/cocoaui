@@ -9,82 +9,7 @@
 
 #import "ITablePullRefreshDemo.h"
 #import "IObj.h"
-
-@interface ITablePullRefreshItem : IView{
-}
-@property ILabel *num;
-@property IButton *btn_1;
-@property IButton *btn_2;
-@property IButton *btn_3;
-@property IButton *btn_4;
-@property IView *div;
-@end
-@implementation ITablePullRefreshItem
-- (id)init{
-	self = [super init];
-	IView *view = [IView namedView:@"ITablePullRefreshItem"];
-	[self addSubview:view];
-	
-	_num = (ILabel *)[view getViewById:@"seq"];
-	_btn_1 = (IButton *)[view getViewById:@"btn_1"];
-	_btn_2 = (IButton *)[view getViewById:@"btn_2"];
-	_btn_3 = (IButton *)[view getViewById:@"btn_3"];
-	_btn_4 = (IButton *)[view getViewById:@"btn_4"];
-	_div = (IView *)[view getViewById:@"div"];
-	
-	__weak typeof(self) me = self;
-	[_btn_1 addEvent:IEventClick handler:^(IEventType event, IView *view) {
-		NSString *s = me.num.text;
-		if(s.length > 2){
-			s = [s substringToIndex:s.length - 2];
-			me.num.text = s;
-
-			IObj *obj = (IObj *)me.data;
-			obj.strval = s;
-		}
-	}];
-	[_btn_2 addEvent:IEventClick handler:^(IEventType event, IView *view) {
-		NSString *s = me.num.text;
-		s = [s stringByAppendingFormat:@"\na"];
-		me.num.text = s;
-		
-		IObj *obj = (IObj *)me.data;
-		obj.strval = s;
-	}];
-	
-	IView *div2 = (IView *)[view getViewById:@"div2"];
-
-	[_btn_3 addEvent:IEventClick handler:^(IEventType event, IView *view) {
-		me.div.style.width -= 20;
-		[div2.style removeClass:@"a"];
-	}];
-	[_btn_4 addEvent:IEventClick handler:^(IEventType event, IView *view) {
-		me.div.style.width += 20;
-		[div2.style addClass:@"a"];
-	}];
-	
-	
-	NSArray *arr = @[@"x", @"y", @"z"];
-	for(NSString *s in arr){
-		ILabel *label = [ILabel labelWithText:s];
-		[label.style addClass:s];
-		[div2 addSubview:label];
-	}
-
-	
-	return self;
-}
-
-- (void)setData:(id)data{
-	[super setData:data];
-	IObj *obj = (IObj *)self.data;
-	_num.text = obj.strval;
-}
-
-@end
-
-
-////////////////////////////////////////////////
+#import "ITablePullRefreshItem.h"
 
 
 @interface ITablePullRefreshDemo (){
@@ -154,42 +79,35 @@
 	if(state == IRefreshBegin){
 		// refresh
 		if(view == self.headerRefreshControl){
-			[self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
-			return;
+			// 模拟网络请求
+			dispatch_after(0.2, dispatch_get_main_queue(), ^(void){
+				static int seq = 1000;
+				for(int i=0; i<5; i++){
+					NSString *s = [NSString stringWithFormat:@"%d", seq];
+					IObj *obj = [IObj stringObj:s];
+					[self prependDataRow:obj forTag:@"item"];
+					seq ++;
+				}
+				[self reload];
+				[self endRefresh:view];
+			});
 		}
 		// load more
 		if(view == self.footerRefreshControl){
 			[self loadData:5];
+			[self reload];
+			[self endRefresh:view];
 		}
-		[self reload];
-		[self endRefresh:view];
 	}
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
-	NSLog(@"%s %d", __func__, (int)index);
+	log_debug(@"%s %d", __func__, (int)index);
 	IObj *obj = view.data;
 	obj.strval = @"clicked\nwww\naaa";
 	[self updateDataRow:obj forTag:@"item" atIndex:index];
 	//[self removeRowAtIndex:index];
 	[self reload];
-}
-
-- (void)reloadData{
-	//[self clear];
-	//[self loadData:20];
-	
-	static int seq = 1000;
-	for(int i=0; i<5; i++){
-		NSString *s = [NSString stringWithFormat:@"%d", seq];
-		IObj *obj = [IObj stringObj:s];
-		[self prependDataRow:obj forTag:@"item"];
-		seq ++;
-	}
-	
-	
-	[self reload];
-	[self endRefresh:self.headerRefreshControl];
 }
 
 @end

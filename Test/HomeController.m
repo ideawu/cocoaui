@@ -16,6 +16,7 @@
 #import "TestController.h"
 #import "IStyleSheet.h"
 #import "Http.h"
+#import "ITableInUIView.h"
 
 @implementation HomeController
 
@@ -27,7 +28,7 @@
 	
 	__weak typeof(self) me = self;
 	[btn addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
-		NSLog(@"%d", event);
+		log_debug(@"%d", event);
 		if(event == IEventHighlight){
 			[view.style set:@"background: #ffe;"];
 			//[view.style set:@"padding: 8; background: #ffe url(ic_down.png)"];
@@ -62,21 +63,21 @@
 	[view addSubview:sub];
 	[self addIViewRow:view];
 	 //[view bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-	 //	NSLog(@"%s:%d %@", __func__, __LINE__, view);
+	 //	log_debug(@"%s:%d %@", __func__, __LINE__, view);
 	 //}];
 	 [sub bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-		NSLog(@"%s:%d %@", __func__, __LINE__, view);
+		log_debug(@"%s:%d %@", __func__, __LINE__, view);
 	 }];
 	*/
 	
 #if 0
 	{
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
-		NSLog(@"start");
+		log_debug(@"start");
 		for(int i=0; i<10000; i++){
 			IView *view = [IView viewFromXml:xml];
 		}
-		NSLog(@"end");
+		log_debug(@"end");
 	}
 #endif
 	
@@ -100,7 +101,7 @@
 		IView *pan = [view getViewById:@"pan"];
 		[self addIViewRow:view];
 		[view addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
-			NSLog(@"%d", event);
+			log_debug(@"%d", event);
 			if(event == IEventHighlight){
 				[pan setNeedsDisplay];
 				[pan.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
@@ -117,7 +118,7 @@
 	{
 		http_get_raw(@"http://www.cocoaui.com/", nil, ^(NSData *data) {
 			NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			NSLog(@"%@", str);
+			log_debug(@"%@", str);
 			IView *view = [IView viewFromXml:str];
 			[self addIViewRow:view];
 			[self reload];
@@ -131,6 +132,7 @@
 	[self add_btn:@"ITableClickToRefresh"];
 	[self add_btn:@"Test"];
 	[self add_btn:@"IPopoverDemo"];
+	[self add_btn:@"ITableInUIView"];
 
 	[self addSeparator:@"height: 8;"];
 	[self add_btn:@"Detect memory leak"];
@@ -155,12 +157,12 @@
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
-	NSLog(@"%s:%d %d:%@", __func__, __LINE__, (int)index, view);
+	log_debug(@"%s:%d %d:%@", __func__, __LINE__, (int)index, view);
 }
 
 - (void)click:(UIButton *)btn{
 	NSString *text = btn.titleLabel.text;
-	NSLog(@"click %@", text);
+	log_debug(@"click %@", text);
 	UIViewController *controller;
 	if([text isEqualToString:@"Login"]){
 		controller = [[LoginController alloc] init];
@@ -180,16 +182,19 @@
 	if([text isEqualToString:@"IPopoverDemo"]){
 		controller = [[IPopoverDemo alloc] init];
 	}
+	if([text isEqualToString:@"ITableInUIView"]){
+		controller = [[ITableInUIView alloc] init];
+	}
 	if([text isEqualToString:@"Detect memory leak"]){
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
-		NSLog(@"start");
+		log_debug(@"start");
 		IView *parent = [[IView alloc] init];
 		for(int i=0; i<1000; i++){
 			IView *view = [IView viewFromXml:xml];
 			[parent addSubview:view];
 		}
 		parent = nil;
-		NSLog(@"end");
+		log_debug(@"end");
 		return;
 	}
 	[self.navigationController pushViewController:controller animated:YES];
