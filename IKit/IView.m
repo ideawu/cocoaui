@@ -149,11 +149,13 @@
 }
 
 - (void)addUIView:(UIView *)view{
+	[self setNeedsLayout];
 	contentView = view;
 	[super addSubview:view];
 }
 
 - (void)addSubview:(UIView *)view style:(NSString *)css{
+	[self setNeedsLayout];
 	IView *sub;
 	if([[view class] isSubclassOfClass:[IView class]]){
 		sub = (IView *)view;
@@ -181,6 +183,7 @@
 }
 
 - (void)removeFromSuperview{
+	[super setNeedsLayout];
 	[super removeFromSuperview];
 	[_parent.subs removeObject:self];
 	_parent = nil;
