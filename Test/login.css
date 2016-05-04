@@ -1,0 +1,21 @@
+#logo{
+	float: center; clear: both; width: 64; height: 64; margin: 10 0;
+}
+.row{
+	margin: 15 0; border-bottom: 1 solid #eee;
+}
+.row_icon{
+	width: 18; height: 24; margin: 8 8 0 0;
+}
+.row_input{
+	width: 100%; height: 40;
+}
+#captcha_img{
+	float: right; margin: 10 0 0 4; width: 120; height: 50; background: #eee;
+}
+#submit{
+	clear: both; width: 100%; height: 40; font-size: large; margin: 15 0 0 0; color: #fff; background: #6cf; border-radius: 5;
+}
+div{
+	/*border: 1px solid #ccf;*/
+}

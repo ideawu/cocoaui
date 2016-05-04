@@ -1,0 +1,25 @@
+<div style="margin: 15;">
+	<style src="login.css" />
+	
+	<img id="logo" src="user.png" />
+	
+	<div class="row">
+		<img src="ic_name.png" class="row_icon" />
+		<input id="name" type="text" placeholder="Username" class="row_input" />
+	</div>
+	
+	<div class="row">
+		<img src="ic_pass.png" class="row_icon" />
+		<input id="password" type="password" placeholder="Password" class="row_input" />
+	</div>
+	
+	<div id="captcha_div" style="display: none;">
+		<img id="captcha_img" />
+		<div style="margin: 15 0; border-bottom: 1 solid #eee;">
+			<img src="ic_captcha.png" style="width: 18; height: 24; margin: 8 8 0 0;" />
+			<input id="captcha" type="text" placeholder="Captcha" style="width: 100%; height: 40;" />
+		</div>
+	</div>
+	
+	<button id="submit">Login</button>
+</div>
