@@ -19,6 +19,7 @@
 #import "IInput.h"
 #import "IButton.h"
 #import "ISwitch.h"
+#import "ISelect.h"
 #import "IImage.h"
 #import "INSXmlViewLoader.h"
 #import "IDTHTMLViewLoader.h"
@@ -39,6 +40,7 @@ typedef enum{
 	NSMutableArray *parse_stack;
 	NSMutableString *_text;
 	NSString *_last_tag;
+	NSString *_optionKey;
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
 @property (nonatomic) NSMutableArray *rootViews;
@@ -273,7 +275,7 @@ typedef enum{
 // 对于不支持的标签, 转成纯文本
 
 - (void)didStartElement:(NSString *)tagName attributes:(NSDictionary *)attributeDict{
-	//log_trace(@"%*s<%@>", (int)parse_stack.count*4, "", tagName);
+//	log_trace(@"%*s<%@>", (int)parse_stack.count*4, "", tagName);
 
 	tagName = [tagName lowercaseString];
 	
@@ -288,6 +290,13 @@ typedef enum{
 		return;
 	}
 	if([tagName isEqualToString:@"script"]){
+		return;
+	}
+	if([tagName isEqualToString:@"option"]){
+		_optionKey = [attributeDict objectForKey:@"value"];
+		if(!_optionKey){
+			_optionKey = @"";
+		}
 		return;
 	}
 	if(state != ParseView){
@@ -343,7 +352,7 @@ typedef enum{
 }
 
 - (void)didEndElement:(NSString *)tagName{
-	//log_trace(@"%*s</%@>", (int)(parse_stack.count-1)*4, "", tagName);
+//	log_trace(@"%*s</%@>", (int)(parse_stack.count-1)*4, "", tagName);
 
 	_last_tag = nil;
 	tagName = [tagName lowercaseString];
@@ -353,6 +362,16 @@ typedef enum{
 	}
 	if([tagName isEqualToString:@"style"]){
 		[_styleSheet parseCss:_text baseUrl:_basePath];
+		_text = [[NSMutableString alloc] init];
+		return;
+	}
+	if([tagName isEqualToString:@"option"]){
+		if([parentView class] == [ISelect class]){
+			ISelect *sel = (ISelect *)parentView;
+			NSString *text = [self getAndResetText];
+			[sel addOptionKey:_optionKey text:text];
+			//log_debug(@"%@=%@", _optionKey, text);
+		}
 		_text = [[NSMutableString alloc] init];
 		return;
 	}
@@ -439,6 +458,7 @@ typedef enum{
 		
 		tagClassTable[@"switch"] = [ISwitch class];
 		tagClassTable[@"button"] = [IButton class];
+		tagClassTable[@"select"] = [ISelect class];
 	}
 	return [tagClassTable objectForKey:tagName];
 }

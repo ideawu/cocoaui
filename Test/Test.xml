@@ -1,29 +1,49 @@
 <div style="height: 100%; border: 2px solid #3cf;">
-	<style>
-		.a{
-		background: #3cf;
-		}
-		.a:hover{
-		background: #000;
-		}
-		.b > .c{
-		color: #f00;
-		}
-	</style>
-	<div class="a" style="padding: 15; align: center; valign: middle; color: #fff;">
-		<span style="font-size: 32;">Hello World!</span>
-	</div>
-	<div style="background: #eee;">
-		<img src="icon.png" />
-		a
-		<div class="b">
-			b
-			<div class="c">
-				c
-			</div>
-			<div>
-				<div class="c">ccc</div>
-			</div>
-		</div>
-	</div>
+	<br/>
+	
+	bbb:
+	<select style="width: 200;">
+		<option value="a1">选项 1</option>
+		<option value="a2">选项 2</option>
+		<option value="a3">选项 3</option>
+		<option value="a4">选项 4</option>
+	</select>
+	
+	<br/>
+	
+	aaa:
+	<select style="width: auto;">
+		<option value="1">option aaaaaa1</option>
+		<option value="2">option 2</option>
+		<option value="3">option 3</option>
+		<option value="4">option 4</option>
+	</select>
+	
+<!--	<style>-->
+<!--		.a{-->
+<!--		background: #3cf;-->
+<!--		}-->
+<!--		.a:hover{-->
+<!--		background: #000;-->
+<!--		}-->
+<!--		.b > .c{-->
+<!--		color: #f00;-->
+<!--		}-->
+<!--	</style>-->
+<!--	<div class="a" style="padding: 15; align: center; valign: middle; color: #fff;">-->
+<!--		<span style="font-size: 32;">Hello World!</span>-->
+<!--	</div>-->
+<!--	<div style="background: #eee;">-->
+<!--		<img src="icon.png" />-->
+<!--		a-->
+<!--		<div class="b">-->
+<!--			b-->
+<!--			<div class="c">-->
+<!--				c-->
+<!--			</div>-->
+<!--			<div>-->
+<!--				<div class="c">ccc</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
 </div>

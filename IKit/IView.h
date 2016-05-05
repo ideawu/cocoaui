@@ -83,6 +83,11 @@ typedef enum{
  */
 - (BOOL)fireEvent:(IEventType)event;
 
+/**
+ * 一般不需要调用本方法, 自定义控件重写本方法.
+ */
+- (void)layout;
+
 @end
 
 #endif

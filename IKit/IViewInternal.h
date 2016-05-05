@@ -38,7 +38,6 @@
 - (void)addUIView:(UIView *)view;
 
 - (NSString *)name;
-- (void)layout;
 - (void)updateFrame;
 
 - (void)fireHighlightEvent;

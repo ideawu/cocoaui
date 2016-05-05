@@ -55,6 +55,12 @@
 	self.navigationController.navigationBar.translucent = NO;
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
+//	{
+//		ILabel *label = [ILabel labelWithText:@"aaaa"];
+//		[label.style set:@"text-align: center;"];
+//		[self addIViewRow:label];
+//	}
+	
 	/*
 	IView *view = [[IView alloc] init];
 	[view.style set:@"height: 100; background: #ff3;"];
