@@ -16,11 +16,11 @@
 @property (readonly, nonatomic) ILabel *label;
 @property (readonly, nonatomic) ILabel *arrow;
 
-@property (nonatomic) id selectedKey;
-@property (readonly, nonatomic) id selectedText;
+@property (nonatomic) NSString *selectedKey;
+@property (readonly, nonatomic) NSString *selectedText;
 
-- (void)addOptionKey:(id)key text:(NSString *)text;
+- (void)addOptionKey:(NSString *)key text:(NSString *)text;
 
-- (void)onSelectKey:(void (^)(id key))callback;
+- (void)onSelectKey:(void (^)(NSString *key))callback;
 
 @end

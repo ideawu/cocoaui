@@ -24,7 +24,7 @@
 	[self addIViewRow:view];
 	
 	ISelect *sel = (ISelect *)[view getViewById:@"select1"];
-	[sel onSelectKey:^(id key) {
+	[sel onSelectKey:^(NSString *key) {
 		log_debug(@"select %@", key);
 	}];
 }

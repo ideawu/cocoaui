@@ -17,7 +17,7 @@
 @interface ISelect ()<ITableDelegate>{
 	ITable *_table;
 	IPopover *_pop;
-	void (^_callback)(id key);
+	void (^_callback)(NSString *key);
 }
 @property (nonatomic) NSMutableArray *options; // k0, v0, k1, v1, ...
 @end
@@ -90,11 +90,11 @@
 	[self setSelectedKey:key];
 }
 
-- (void)onSelectKey:(void (^)(id key))callback{
+- (void)onSelectKey:(void (^)(NSString *key))callback{
 	_callback = callback;
 }
 
-- (NSString *)optionTextForKey:(id)key{
+- (NSString *)optionTextForKey:(NSString *)key{
 	for(NSUInteger i=0; i<_options.count; i+=2){
 		if(_options[i] == key){
 			return _options[i+1];
@@ -103,7 +103,7 @@
 	return nil;
 }
 
-- (void)addOptionKey:(id)key text:(NSString *)text{
+- (void)addOptionKey:(NSString *)key text:(NSString *)text{
 	for(NSUInteger i=0; i<_options.count; i+=2){
 		if(_options[i] == key){
 			_options[i+1] = text;
@@ -120,7 +120,7 @@
 	}
 }
 
-- (void)setSelectedKey:(id)key{
+- (void)setSelectedKey:(NSString *)key{
 	NSString *text = [self optionTextForKey:key];
 	if(!text){
 		return;
