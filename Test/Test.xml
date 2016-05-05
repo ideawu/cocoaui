@@ -2,7 +2,7 @@
 	<br/>
 	
 	bbb:
-	<select style="width: 200;">
+	<select style="width: 200;" id="select1">
 		<option value="a1">选项 1</option>
 		<option value="a2">选项 2</option>
 		<option value="a3">选项 3</option>

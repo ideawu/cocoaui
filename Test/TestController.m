@@ -22,6 +22,11 @@
 
 	IView *view = [IView namedView:@"Test"];
 	[self addIViewRow:view];
+	
+	ISelect *sel = (ISelect *)[view getViewById:@"select1"];
+	[sel onSelectKey:^(id key) {
+		log_debug(@"select %@", key);
+	}];
 }
 
 @end

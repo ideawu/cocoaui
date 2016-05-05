@@ -41,7 +41,7 @@
 	CGRect frame1 = _contentView.frame;
 	CGRect frame0 = frame1;
 	frame0.origin.y -= frame0.size.height;
-	log_debug(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
+	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
 
 	_contentView.frame = frame0;
 	self.layer.opacity = 0;

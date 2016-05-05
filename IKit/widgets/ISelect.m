@@ -16,6 +16,8 @@
 
 @interface ISelect ()<ITableDelegate>{
 	ITable *_table;
+	IPopover *_pop;
+	void (^_callback)(id key);
 }
 @property (nonatomic) NSMutableArray *options; // k0, v0, k1, v1, ...
 @end
@@ -66,8 +68,8 @@
 		[v addSubview:_table.view];
 		[wrapper addSubview:v];
 		
-		IPopover *pop = [[IPopover alloc] init];
-		[pop presentView:wrapper onViewController:me.viewController];
+		_pop = [[IPopover alloc] init];
+		[_pop presentView:wrapper onViewController:me.viewController];
 	}];
 
 	return self;
@@ -80,8 +82,16 @@
 	view.layer.opacity = 1;
 }
 - (void)table:(ITable *)table onClick:(IView *)view atIndex:(NSUInteger)index{
+	[_pop hide];
+	_pop = nil;
+	
 	id key = self.options[index * 2];
-	log_debug(@"%d %@", index, key);
+	//log_debug(@"select %d %@", index, key);
+	[self setSelectedKey:key];
+}
+
+- (void)onSelectKey:(void (^)(id key))callback{
+	_callback = callback;
 }
 
 - (NSString *)optionTextForKey:(id)key{
@@ -98,7 +108,7 @@
 		if(_options[i] == key){
 			_options[i+1] = text;
 			if(key == _selectedKey){
-				[self selectKey:key];
+				[self setSelectedKey:key];
 			}
 			return;
 		}
@@ -106,11 +116,11 @@
 	[_options addObject:key];
 	[_options addObject:text];
 	if(!_selectedKey){
-		[self selectKey:key];
+		[self setSelectedKey:key];
 	}
 }
 
-- (void)selectKey:(id)key{
+- (void)setSelectedKey:(id)key{
 	NSString *text = [self optionTextForKey:key];
 	if(!text){
 		return;
@@ -118,6 +128,9 @@
 	_selectedKey = key;
 	_selectedText = text;
 	_label.text = _selectedText;
+	if(_callback){
+		_callback(key);
+	}
 	[self setNeedsLayout];
 	[self setNeedsDisplay];
 }
