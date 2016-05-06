@@ -26,6 +26,7 @@
 
 - (id)init{
 	self = [super init];
+	_selectedIndex = -1;
 	_options = [[NSMutableArray alloc] init];
 
 	_label = [ILabel labelWithText:@"---"];
@@ -42,39 +43,53 @@
 	[self addSubview:_label];
 
 	__weak typeof(self) me = self;
-	
 	[self bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-		_table = [[ITable alloc] init];
-		_table.delegate = me;
-
-		for(NSUInteger i=0; i<me.options.count; i+=2){
-			NSString *text = me.options[i+1];
-			ILabel *row = [ILabel labelWithText:text];
-			[row.style set:@"height: 35; margin: 0 3; text-align: center; border-bottom: 0.5 solid #eee; background: #fff;"];
-			[_table addIViewRow:row];
-		}
-
-		IView *wrapper = [[IView alloc] init];
-		[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 5;"];
-		
-		CGFloat w = me.viewController.view.frame.size.width * 0.6;
-		CGFloat h = me.viewController.view.frame.size.height * 0.6;
-		w = MIN(w, 240);
-		h = MIN(h, 400);
-		CGFloat y = (me.viewController.view.frame.size.height - h)/2 * 0.6;
-		[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
-		
-		// 如果不用 uiview 包裹 ITable.view, ITable.view 会布局错误.
-		UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, w, h)];
-		_table.view.frame = v.bounds;
-		[v addSubview:_table.view];
-		[wrapper addSubview:v];
-		
-		_pop = [[IPopover alloc] init];
-		[_pop presentView:wrapper onViewController:me.viewController];
+		[me showDropdown];
 	}];
 
 	return self;
+}
+
+- (void)showDropdown{
+	_table = [[ITable alloc] init];
+	_table.delegate = self;
+	
+	for(NSUInteger i=0; i<self.options.count; i+=2){
+		NSString *text = self.options[i+1];
+		ILabel *row = [ILabel labelWithText:text];
+		[row.style set:@"height: 35; margin: 0 3; text-align: center; border-bottom: 0.5 solid #eee; background: #fff;"];
+		if(i/2 == self.selectedIndex){
+			[row.style set:@"font-weight: bold"];
+		}
+		[_table addIViewRow:row];
+	}
+	
+	IView *wrapper = [[IView alloc] init];
+	[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 5;"];
+	
+	CGFloat w = self.viewController.view.frame.size.width * 0.6;
+	CGFloat h = self.viewController.view.frame.size.height * 0.6;
+	w = MIN(w, 240);
+	h = MIN(h, 400);
+	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
+	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
+	
+	// 如果不用 uiview 包裹 ITable.view, ITable.view 会布局错误.
+	UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, w, h)];
+	_table.view.frame = v.bounds;
+	[v addSubview:_table.view];
+	[wrapper addSubview:v];
+	
+	_pop = [[IPopover alloc] init];
+	[_pop presentView:wrapper onViewController:self.viewController];
+	
+	if(self.selectedIndex >= 0){
+		NSUInteger index = self.selectedIndex;
+		if(index + 4 < _options.count/2 - 2){
+			index += 4;
+		}
+		[_table scrollToRowAtIndex:index animated:NO];
+	}
 }
 
 - (void)table:(ITable *)table onHighlight:(IView *)view atIndex:(NSUInteger)index{
@@ -123,18 +138,20 @@
 }
 
 - (void)setSelectedKey:(NSString *)key{
-	NSString *text = [self optionTextForKey:key];
-	if(!text){
-		return;
+	for(NSUInteger i=0; i<_options.count; i+=2){
+		if(_options[i] == key){
+			_selectedIndex = (NSInteger)i/2;
+			_selectedKey = key;
+			_selectedText = _options[i+1];
+			_label.text = _selectedText;
+			if(_callback){
+				_callback(key);
+			}
+			[self setNeedsLayout];
+			[self setNeedsDisplay];
+			break;
+		}
 	}
-	_selectedKey = key;
-	_selectedText = text;
-	_label.text = _selectedText;
-	if(_callback){
-		_callback(key);
-	}
-	[self setNeedsLayout];
-	[self setNeedsDisplay];
 }
 
 - (void)layout{

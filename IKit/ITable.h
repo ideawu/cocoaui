@@ -44,6 +44,9 @@
 - (void)reload;
 - (NSUInteger)count;
 
+
+- (void)scrollToRowAtIndex:(NSUInteger)index animated:(BOOL)animated;
+
 - (void)removeRowAtIndex:(NSUInteger)index;
 
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;

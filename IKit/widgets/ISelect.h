@@ -16,6 +16,7 @@
 @property (readonly, nonatomic) ILabel *label;
 @property (readonly, nonatomic) ILabel *arrow;
 
+@property (nonatomic) NSInteger selectedIndex;
 @property (nonatomic) NSString *selectedKey;
 @property (readonly, nonatomic) NSString *selectedText;
 

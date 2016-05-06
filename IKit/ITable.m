@@ -169,6 +169,12 @@
 	return _cells.count;
 }
 
+- (void)scrollToRowAtIndex:(NSUInteger)index animated:(BOOL)animated{
+	ICell *cell = _cells[index];
+	CGRect frame = CGRectMake(0, cell.y, _contentFrame.size.width, cell.height);
+	[self.scrollView scrollRectToVisible:frame animated:animated];
+}
+
 - (void)removeRowAtIndex:(NSUInteger)index{
 	ICell *cell = [_cells objectAtIndex:index];
 	if(!cell){
