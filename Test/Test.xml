@@ -1,7 +1,13 @@
 <div style="height: 100%; border: 2px solid #3cf;">
+	<style>
+		select{
+			padding: 4px 0;
+		}
+	</style>
+	
 	<br/>
 	
-	bbb:
+	<span style="width: 40;">aaa:</span>
 	<select style="width: 200;" id="select1">
 		<option value="a1">选项 1</option>
 		<option value="a2">选项 2</option>
@@ -48,8 +54,8 @@
 	
 	<br/>
 	
-	aaa:
-	<select style="width: auto;">
+	<span style="width: 40;">bbb:</span>
+	<select id="select2">
 		<option value="1">option aaaaaa1</option>
 		<option value="2">option 2</option>
 		<option value="3">option 3</option>

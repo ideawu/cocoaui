@@ -27,6 +27,13 @@
 	[sel onSelectKey:^(NSString *key) {
 		log_debug(@"select %@", key);
 	}];
+	
+	{
+		// 自定义控件样式
+		ISelect *sel = (ISelect *)[view getViewById:@"select2"];
+		[sel.style set:@"border: none;"];
+		[sel.arrow.style set:@"color: #f33; background: none;"];
+	}
 }
 
 @end
