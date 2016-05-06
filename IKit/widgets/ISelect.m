@@ -26,6 +26,8 @@
 
 - (id)init{
 	self = [super init];
+	self.style.tagName = @"select";
+	
 	_selectedIndex = -1;
 	_options = [[NSMutableArray alloc] init];
 

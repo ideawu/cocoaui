@@ -11,7 +11,7 @@
 	<select style="width: 200;" id="select1">
 		<option value="a1">选项 1</option>
 		<option value="a2">选项 2</option>
-		<option value="a3">选项 3</option>
+		<option value="a3" selected="selected">选项 3</option>
 		<option value="a4">选项 4</option>
 		<option value="a5">选项 5</option>
 		<option value="a6">选项 6</option>

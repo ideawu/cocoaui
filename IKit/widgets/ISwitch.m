@@ -23,7 +23,7 @@
 - (id)init{
 	self = [super init];
 	
-	self.style.tagName = @"label";
+	self.style.tagName = @"switch";
 	//CGRect frame = CGRectMake(0, 0, [IStyle normalFontSize] * 2, [IStyle normalFontSize]);
 	//_uiswitch = [[UISwitch alloc] initWithFrame:frame];
 	_uiswitch = [[UISwitch alloc] init];

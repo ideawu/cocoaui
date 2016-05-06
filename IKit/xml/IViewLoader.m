@@ -41,6 +41,7 @@ typedef enum{
 	NSMutableString *_text;
 	NSString *_last_tag;
 	NSString *_optionKey;
+	NSString *_optionSelected;
 }
 @property (nonatomic) NSMutableDictionary *viewsById;
 @property (nonatomic) NSMutableArray *rootViews;
@@ -294,6 +295,7 @@ typedef enum{
 	}
 	if([tagName isEqualToString:@"option"]){
 		_optionKey = [attributeDict objectForKey:@"value"];
+		_optionSelected = [attributeDict objectForKey:@"selected"];
 		if(!_optionKey){
 			_optionKey = @"";
 		}
@@ -370,6 +372,9 @@ typedef enum{
 			ISelect *sel = (ISelect *)parentView;
 			NSString *text = [self getAndResetText];
 			[sel addOptionKey:_optionKey text:text];
+			if(_optionSelected){
+				[sel setSelectedKey:_optionKey];
+			}
 			//log_debug(@"%@=%@", _optionKey, text);
 		}
 		_text = [[NSMutableString alloc] init];
