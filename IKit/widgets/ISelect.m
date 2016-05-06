@@ -35,7 +35,7 @@
 	_arrow = [ILabel labelWithText:@">"];
 	_arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
 
-	[self.style set:@"padding: 1px 0; border: 0.5px solid #999; color: #666;"];
+	[self.style set:@"padding: 1px 0; border: 0.5px solid #ccc;"];
 	[_arrow.style set:@"float: right; padding-left: 2; width: 15px; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #0cf; border-radius: 3; color: #fff;"];
 	[_label.style set:@"width: 100%; valign: middle; text-align: center;"];
 	[self addSubview:_arrow];
@@ -50,7 +50,7 @@
 		for(NSUInteger i=0; i<me.options.count; i+=2){
 			NSString *text = me.options[i+1];
 			ILabel *row = [ILabel labelWithText:text];
-			[row.style set:@"height: 35; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
+			[row.style set:@"height: 35; margin: 0 3; text-align: center; border-bottom: 0.5 solid #eee; background: #fff;"];
 			[_table addIViewRow:row];
 		}
 
@@ -58,8 +58,10 @@
 		[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 5;"];
 		
 		CGFloat w = me.viewController.view.frame.size.width * 0.6;
-		CGFloat h = me.viewController.view.frame.size.height * 0.5;
-		CGFloat y = (me.viewController.view.frame.size.height - h)/2 * 0.3;
+		CGFloat h = me.viewController.view.frame.size.height * 0.6;
+		w = MIN(w, 240);
+		h = MIN(h, 400);
+		CGFloat y = (me.viewController.view.frame.size.height - h)/2 * 0.6;
 		[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
 		
 		// 如果不用 uiview 包裹 ITable.view, ITable.view 会布局错误.
