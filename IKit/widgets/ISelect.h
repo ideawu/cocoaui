@@ -13,12 +13,12 @@
 
 @interface ISelect : IView
 
-@property (readonly, nonatomic) ILabel *label;
-@property (readonly, nonatomic) ILabel *arrow;
+@property (nonatomic, readonly) ILabel *label;
+@property (nonatomic, readonly) ILabel *arrow;
 
 @property (nonatomic) NSInteger selectedIndex;
 @property (nonatomic) NSString *selectedKey;
-@property (readonly, nonatomic) NSString *selectedText;
+@property (nonatomic, readonly) NSString *selectedText;
 
 - (void)addOptionKey:(NSString *)key text:(NSString *)text;
 
