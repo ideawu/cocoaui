@@ -59,7 +59,7 @@
 	for(NSUInteger i=0; i<self.options.count; i+=2){
 		NSString *text = self.options[i+1];
 		ILabel *row = [ILabel labelWithText:text];
-		[row.style set:@"height: 35; margin: 0 3; text-align: center; border-bottom: 0.5 solid #eee; background: #fff;"];
+		[row.style set:@"height: 35; margin-left: 5; text-align: center; border-bottom: 0.5 solid #eee;"];
 		if(i/2 == self.selectedIndex){
 			[row.style set:@"font-weight: bold"];
 		}
@@ -67,11 +67,11 @@
 	}
 	
 	IView *wrapper = [[IView alloc] init];
-	[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 5;"];
+	[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 7;"];
 	
-	CGFloat w = self.viewController.view.frame.size.width * 0.6;
+	CGFloat w = self.viewController.view.frame.size.width * 0.7;
 	CGFloat h = self.viewController.view.frame.size.height * 0.6;
-	w = MIN(w, 240);
+	w = MIN(w, 260);
 	h = MIN(h, 400);
 	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
 	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
@@ -89,6 +89,8 @@
 		NSUInteger index = self.selectedIndex;
 		if(index + 4 < _options.count/2 - 2){
 			index += 4;
+		}else{
+			index = (_options.count/2 - 1);
 		}
 		[_table scrollToRowAtIndex:index animated:NO];
 	}
