@@ -3,9 +3,6 @@
 		select{
 			padding: 4px 0;
 		}
-		select.b{
-			background: #3cf;
-		}
 	</style>
 	
 	<br/>
