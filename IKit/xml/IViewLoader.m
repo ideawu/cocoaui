@@ -97,7 +97,6 @@ typedef enum{
 	state = ParseInit;
 	parentView = nil;
 	_styleSheet = [[IStyleSheet alloc] init];
-	[_styleSheet mergeWithStyleSheet:[IStyleSheet shared]];
 	
 	_rootViews = [[NSMutableArray alloc] init];
 	parse_stack = [[NSMutableArray alloc] init];

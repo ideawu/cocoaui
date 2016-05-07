@@ -83,7 +83,6 @@
 	[v addSubview:_table.view];
 	[wrapper addSubview:v];
 	
-	__weak typeof(self) me = self;
 	_pop = [[IPopover alloc] init];
 	[_pop presentView:wrapper onViewController:self.viewController];
 	
