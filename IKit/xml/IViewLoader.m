@@ -186,15 +186,10 @@ typedef enum{
 	NSString *src = [attributeDict objectForKey:@"src"];
 	IImage *img = [[IImage alloc] init];
 	if(src){
-		if([IKitUtil isDataURI:src]){
-			log_debug(@"load image element from data URI");
-			img.image = [IKitUtil loadImageFromDataURI:src];
-		}else{
+		if(![IKitUtil isDataURI:src]){
 			src = [IKitUtil buildPath:_basePath src:src];
-			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *_img) {
-				img.image = _img;
-			}];
 		}
+		img.src = src;
 	}
 	
 	NSString *width = [attributeDict objectForKey:@"width"];

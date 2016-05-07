@@ -600,21 +600,19 @@
 	}
 	_backgroundImage = nil;
 	if(src){
-		if([IKitUtil isDataURI:src]){
-			_backgroundImage = [IKitUtil loadImageFromDataURI:src];
-		}else{
+		if(![IKitUtil isDataURI:src]){
 			src = [IKitUtil buildPath:baseUrl src:src];
-			//log_debug(@"%@ load background image: %@", _view.name, src);
-			IEventType event = _view.event;
-			[[IResourceMananger sharedMananger] loadImage:src callback:^(UIImage *img) {
-				// 如果在异步加载的前后, _view 状态发生了改变, 则不更新 background-image
-				// 可能有考虑不到的地方, 但先这么做吧.
-				if(event == _view.event){
-					_backgroundImage = img;
-					[_view setNeedsDisplay];
-				}
-			}];
 		}
+		//log_debug(@"%@ load background image: %@", _view.name, src);
+		IEventType event = _view.event;
+		[[IResourceMananger sharedMananger] loadImageSrc:src callback:^(UIImage *img) {
+			// 如果在异步加载的前后, _view 状态发生了改变, 则不更新 background-image
+			// 可能有考虑不到的地方, 但先这么做吧.
+			if(event == _view.event){
+				_backgroundImage = img;
+				[_view setNeedsDisplay];
+			}
+		}];
 	}
 }
 
