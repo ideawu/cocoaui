@@ -85,11 +85,34 @@ typedef enum{
 - (id)init{
 	self = [super init];
 	_basePath = nil;
+	[self initDefaultCss];
 	return self;
 }
 
 - (IStyleSheet *)styleSheet{
 	return _styleSheet;
+}
+
+- (void)initDefaultCss{
+	static BOOL inited = NO;
+	if(inited){
+		return;
+	}
+	inited = YES;
+	
+	[[IStyleSheet builtin] parseCss:@"a{color: #00f;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"b{font-weight: bold;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"p{clear: both; width: 100%; margin: 12 0;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"br{clear: both; width: 100%; height: 12;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"hr{clear: both; width: 100%; height: 1; margin: 12 0; background: #333;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"ul{clear: both; width: 100%; padding-left: 20; margin: 12 0;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"ol{clear: both; width: 100%; padding-left: 20; margin: 12 0;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"li{clear: both; width: 100%;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"h1{clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"h2{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"h3{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"h4{clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;}" baseUrl:nil];
+	[[IStyleSheet builtin] parseCss:@"h5{clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;}" baseUrl:nil];
 }
 
 - (IView *)loadXml:(NSString *)str{
@@ -243,13 +266,13 @@ typedef enum{
 	// REMEMBER to set baseUrl!
 	view.style.cssBlock.baseUrl = _basePath;
 	
-	// 1.
-	NSString *defaultCss = [IViewLoader getDefaultCssForTag:view.style.tagName];
-	if(defaultCss){
-		[view.style set:defaultCss];
-	}
-	// 2.
-	[view.style.cssBlock addKey:@"@" value:@""];
+//	// 1.
+//	NSString *defaultCss = [IViewLoader getDefaultCssForTag:view.style.tagName];
+//	if(defaultCss){
+//		[view.style set:defaultCss];
+//	}
+//	// 2.
+//	[view.style.cssBlock addKey:@"@" value:@""];
 	
 	// 3.
 	NSString *css = [attributeDict objectForKey:@"style"];
@@ -467,21 +490,21 @@ typedef enum{
 	static NSMutableDictionary *defaultCssTable = nil;
 	if(defaultCssTable == nil){
 		defaultCssTable = [[NSMutableDictionary alloc] init];
-		defaultCssTable[@"a"] = @"color: #00f;";
-		defaultCssTable[@"b"] = @"font-weight: bold;";
-		defaultCssTable[@"p"] = @"clear: both; width: 100%; margin: 12 0;";
-		defaultCssTable[@"br"] = @"clear: both; width: 100%; height: 12;";
-		defaultCssTable[@"hr"] = @"clear: both; width: 100%; height: 1; margin: 12 0; background: #333;";
-		
-		defaultCssTable[@"ul"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
-		defaultCssTable[@"ol"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
-		defaultCssTable[@"li"] = @"clear: both; width: 100%;";
-		
-		defaultCssTable[@"h1"] = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
-		defaultCssTable[@"h2"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
-		defaultCssTable[@"h3"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
-		defaultCssTable[@"h4"] = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
-		defaultCssTable[@"h5"] = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
+//		defaultCssTable[@"a"] = @"color: #00f;";
+//		defaultCssTable[@"b"] = @"font-weight: bold;";
+//		defaultCssTable[@"p"] = @"clear: both; width: 100%; margin: 12 0;";
+//		defaultCssTable[@"br"] = @"clear: both; width: 100%; height: 12;";
+//		defaultCssTable[@"hr"] = @"clear: both; width: 100%; height: 1; margin: 12 0; background: #333;";
+//		
+//		defaultCssTable[@"ul"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
+//		defaultCssTable[@"ol"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
+//		defaultCssTable[@"li"] = @"clear: both; width: 100%;";
+//		
+//		defaultCssTable[@"h1"] = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
+//		defaultCssTable[@"h2"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
+//		defaultCssTable[@"h3"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
+//		defaultCssTable[@"h4"] = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
+//		defaultCssTable[@"h5"] = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
 	}
 	return [defaultCssTable objectForKey:tagName];
 }

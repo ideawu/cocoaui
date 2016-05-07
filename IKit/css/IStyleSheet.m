@@ -20,6 +20,14 @@
 
 @implementation IStyleSheet
 
++ (IStyleSheet *)builtin{
+	static IStyleSheet *ret = nil;
+	if(ret == nil){
+		ret = [[IStyleSheet alloc] init];
+	}
+	return ret;
+}
+
 - (id)init{
 	self = [super init];
 	_rules = [[NSMutableArray alloc] init];

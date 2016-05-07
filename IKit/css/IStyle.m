@@ -286,17 +286,17 @@
 	//log_debug(@"%s %@", __func__, clz);
 	clz = [clz lowercaseString];
 	[_classes addObject:clz];
-	if(_view.inheritedStyleSheet){
+//	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
-	}
+//	}
 }
 
 - (void)removeClass:(NSString *)clz{
 	clz = [clz lowercaseString];
 	[_classes removeObject:clz];
-	if(_view.inheritedStyleSheet){
+//	if(_view.inheritedStyleSheet){
 		[self renderAllCss];
-	}
+//	}
 }
 
 - (BOOL)hasClass:(NSString *)clz{
@@ -341,33 +341,35 @@
 	}
 }
 
+- (void)renderCssFromStylesheet:(IStyleSheet *)sheet{
+	for(ICssRule *rule in sheet.rules){
+		//log_debug(@"RULE: %@", rule);
+		if([rule matchView:_view]){
+			//log_debug(@" %@#%@ match?: %d", _tagName, self.view.vid, [rule matchView:_view]);
+			for(ICssDecl *decl in rule.declBlock.decls){
+				//log_debug(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
+				[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
+			}
+		}
+	}
+}
+
 - (void)renderAllCss{
 	//log_debug(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
+
+	// 1. built-in css
+	[self renderCssFromStylesheet:[IStyleSheet builtin]];
 	
-	// 对于手工创建的控件, 加上对 stylesheet 的引用
-	if(_cssBlock.decls.count == 0){
-		[_cssBlock addKey:@"@" value:@""];
+	// 2. stylesheet css
+	IStyleSheet *sheet = _view.inheritedStyleSheet;
+	if(sheet){
+		[self renderCssFromStylesheet:sheet];
 	}
 	
+	// 3. inline css
 	for(ICssDecl *decl in _cssBlock.decls){
-		if([decl.key isEqualToString:@"@"]){
-			IStyleSheet *sheet = _view.inheritedStyleSheet;
-			if(sheet){
-				for(ICssRule *rule in sheet.rules){
-					//log_debug(@"RULE: %@", rule);
-					if([rule matchView:_view]){
-						//log_debug(@" %@#%@ match?: %d", _tagName, self.view.vid, [rule matchView:_view]);
-						for(ICssDecl *decl in rule.declBlock.decls){
-							//log_debug(@"  %@ %@ %@: %@", decl, decl.key, decl.key, decl.val);
-							[self applyDecl:decl baseUrl:rule.declBlock.baseUrl];
-						}
-					}
-				}
-			}
-		}else{
-			[self applyDecl:decl baseUrl:_cssBlock.baseUrl];
-		}
+		[self applyDecl:decl baseUrl:_cssBlock.baseUrl];
 	}
 	
 	[_view setNeedsDisplay];
