@@ -27,6 +27,8 @@
 
 @property (nonatomic, readonly) NSArray *rules;
 
++ (IStyleSheet *)shared;
+
 - (void)mergeWithStyleSheet:(IStyleSheet *)sheet;
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl;
 

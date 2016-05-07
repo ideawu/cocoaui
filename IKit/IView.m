@@ -129,6 +129,7 @@
 		}
 		v = v.parent;
 	}
+	// TODO: 返回 IStyleSheet.shared?
 	return nil;
 }
 

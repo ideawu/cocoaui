@@ -3,6 +3,9 @@
 		select{
 			padding: 4px 0;
 		}
+		select.b{
+			background: #3cf;
+		}
 	</style>
 	
 	<br/>
@@ -55,7 +58,7 @@
 	<br/>
 	
 	<span style="width: 40;">bbb:</span>
-	<select id="select2">
+	<select id="select2" class="b">
 		<option value="1">option aaaaaa1</option>
 		<option value="2">option 2</option>
 		<option value="3">option 3</option>

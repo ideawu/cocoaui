@@ -20,6 +20,16 @@
 
 @implementation IStyleSheet
 
++ (IStyleSheet *)shared{
+	static IStyleSheet *ret = nil;
+	if(ret == nil){
+		ret = [[IStyleSheet alloc] init];
+		NSString *default_css = @"select.a{background: #ff3;}";
+		[ret parseCss:default_css baseUrl:nil];
+	}
+	return ret;
+}
+
 - (id)init{
 	self = [super init];
 	_rules = [[NSMutableArray alloc] init];
