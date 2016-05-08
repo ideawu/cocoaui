@@ -14,6 +14,7 @@
 
 @interface ICssRule : NSObject
 
+@property (nonatomic, readonly) NSMutableArray *selectors;
 @property (nonatomic, readonly) ICssBlock *declBlock;
 @property (nonatomic, readonly) int weight;
 

@@ -13,7 +13,6 @@
 #import "ICssBlock.h"
 
 @interface ICssRule()
-@property (nonatomic, readonly) NSMutableArray *selectors;
 @end
 
 @implementation ICssRule
