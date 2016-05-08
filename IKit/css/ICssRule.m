@@ -11,6 +11,7 @@
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "ICssBlock.h"
+#import "IKitUtil.h"
 
 @interface ICssRule()
 @end
@@ -55,12 +56,9 @@
 
 	sel = [sel stringByReplacingOccurrencesOfString:@">" withString:@" > "];
 	sel = [sel stringByReplacingOccurrencesOfString:@":" withString:@" : "];
-	NSArray *ps = [sel componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSArray *ps = [IKitUtil split:sel];
 	for(NSString *p in ps){
-		NSString *key = [p stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		if(key.length == 0){
-			continue;
-		}
+		NSString *key = p;
 		if(_selectors.count > 0 && [_selectors.lastObject isEqualToString:@":"]){
 			[_selectors removeLastObject];
 			if(_selectors.lastObject){

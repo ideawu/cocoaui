@@ -355,6 +355,11 @@
 }
 
 - (void)renderAllCss{
+	// 1. builtin(default) css
+	// 2. stylesheet(by style tag) css
+	// 3. inline css
+	// $: dynamically set css
+	
 	//log_debug(@"%@ %@ %s", _view.name, _tagName, __func__);
 	[self reset];
 
@@ -575,11 +580,8 @@
 }
 
 - (void)parseBackground:(NSString *)v baseUrl:(NSString *)baseUrl{
-	NSMutableArray *ps = [NSMutableArray arrayWithArray:
-						  [v componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-	[ps removeObject:@""];
-	
 	NSString *src = nil;
+	NSArray *ps = [IKitUtil split:v];
 	for(NSString *p in ps){
 		if([p characterAtIndex:0] == '#'){
 			_backgroundColor = [IKitUtil colorFromHex:p];
@@ -650,9 +652,7 @@
 
 - (UIEdgeInsets)parseEdge:(NSString *)v{
 	UIEdgeInsets edge;
-	NSMutableArray *ps = [NSMutableArray arrayWithArray:
-						  [v componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-	[ps removeObject:@""];
+	NSArray *ps = [IKitUtil split:v];
 	if(ps.count == 1){
 		edge.left = edge.right = edge.top = edge.bottom = [ps[0] floatValue];
 	}else if(ps.count == 2){
@@ -677,9 +677,7 @@
 	if([v isEqualToString:@"none"]){
 		return border;
 	}
-	NSMutableArray *ps = [NSMutableArray arrayWithArray:
-						  [v componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-	[ps removeObject:@""];
+	NSArray *ps = [IKitUtil split:v];
 	if(ps.count > 0){
 		border.width = [ps[0] floatValue];
 	}

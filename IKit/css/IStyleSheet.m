@@ -68,6 +68,10 @@
 	return ret;
 }
 
+- (void)parseCss:(NSString *)css{
+	[self parseCss:css baseUrl:nil];
+}
+
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl{
 	css = [self stripComment:css];
 	if(css.length == 0){
@@ -81,7 +85,7 @@
 			break;
 		}
 		NSString *selector = [css substringWithRange:NSMakeRange(searchRange.location, srange.location - searchRange.location)];
-		selector = [selector stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		selector = [IKitUtil trim:selector];
 
 		searchRange.location = srange.location + srange.length;
 		searchRange.length = css.length - searchRange.location;

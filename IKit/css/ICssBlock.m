@@ -9,6 +9,7 @@
 
 #import "ICssBlock.h"
 #import "ICssDecl.h"
+#import "IKitUtil.h"
 
 @interface ICssBlock(){
 	NSMutableArray *_decls;
@@ -75,8 +76,8 @@
 					state = PARSE_KEY;
 					
 					if(k && v){
-						k = [k stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-						v = [v stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+						k = [IKitUtil trim:k];
+						v = [IKitUtil trim:v];
 						k = [k lowercaseString];
 						if(![k isEqualToString:@"background"]){
 							v = [v lowercaseString];
@@ -123,7 +124,7 @@
 	}
 	
 	/*
-	css = [css stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	css = [IKitUtil trim:css];;
 	NSArray *kvs = [css componentsSeparatedByString:@";"];
 	for(NSString *s in kvs){
 		NSArray *kv = [s componentsSeparatedByString:@":"];
@@ -132,8 +133,8 @@
 		}
 		NSString *k = [kv objectAtIndex:0];
 		NSString *v = [kv objectAtIndex:1];
-		k = [k stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		v = [v stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		k = [IKitUtil trim:k];
+		v = [IKitUtil trim:v];
 		k = [k lowercaseString];
 		if(![k isEqualToString:@"background"]){
 			v = [v lowercaseString];

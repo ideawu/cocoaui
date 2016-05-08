@@ -171,4 +171,15 @@ static CGFloat colorVal(NSString *hex){
 	*/
 }
 
++ (NSString *)trim:(NSString *)str{
+	return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
++ (NSArray *)split:(NSString *)str{
+	NSMutableArray *ps = [NSMutableArray arrayWithArray:
+						  [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+	[ps removeObject:@""];
+	return ps;
+}
+
 @end

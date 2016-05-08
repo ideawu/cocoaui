@@ -33,6 +33,8 @@ typedef enum{
 	ParseView,
 }ParseState;
 
+static NSMutableDictionary *_tagClassTable = nil;
+
 @interface IViewLoader () <NSXMLParserDelegate, DTHTMLParserDelegate>{
 	ParseState state;
 	IView *parentView;
@@ -85,34 +87,62 @@ typedef enum{
 - (id)init{
 	self = [super init];
 	_basePath = nil;
-	[self initDefaultCss];
+	[self initDefault];
 	return self;
 }
 
-- (IStyleSheet *)styleSheet{
-	return _styleSheet;
-}
-
-- (void)initDefaultCss{
+- (void)initDefault{
 	static BOOL inited = NO;
 	if(inited){
 		return;
 	}
 	inited = YES;
 	
-	[[IStyleSheet builtin] parseCss:@"a{color: #00f;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"b{font-weight: bold;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"p{clear: both; width: 100%; margin: 12 0;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"br{clear: both; width: 100%; height: 12;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"hr{clear: both; width: 100%; height: 1; margin: 12 0; background: #333;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"ul{clear: both; width: 100%; padding-left: 20; margin: 12 0;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"ol{clear: both; width: 100%; padding-left: 20; margin: 12 0;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"li{clear: both; width: 100%;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"h1{clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"h2{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"h3{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"h4{clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;}" baseUrl:nil];
-	[[IStyleSheet builtin] parseCss:@"h5{clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;}" baseUrl:nil];
+	IStyleSheet *sheet = [IStyleSheet builtin];
+	[sheet parseCss:@"a{color: #00f;}"];
+	[sheet parseCss:@"b{font-weight: bold;}"];
+	[sheet parseCss:@"p{clear: both; width: 100%; margin: 12 0;}"];
+	[sheet parseCss:@"br{clear: both; width: 100%; height: 12;}"];
+	[sheet parseCss:@"hr{clear: both; width: 100%; height: 1; margin: 12 0; background: #333;}"];
+	[sheet parseCss:@"ul{clear: both; width: 100%; padding-left: 20; margin: 12 0;}"];
+	[sheet parseCss:@"ol{clear: both; width: 100%; padding-left: 20; margin: 12 0;}"];
+	[sheet parseCss:@"li{clear: both; width: 100%;}"];
+	[sheet parseCss:@"h1{clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;}"];
+	[sheet parseCss:@"h2{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;}"];
+	[sheet parseCss:@"h3{clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;}"];
+	[sheet parseCss:@"h4{clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;}"];
+	[sheet parseCss:@"h5{clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;}"];
+
+	Class textClass = [ILabel class];
+	Class viewClass = [IView class];
+	
+	[IViewLoader registerViewClass:textClass forTag:@"a"];
+	[IViewLoader registerViewClass:textClass forTag:@"b"];
+	[IViewLoader registerViewClass:textClass forTag:@"label"];
+	[IViewLoader registerViewClass:textClass forTag:@"span"];
+
+	[IViewLoader registerViewClass:viewClass forTag:@"p"];
+	[IViewLoader registerViewClass:viewClass forTag:@"h1"];
+	[IViewLoader registerViewClass:viewClass forTag:@"h2"];
+	[IViewLoader registerViewClass:viewClass forTag:@"h3"];
+	[IViewLoader registerViewClass:viewClass forTag:@"h4"];
+	[IViewLoader registerViewClass:viewClass forTag:@"h5"];
+	
+	[IViewLoader registerViewClass:viewClass forTag:@"br"];
+	[IViewLoader registerViewClass:viewClass forTag:@"hr"];
+	[IViewLoader registerViewClass:viewClass forTag:@"ul"];
+	[IViewLoader registerViewClass:viewClass forTag:@"ol"];
+	[IViewLoader registerViewClass:viewClass forTag:@"li"];
+	[IViewLoader registerViewClass:viewClass forTag:@"div"];
+	[IViewLoader registerViewClass:viewClass forTag:@"view"];
+
+	[IViewLoader registerViewClass:[ISwitch class] forTag:@"switch"];
+	[IViewLoader registerViewClass:[IButton class] forTag:@"button"];
+	[IViewLoader registerViewClass:[ISelect class] forTag:@"select"];
+}
+
+- (IStyleSheet *)styleSheet{
+	return _styleSheet;
 }
 
 - (IView *)loadXml:(NSString *)str{
@@ -258,23 +288,9 @@ typedef enum{
 }
 
 - (void)bindStyleToView:(IView *)view attributes:(NSDictionary *)attributeDict{
-	// 1. builtin(default) css
-	// 2. stylesheet(by style tag) css
-	// 3. inline css
-	// $: dynamically set css
-	
 	// REMEMBER to set baseUrl!
 	view.style.cssBlock.baseUrl = _basePath;
 	
-//	// 1.
-//	NSString *defaultCss = [IViewLoader getDefaultCssForTag:view.style.tagName];
-//	if(defaultCss){
-//		[view.style set:defaultCss];
-//	}
-//	// 2.
-//	[view.style.cssBlock addKey:@"@" value:@""];
-	
-	// 3.
 	NSString *css = [attributeDict objectForKey:@"style"];
 	if(css){
 		[view.style set:css];
@@ -282,9 +298,7 @@ typedef enum{
 	
 	NSString *class_ = [attributeDict objectForKey:@"class"];
 	if(class_ != nil){
-		NSMutableArray *ps = [NSMutableArray arrayWithArray:
-							  [class_ componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-		[ps removeObject:@""];
+		NSArray *ps = [IKitUtil split:class_];
 		for(NSString *clz in ps){
 			[view.style addClass:clz];
 		}
@@ -337,7 +351,7 @@ typedef enum{
 	}else if([tagName isEqualToString:@"input"]){
 		view = [self buildInputWithAttributes:attributeDict];
 	}else{
-		Class clz = [IViewLoader getClassForTag:tagName];
+		Class clz = [IViewLoader getViewClassForTag:tagName];
 		// 避免嵌套的 ILabel
 		if(clz == [ILabel class]){
 			Class pclz = [parentView class];
@@ -436,7 +450,7 @@ typedef enum{
 		return @"";
 	}
 	// TODO: 根据相临节点的类型(是否是文本节点), 保留末尾的空白字符.
-	NSString *str = [_text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSString *str = [IKitUtil trim:_text];
 	_text = [[NSMutableString alloc] init];
 	return str;
 }
@@ -451,62 +465,15 @@ typedef enum{
 	[_text appendString:str];
 }
 
-+ (Class)getClassForTag:(NSString *)tagName{
-	static NSMutableDictionary *tagClassTable = nil;
-	if(tagClassTable == nil){
-		tagClassTable = [[NSMutableDictionary alloc] init];
-		
-		Class textClass = [ILabel class];
-		Class viewClass = [IView class];
-		
-		tagClassTable[@"a"] = textClass;
-		tagClassTable[@"b"] = textClass;
-		tagClassTable[@"label"] = textClass;
-		tagClassTable[@"span"] = textClass;
-
-		tagClassTable[@"p"] = viewClass;
-		tagClassTable[@"h1"] = viewClass;
-		tagClassTable[@"h2"] = viewClass;
-		tagClassTable[@"h3"] = viewClass;
-		tagClassTable[@"h4"] = viewClass;
-		tagClassTable[@"h5"] = viewClass;
-
-		tagClassTable[@"br"] = viewClass;
-		tagClassTable[@"hr"] = viewClass;
-		tagClassTable[@"ul"] = viewClass;
-		tagClassTable[@"ol"] = viewClass;
-		tagClassTable[@"li"] = viewClass;
-		tagClassTable[@"div"] = viewClass;
-		tagClassTable[@"view"] = viewClass;
-		
-		tagClassTable[@"switch"] = [ISwitch class];
-		tagClassTable[@"button"] = [IButton class];
-		tagClassTable[@"select"] = [ISelect class];
++ (void)registerViewClass:(Class)viewClass forTag:(NSString *)tagName{
+	if(_tagClassTable == nil){
+		_tagClassTable = [[NSMutableDictionary alloc] init];
 	}
-	return [tagClassTable objectForKey:tagName];
+	_tagClassTable[tagName] = viewClass;
 }
 
-+ (NSString *)getDefaultCssForTag:(NSString *)tagName{
-	static NSMutableDictionary *defaultCssTable = nil;
-	if(defaultCssTable == nil){
-		defaultCssTable = [[NSMutableDictionary alloc] init];
-//		defaultCssTable[@"a"] = @"color: #00f;";
-//		defaultCssTable[@"b"] = @"font-weight: bold;";
-//		defaultCssTable[@"p"] = @"clear: both; width: 100%; margin: 12 0;";
-//		defaultCssTable[@"br"] = @"clear: both; width: 100%; height: 12;";
-//		defaultCssTable[@"hr"] = @"clear: both; width: 100%; height: 1; margin: 12 0; background: #333;";
-//		
-//		defaultCssTable[@"ul"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
-//		defaultCssTable[@"ol"] = @"clear: both; width: 100%; padding-left: 20; margin: 12 0;";
-//		defaultCssTable[@"li"] = @"clear: both; width: 100%;";
-//		
-//		defaultCssTable[@"h1"] = @"clear: both; font-weight: bold; width: 100%; margin: 12 0; font-size: 240%;";
-//		defaultCssTable[@"h2"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 180%;";
-//		defaultCssTable[@"h3"] = @"clear: both; font-weight: bold; width: 100%; margin: 10 0; font-size: 140%;";
-//		defaultCssTable[@"h4"] = @"clear: both; font-weight: bold; width: 100%; margin: 8 0; font-size: 110%;";
-//		defaultCssTable[@"h5"] = @"clear: both; font-weight: bold; width: 100%; margin: 6 0; font-size: 100%;";
-	}
-	return [defaultCssTable objectForKey:tagName];
++ (Class)getViewClassForTag:(NSString *)tagName{
+	return [_tagClassTable objectForKey:tagName];
 }
 
 @end
