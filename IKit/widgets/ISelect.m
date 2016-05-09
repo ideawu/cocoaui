@@ -62,7 +62,7 @@
 	for(NSUInteger i=0; i<self.options.count; i+=2){
 		NSString *text = self.options[i+1];
 		ILabel *row = [ILabel labelWithText:text];
-		[row.style set:@"height: 42; margin-left: 8; font-size: 18; text-align: center; border-bottom: 0.5 solid #eee;"];
+		[row.style set:@"height: 42; margin-left: 8; font-size: 18; color: #555; text-align: center; border-bottom: 0.5 solid #eee;"];
 		if(i/2 == self.selectedIndex){
 			[row.style set:@"font-weight: bold"];
 		}
