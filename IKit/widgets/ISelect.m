@@ -41,8 +41,8 @@
 	_arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
 	[_arrow.style addClass:@"arrow"];
 
-	[self.style set:@"padding: 0px 0; border: 0.5px solid #ccc; border-radius: 4;"];
-	[_arrow.style set:@"float: right; padding: 0; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #49f; color: #fff;"];
+	[self.style set:@"border: 0.5px solid #ccc; border-radius: 4;"];
+	[_arrow.style set:@"float: right; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #49f; color: #fff;"];
 	[_label.style set:@"width: 100%; padding: 4; valign: middle; text-align: center;"];
 	[self addSubview:_arrow];
 	[self addSubview:_label];
