@@ -551,14 +551,14 @@
 				312F65281B81DF8600174F85 /* ILabel.m */,
 				312F65291B81DF8600174F85 /* IPopover.h */,
 				312F652A1B81DF8600174F85 /* IPopover.m */,
-				312F652B1B81DF8600174F85 /* IRefreshControl.h */,
-				312F652C1B81DF8600174F85 /* IRefreshControl.m */,
 				312F652D1B81DF8600174F85 /* ISwitch.h */,
 				312F652E1B81DF8600174F85 /* ISwitch.m */,
-				312F652F1B81DF8600174F85 /* ITableRow.h */,
-				312F65301B81DF8600174F85 /* ITableRow.m */,
 				31CFA3DB1CDAFCD100360734 /* ISelect.h */,
 				31CFA3DC1CDAFCD100360734 /* ISelect.m */,
+				312F652F1B81DF8600174F85 /* ITableRow.h */,
+				312F65301B81DF8600174F85 /* ITableRow.m */,
+				312F652B1B81DF8600174F85 /* IRefreshControl.h */,
+				312F652C1B81DF8600174F85 /* IRefreshControl.m */,
 			);
 			name = widgets;
 			path = IKit/widgets;

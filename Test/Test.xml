@@ -1,7 +1,6 @@
 <div style="height: 100%; border: 2px solid #3cf;">
 	<style>
 		select{
-			padding: 4px 0;
 		}
 		select .label{
 		}
