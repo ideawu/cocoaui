@@ -35,9 +35,11 @@
 	_label = [ILabel labelWithText:@"---"];
 	_label.label.numberOfLines = 1;
 	_label.label.lineBreakMode = NSLineBreakByTruncatingTail;
+	[_label.style addClass:@"label"];
 
 	_arrow = [ILabel labelWithText:@">"];
 	_arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
+	[_arrow.style addClass:@"arrow"];
 
 	[self.style set:@"padding: 0px 0; border: 0.5px solid #ccc; border-radius: 4;"];
 	[_arrow.style set:@"float: right; padding: 0; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #3bf; color: #fff;"];

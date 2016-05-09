@@ -3,6 +3,10 @@
 		select{
 			padding: 4px 0;
 		}
+		select .label{
+		}
+		select .arrow{
+		}
 	</style>
 	
 	<br/>
