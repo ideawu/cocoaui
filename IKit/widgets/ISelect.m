@@ -75,7 +75,7 @@
 	CGFloat w = self.viewController.view.frame.size.width * 0.8;
 	CGFloat h = self.viewController.view.frame.size.height * 0.9;
 	w = MIN(w, 300);
-	h = MIN(h, 400);
+	h = MIN(h, 420);
 	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
 	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
 	
