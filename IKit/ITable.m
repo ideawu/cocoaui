@@ -445,9 +445,10 @@
 	// 必须禁用动画
 	[UIView setAnimationsEnabled:NO];
 	[self layoutVisibleCells];
+	[UIView setAnimationsEnabled:YES];
+	
 	[self layoutHeaderFooterRefreshControl];
 	[self layoutHeaderFooterView];
-	[UIView setAnimationsEnabled:YES];
 }
 
 - (void)layoutVisibleCells{
