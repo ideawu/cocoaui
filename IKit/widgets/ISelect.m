@@ -62,20 +62,20 @@
 	for(NSUInteger i=0; i<self.options.count; i+=2){
 		NSString *text = self.options[i+1];
 		ILabel *row = [ILabel labelWithText:text];
-		[row.style set:@"height: 35; margin-left: 5; text-align: center; border-bottom: 0.5 solid #eee;"];
+		[row.style set:@"height: 42; margin: 0 6; font-size: 18; color: #555; text-align: center; border-bottom: 0.5 solid #eee;"];
 		if(i/2 == self.selectedIndex){
-			[row.style set:@"font-weight: bold"];
+			[row.style set:@"font-weight: bold;"];
 		}
 		[_table addIViewRow:row];
 	}
 	
 	IView *wrapper = [[IView alloc] init];
-	[wrapper.style set:@"float: center; border: 1px solid #ccc; border-radius: 7;"];
+	[wrapper.style set:@"float: center; border: 1px solid #ccc; border-radius: 10;"];
 	
 	CGFloat w = self.viewController.view.frame.size.width * 0.8;
-	CGFloat h = self.viewController.view.frame.size.height * 0.6;
+	CGFloat h = self.viewController.view.frame.size.height * 0.9;
 	w = MIN(w, 300);
-	h = MIN(h, 400);
+	h = MIN(h, 420);
 	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
 	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
 	
