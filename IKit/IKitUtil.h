@@ -28,6 +28,9 @@
 + (BOOL)isDataURI:(NSString *)src;
 + (UIImage *)loadImageFromDataURI:(NSString *)src;
 
++ (NSString *)trim:(NSString *)str;
++ (NSArray *)split:(NSString *)str;
+
 @end
 
 #endif

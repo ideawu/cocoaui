@@ -71,6 +71,9 @@
 	}
 }
 
+- (void)table:(ITable *)table onClick:(IView *)view atIndex:(NSUInteger)index{
+	log_debug(@"click row %d", index);
+}
 
 - (void)loadData:(int)count{
 	static int seq = 0;

@@ -12,7 +12,7 @@
 
 @property (nonatomic, readonly) UISwitch *uiswitch;
 
-@property (nonatomic,getter=isOn) BOOL on;
+@property (nonatomic, getter=isOn) BOOL on;
 
 - (void)setOn:(BOOL)on animated:(BOOL)animated; // does not send action
 

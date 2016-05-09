@@ -20,6 +20,14 @@
 
 @implementation IStyleSheet
 
++ (IStyleSheet *)builtin{
+	static IStyleSheet *ret = nil;
+	if(ret == nil){
+		ret = [[IStyleSheet alloc] init];
+	}
+	return ret;
+}
+
 - (id)init{
 	self = [super init];
 	_rules = [[NSMutableArray alloc] init];
@@ -60,6 +68,10 @@
 	return ret;
 }
 
+- (void)parseCss:(NSString *)css{
+	[self parseCss:css baseUrl:nil];
+}
+
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl{
 	css = [self stripComment:css];
 	if(css.length == 0){
@@ -73,7 +85,7 @@
 			break;
 		}
 		NSString *selector = [css substringWithRange:NSMakeRange(searchRange.location, srange.location - searchRange.location)];
-		selector = [selector stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		selector = [IKitUtil trim:selector];
 
 		searchRange.location = srange.location + srange.length;
 		searchRange.length = css.length - searchRange.location;

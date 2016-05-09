@@ -129,6 +129,7 @@
 		}
 		v = v.parent;
 	}
+	// TODO: 返回一个默认的 IStyleSheet?
 	return nil;
 }
 

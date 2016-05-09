@@ -8,10 +8,11 @@
  */
 
 #import "IPopover.h"
+#import "IStyleInternal.h"
 
 @interface IPopover (){
 	IView *_wrapperView;
-	IView *_contentView;
+	UIView *_contentView;
 }
 @end
 
@@ -19,12 +20,13 @@
 
 - (id)init{
 	self = [super init];
+	
 	_wrapperView = [[IView alloc] init];
-	[self addSubview:_wrapperView];
+   [self addSubview:_wrapperView];
 	
 	[self.style set:@"width: 100%; height: 100%;"];
 	[_wrapperView.style set:@"width: 100%; height: 100%; background: #2000"];
-
+	
 	[self addEvent:IEventClick handler:^(IEventType event, IView *view) {
 		[view hide];
 	}];
@@ -34,8 +36,7 @@
 
 - (void)show{
 	[super show];
-	[self setNeedsLayout];
-	[self layoutSubviews];
+	[self layout];
 	
 	CGRect frame1 = _contentView.frame;
 	CGRect frame0 = frame1;
@@ -43,12 +44,12 @@
 	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
 
 	_contentView.frame = frame0;
-	_wrapperView.layer.opacity = 0;
+	self.layer.opacity = 0;
 	[UIView animateWithDuration:0.3 animations:^(){
 		_contentView.frame = frame1;
-		_wrapperView.layer.opacity = 1;
+		self.layer.opacity = 1;
 	} completion:^(BOOL finished) {
-		//log_debug(@"%s", __func__);
+		//log_debug(@"%f", _contentView.frame.size.width);
 	}];
 }
 
@@ -57,38 +58,42 @@
 	frame.origin.y -= frame.size.height;
 	[UIView animateWithDuration:0.3 animations:^(){
 		_contentView.frame = frame;
-		_wrapperView.layer.opacity = 0;
+		self.layer.opacity = 0;
+		if(_onWillHide){
+			_onWillHide(self);
+		}
 	} completion:^(BOOL finished) {
 		[self setContentView:nil];
 		[self removeFromSuperview];
 		[super hide];
+		if(_onHidden){
+			_onHidden(self);
+		}
 	}];
 }
 
-- (void)setContentView:(IView *)view{
+- (void)setContentView:(UIView *)view{
 	if(_contentView){
 		[_contentView removeFromSuperview];
 	}
-	if(view){
-		[_wrapperView addSubview:view];
-	}
 	_contentView = view;
+	[_wrapperView addSubview:_contentView];
 }
 
-- (void)my_presentView:(IView *)view onView:(UIView *)containerView{
+- (void)my_presentView:(UIView *)view onView:(UIView *)containerView{
 	[self removeFromSuperview];
 	[containerView addSubview:self];
 	
+	self.frame = containerView.bounds;
 	[self setContentView:view];
 	[self show];
 }
 
-- (void)presentView:(IView *)view onView:(UIView *)containerView{
-	[_wrapperView.style set:@"margin-top: 0"];
+- (void)presentView:(UIView *)view onView:(UIView *)containerView{
 	[self my_presentView:view onView:containerView];
 }
 
-- (void)presentView:(IView *)view onViewController:(UIViewController *)controller{
+- (void)presentView:(UIView *)view onViewController:(UIViewController *)controller{
 	if([controller isKindOfClass:[UINavigationController class]]){
 		CGRect frame = [(UINavigationController *)controller navigationBar].frame;
 		CGFloat offset = frame.origin.y + frame.size.height;

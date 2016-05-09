@@ -14,8 +14,11 @@
 
 @interface IPopover : IView
 
-- (void)presentView:(IView *)view onView:(UIView *)containerView;
-- (void)presentView:(IView *)view onViewController:(UIViewController *)controller;
+@property void (^onHidden)(IPopover *popover);
+@property void (^onWillHide)(IPopover *popover);
+
+- (void)presentView:(UIView *)view onView:(UIView *)containerView;
+- (void)presentView:(UIView *)view onViewController:(UIViewController *)controller;
 
 @end
 

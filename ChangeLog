@@ -1,5 +1,7 @@
 * 1.2.6
 	* New features:
+		- CSS support tag.class(2016-05-07)
+		- Add dropdown menu<select>(2016-05-05)
 		- ITable is able to be wrapped in UIView(2016-03-29) 
 * 1.2.5
 	* New features:

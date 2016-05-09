@@ -21,6 +21,7 @@
 #import "IInput.h"
 #import "IButton.h"
 #import "ISwitch.h"
+#import "ISelect.h"
 #import "IImage.h"
 #import "IPullRefresh.h"
 #import "IRefreshControl.h"

@@ -136,15 +136,15 @@ static IResourceMananger *_sharedMananger;
 	[data writeToFile:data_file atomically:YES];
 }
 
-- (UIImage *)loadImage:(NSString *)path callback:(void (^)(UIImage *))callback{
+- (UIImage *)loadImageSrc:(NSString *)src callback:(void (^)(UIImage *))callback{
 	UIImage *img = nil;
 
-	if([IKitUtil isHttpUrl:path]){
+	if([IKitUtil isHttpUrl:src]){
 		if(_enableImageCache){
-			img = [self cache_get:path];
+			img = [self cache_get:src];
 		}
 		if(img){
-			log_debug(@"load img from cache: %@", path);
+			log_debug(@"load img from cache: %@", src);
 			if(callback){
 				callback(img);
 			}
@@ -154,17 +154,17 @@ static IResourceMananger *_sharedMananger;
 		// TODO: 并发控制, 去重
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 		[request setHTTPMethod:@"GET"];
-		[request setURL:[NSURL URLWithString:path]];
+		[request setURL:[NSURL URLWithString:src]];
 		[request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 		[NSURLConnection sendAsynchronousRequest:request
 										   queue:[NSOperationQueue currentQueue]
 							   completionHandler:^(NSURLResponse *urlresp, NSData *data, NSError *error)
 		{
-			log_debug(@"load img from remote: %@", path);
+			log_debug(@"load img from remote: %@", src);
 			UIImage *img = [UIImage imageWithData:data];
 			if(img){
 				if(_enableImageCache){
-					[self cache_set:path val:img];
+					[self cache_set:src val:img];
 				}
 				if(callback){
 					dispatch_async(dispatch_get_main_queue(), ^{
@@ -173,17 +173,23 @@ static IResourceMananger *_sharedMananger;
 				}
 			}
 		}];
+	}else if([IKitUtil isDataURI:src]){
+		log_debug(@"load image element from data URI");
+		img = [IKitUtil loadImageFromDataURI:src];
+		if(callback){
+			callback(img);
+		}
 	}else{
-		if([path characterAtIndex:0] != '/'){
-			img = [UIImage imageNamed:path]; // imageNamed 内部有 cache
-		}else if([path rangeOfString:[NSBundle mainBundle].resourcePath].length > 0){
-			path = [path substringFromIndex:[NSBundle mainBundle].resourcePath.length + 1];
-			img = [UIImage imageNamed:path]; // imageNamed 内部有 cache
+		if([src characterAtIndex:0] != '/'){
+			img = [UIImage imageNamed:src]; // imageNamed 内部有 cache
+		}else if([src rangeOfString:[NSBundle mainBundle].resourcePath].length > 0){
+			src = [src substringFromIndex:[NSBundle mainBundle].resourcePath.length + 1];
+			img = [UIImage imageNamed:src]; // imageNamed 内部有 cache
 		}else{
-			NSData *data = [NSData dataWithContentsOfFile:path];
+			NSData *data = [NSData dataWithContentsOfFile:src];
 			img = [UIImage imageWithData:data];
 		}
-		log_debug(@"load img from local: %@", path);
+		log_debug(@"load img from local: %@", src);
 		if(img){
 			if(callback){
 				callback(img);
@@ -200,7 +206,11 @@ static IResourceMananger *_sharedMananger;
 	if(_enableCssCache){
 		sheet = [_cache objectForKey:path];
 		if(sheet){
-			log_debug(@"load css from cache: %@", path);
+			if([IKitUtil isHttpUrl:path]){
+				log_debug(@"load css from cache: %@", path);
+			}else{
+				log_debug(@"load css from cache: %@", [path lastPathComponent]);
+			}
 			return sheet;
 		}
 	}

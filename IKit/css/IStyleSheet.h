@@ -27,7 +27,10 @@
 
 @property (nonatomic, readonly) NSArray *rules;
 
++ (IStyleSheet *)builtin;
+
 - (void)mergeWithStyleSheet:(IStyleSheet *)sheet;
+- (void)parseCss:(NSString *)css;
 - (void)parseCss:(NSString *)css baseUrl:(NSString *)baseUrl;
 
 @end
