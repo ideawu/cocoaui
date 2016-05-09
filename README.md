@@ -14,7 +14,7 @@ Build adaptive UI for iOS Apps with Flow-Layout mechanism and CSS properties.
 
 
 __Demos:__
- * [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
+ * [https://github.com/ideawu/cocoaui/tree/master/Test](https://github.com/ideawu/cocoaui/tree/master/Test)
 
 ## Dependency
 
@@ -77,11 +77,6 @@ Without CocoaUI, here's the equivalent code you'd have to write using Apple's Fo
 	]];
 
 CocoaUI supports most CSS layout and styling feature, the key of CocoaUI is Flow Layout.
-
-### Example Apps
-
- * [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
- * [https://github.com/ideawu/cocoaui/tree/master/IKit/Test](https://github.com/ideawu/cocoaui/tree/master/IKit/Test)
 
 ### Learning CocoaUI
 
