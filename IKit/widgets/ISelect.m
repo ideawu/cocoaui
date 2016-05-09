@@ -88,7 +88,7 @@
 	__weak typeof(self) me = self;
 	_pop = [[IPopover alloc] init];
 	[UIView animateWithDuration:0.2 animations:^(){
-		_arrow.label.transform = CGAffineTransformMakeRotation(-M_PI);
+		_arrow.label.transform = CGAffineTransformMakeRotation(0);
 	}];
 	[_pop onWillHide:^(IPopover *popover) {
 		[UIView animateWithDuration:0.2 animations:^(){
