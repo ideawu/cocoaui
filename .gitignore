@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 *.xcuserstate
+*.xcuserdatad
 build
 IKit.xcodeproj/project.xcworkspace/xcshareddata/IKit.xccheckout
 IKit.xcodeproj/project.xcworkspace/xcuserdata/
