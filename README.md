@@ -80,8 +80,7 @@ CocoaUI supports most CSS layout and styling feature, the key of CocoaUI is Flow
 
 ### Example Apps
 
- * [https://github.com/ideawu/cocoaui-demos](https://github.com/ideawu/cocoaui-demos)
- * [https://github.com/ideawu/cocoaui/tree/master/IKit/Test](https://github.com/ideawu/cocoaui/tree/master/IKit/Test)
+ * [https://github.com/ideawu/cocoaui/tree/master/Test](https://github.com/ideawu/cocoaui/tree/master/Test)
 
 ### Learning CocoaUI
 
