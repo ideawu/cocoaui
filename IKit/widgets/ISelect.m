@@ -90,7 +90,7 @@
 	[UIView animateWithDuration:0.2 animations:^(){
 		_arrow.label.transform = CGAffineTransformMakeRotation(-M_PI);
 	}];
-	[_pop setOnWillHide:^(IPopover *popover) {
+	[_pop onWillHide:^(IPopover *popover) {
 		[UIView animateWithDuration:0.2 animations:^(){
 			me.arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
 		}];

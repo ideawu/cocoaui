@@ -37,12 +37,12 @@
 	return self;
 }
 
-- (void)setOnHidden:(void (^)(IPopover *popover))onHidden{
-	_onHidden = onHidden;
+- (void)onHidden:(void (^)(IPopover *popover))callback{
+	_onHidden = callback;
 }
 
-- (void)setOnWillHide:(void (^)(IPopover *popover))onWillHide{
-	_onWillHide = onWillHide;
+- (void)onWillHide:(void (^)(IPopover *popover))callback{
+	_onWillHide = callback;
 }
 
 - (void)show{

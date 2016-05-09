@@ -14,8 +14,8 @@
 
 @interface IPopover : IView
 
-- (void)setOnHidden:(void (^)(IPopover *popover))onHidden;
-- (void)setOnWillHide:(void (^)(IPopover *popover))onWillHide;
+- (void)onHidden:(void (^)(IPopover *popover))callback;
+- (void)onWillHide:(void (^)(IPopover *popover))callback;
 
 - (void)presentView:(UIView *)view onView:(UIView *)containerView;
 - (void)presentView:(UIView *)view onViewController:(UIViewController *)controller;
