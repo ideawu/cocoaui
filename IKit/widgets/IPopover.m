@@ -13,6 +13,9 @@
 @interface IPopover (){
 	IView *_wrapperView;
 	UIView *_contentView;
+	
+	void (^_onHidden)(IPopover *popover);
+	void (^_onWillHide)(IPopover *popover);
 }
 @end
 
@@ -32,6 +35,14 @@
 	}];
 
 	return self;
+}
+
+- (void)setOnHidden:(void (^)(IPopover *popover))onHidden{
+	_onHidden = onHidden;
+}
+
+- (void)setOnWillHide:(void (^)(IPopover *popover))onWillHide{
+	_onWillHide = onWillHide;
 }
 
 - (void)show{
