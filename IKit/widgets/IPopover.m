@@ -66,8 +66,8 @@
 		[self setContentView:nil];
 		[self removeFromSuperview];
 		[super hide];
-		if(_onHide){
-			_onHide(self);
+		if(_onHidden){
+			_onHidden(self);
 		}
 	}];
 }
