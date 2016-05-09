@@ -59,6 +59,9 @@
 	[UIView animateWithDuration:0.3 animations:^(){
 		_contentView.frame = frame;
 		self.layer.opacity = 0;
+		if(_onWillHide){
+			_onWillHide(self);
+		}
 	} completion:^(BOOL finished) {
 		[self setContentView:nil];
 		[self removeFromSuperview];

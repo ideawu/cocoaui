@@ -39,9 +39,9 @@
 	_arrow = [ILabel labelWithText:@">"];
 	_arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
 
-	[self.style set:@"padding: 1px 0; border: 0.5px solid #ccc;"];
-	[_arrow.style set:@"float: right; padding-left: 2; width: 15px; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #0cf; border-radius: 3; color: #fff;"];
-	[_label.style set:@"width: 100%; valign: middle; text-align: center;"];
+	[self.style set:@"padding: 0px 0; border: 0.5px solid #ccc; border-radius: 4;"];
+	[_arrow.style set:@"float: right; padding: 0; height: 100%; font-size: 16px; font-weight: bold; valign: middle; text-align: center; background: #3bf; color: #fff;"];
+	[_label.style set:@"width: 100%; padding: 4; valign: middle; text-align: center;"];
 	[self addSubview:_arrow];
 	[self addSubview:_label];
 
@@ -68,11 +68,11 @@
 	}
 	
 	IView *wrapper = [[IView alloc] init];
-	[wrapper.style set:@"float: center; border: 0.5px solid #ccc; border-radius: 7;"];
+	[wrapper.style set:@"float: center; border: 1px solid #ccc; border-radius: 7;"];
 	
-	CGFloat w = self.viewController.view.frame.size.width * 0.7;
+	CGFloat w = self.viewController.view.frame.size.width * 0.8;
 	CGFloat h = self.viewController.view.frame.size.height * 0.6;
-	w = MIN(w, 260);
+	w = MIN(w, 300);
 	h = MIN(h, 400);
 	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
 	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
@@ -83,7 +83,16 @@
 	[v addSubview:_table.view];
 	[wrapper addSubview:v];
 	
+	__weak typeof(self) me = self;
 	_pop = [[IPopover alloc] init];
+	[UIView animateWithDuration:0.2 animations:^(){
+		_arrow.label.transform = CGAffineTransformMakeRotation(-M_PI);
+	}];
+	[_pop setOnWillHide:^(IPopover *popover) {
+		[UIView animateWithDuration:0.2 animations:^(){
+			me.arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
+		}];
+	}];
 	[_pop presentView:wrapper onViewController:self.viewController];
 	
 	if(self.selectedIndex >= 0){
