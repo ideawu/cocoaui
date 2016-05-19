@@ -8,6 +8,9 @@
 		}
 	</style>
 	
+	<div id="bg" style="width: 100; height: 100; border: 1px solid #333;">
+	</div>
+	
 	<br/>
 	
 	<span style="width: 40;">aaa:</span>
