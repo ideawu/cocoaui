@@ -37,7 +37,9 @@
 
 	{
 		IView *v = [view getViewById:@"bg"];
-		[v.style set:@"background: #ff3 url(ic_up.png) repeat;"];
+		IView *view = [[IView alloc] init];
+		[view.style set:@"width: 100; height: 80; background: #ff3 url(ic_up.png) repeat;"];
+		[v addSubview:view];
 	}
 
 }

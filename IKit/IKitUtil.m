@@ -127,6 +127,9 @@ static CGFloat colorVal(NSString *hex){
 }
 
 + (NSString *)buildPath:(NSString *)basePath src:(NSString *)src{
+	if(!basePath){
+		return src;
+	}
 	if([IKitUtil isHttpUrl:src]){
 		return src;
 	}
