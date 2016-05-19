@@ -34,6 +34,14 @@
 		[sel.style set:@"border: none;"];
 		[sel.arrow.style set:@"color: #f33; background: none;"];
 	}
+
+	{
+		IView *v = [view getViewById:@"bg"];
+		IView *view = [[IView alloc] init];
+		[view.style set:@"width: 100; height: 80; background: #ff3 url(ic_up.png) repeat;"];
+		[v addSubview:view];
+	}
+
 }
 
 @end
