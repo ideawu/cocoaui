@@ -70,6 +70,8 @@
 		311609D71ADA3142003C5EF2 /* IDict.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254501A5E4A110095EC77 /* IDict.h */; };
 		311609D81ADA3149003C5EF2 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492601A8092CC00F0563C /* RSA.m */; };
 		312E1C641CE076C900E916EC /* ISelect.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31CFA3DB1CDAFCD100360734 /* ISelect.h */; };
+		312E1C671CFBF68800E916EC /* ITextArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 312E1C661CFBF68800E916EC /* ITextArea.m */; };
+		312E1C681CFBF69200E916EC /* ITextArea.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312E1C651CFBF68800E916EC /* ITextArea.h */; };
 		312F65161B81DE8F00174F85 /* IStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65151B81DE8F00174F85 /* IStyleSheet.m */; };
 		312F651C1B81DEB700174F85 /* IStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65181B81DEB700174F85 /* IStyle.m */; };
 		312F651E1B81DF1200174F85 /* IStyle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F65171B81DEB700174F85 /* IStyle.h */; };
@@ -160,6 +162,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				312E1C681CFBF69200E916EC /* ITextArea.h in CopyFiles */,
 				312E1C641CE076C900E916EC /* ISelect.h in CopyFiles */,
 				312F65391B81DFD300174F85 /* IButton.h in CopyFiles */,
 				312F653A1B81DFD300174F85 /* IImage.h in CopyFiles */,
@@ -255,6 +258,8 @@
 		08FD76A01A846DFB00FB249C /* ic_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_up.png; sourceTree = "<group>"; };
 		311609911AC9066A003C5EF2 /* ICellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICellView.h; sourceTree = "<group>"; };
 		311609921AC9066A003C5EF2 /* ICellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICellView.m; sourceTree = "<group>"; };
+		312E1C651CFBF68800E916EC /* ITextArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITextArea.h; sourceTree = "<group>"; };
+		312E1C661CFBF68800E916EC /* ITextArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITextArea.m; sourceTree = "<group>"; };
 		312F65141B81DE8F00174F85 /* IStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStyleSheet.h; sourceTree = "<group>"; };
 		312F65151B81DE8F00174F85 /* IStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IStyleSheet.m; sourceTree = "<group>"; };
 		312F65171B81DEB700174F85 /* IStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStyle.h; sourceTree = "<group>"; };
@@ -549,6 +554,8 @@
 				312F65241B81DF8600174F85 /* IImage.m */,
 				312F65251B81DF8600174F85 /* IInput.h */,
 				312F65261B81DF8600174F85 /* IInput.m */,
+				312E1C651CFBF68800E916EC /* ITextArea.h */,
+				312E1C661CFBF68800E916EC /* ITextArea.m */,
 				312F65271B81DF8600174F85 /* ILabel.h */,
 				312F65281B81DF8600174F85 /* ILabel.m */,
 				312F65291B81DF8600174F85 /* IPopover.h */,
@@ -850,6 +857,7 @@
 				312F65331B81DF8600174F85 /* IInput.m in Sources */,
 				312F65431B81E30600174F85 /* ICssRule.m in Sources */,
 				312F651C1B81DEB700174F85 /* IStyle.m in Sources */,
+				312E1C671CFBF68800E916EC /* ITextArea.m in Sources */,
 				312F65381B81DF8600174F85 /* ITableRow.m in Sources */,
 				31B69CAE1BF5AFC400EC1908 /* IViewLoader.m in Sources */,
 				312F65311B81DF8600174F85 /* IButton.m in Sources */,
