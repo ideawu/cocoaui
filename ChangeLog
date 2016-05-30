@@ -1,8 +1,11 @@
 * 1.2.6
 	* New features:
+		- Support <textarea>(2016-05-30)
 		- CSS support tag.class(2016-05-07)
 		- Add dropdown menu<select>(2016-05-05)
 		- ITable is able to be wrapped in UIView(2016-03-29) 
+	* Bug fixes:
+		- Fix IInput padding bug(2016-05-30)
 * 1.2.5
 	* New features:
 		- ITable cells with 100% height will fills the screen(2015-12-01) 

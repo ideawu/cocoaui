@@ -99,6 +99,11 @@ typedef enum{
 	[super drawRect:rect];
 }
 
+- (void)updateFrame{
+	[super updateFrame];
+	_textField.frame = UIEdgeInsetsInsetRect(_textField.frame, self.style.padding);
+}
+
 - (void)layout{
 	//log_debug(@"%@ %s %@", self.name, __func__, _textField.text);
 	
@@ -119,15 +124,6 @@ typedef enum{
 
 	// 先做自定义布局, 再进行父类布局
 	[super layout];
-
-	// 根据 padding 拉伸 UITextField
-	// TODO: 应该再设置 UITextField 的 padding 属性
-	CGRect frame = _textField.frame;
-	frame.origin.x += self.style.padding.left;
-	frame.origin.y += self.style.padding.top;
-	frame.size.width -= self.style.padding.left + self.style.padding.right;
-	frame.size.height -= self.style.padding.top + self.style.padding.bottom;
-	_textField.frame = frame;
 }
 
 
