@@ -28,6 +28,8 @@
  * The height, including border, padding, content
  */
 @property (nonatomic) CGFloat height;
+
+@property (nonatomic, readonly) CGFloat aspectRatio;
 /**
  * The size, both width and height include border, padding, content
  */

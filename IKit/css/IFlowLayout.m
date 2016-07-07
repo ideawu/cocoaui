@@ -98,11 +98,17 @@
 		if(_style.w != self.realWidth){
 			//log_debug(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
 		}
+		if(_style.aspectRatio > 0){
+			self.realWidth = self.realHeight * _style.aspectRatio;
+		}
 		_style.w = self.realWidth;
 	}
 	if(_style.resizeHeight){
 		if(_style.h != self.realHeight){
 			//log_debug(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
+		}
+		if(_style.aspectRatio > 0){
+			self.realHeight = self.realWidth / _style.aspectRatio;
 		}
 		_style.h = self.realHeight;
 	}
