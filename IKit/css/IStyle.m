@@ -461,6 +461,25 @@
 			[self setRatioHeight:f/100];
 		}
 		//log_trace(@"h = %f, ratioH = %f", self.h, self.ratioH);
+	}else if([k isEqualToString:@"aspect-ratio"]){
+		needsLayout = YES;
+		if([v isEqualToString:@"auto"]){
+			_aspectRatio = 0;
+			return;
+		}
+		
+		float f = [v floatValue];
+		if([v rangeOfString:@"%"].location == NSNotFound){
+			if([v rangeOfString:@"/"].location == NSNotFound){
+				_aspectRatio = f;
+			}else{
+				NSArray *ps = [v componentsSeparatedByString:@"/"];
+				f = ((NSString *)ps[0]).floatValue / ((NSString *)ps[1]).floatValue;
+				_aspectRatio = f;
+			}
+		}else{
+			_aspectRatio = f/100;
+		}
 	}else if([k isEqualToString:@"margin"]){
 		needsLayout = YES;
 		_margin = [self parseEdge:v];
