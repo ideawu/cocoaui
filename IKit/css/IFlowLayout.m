@@ -64,6 +64,11 @@
 	}
 }
 
+/**
+ * 这里的 layout 算法不是严格意义上的递归, 因为只 layout 自己的 subs,
+ * 而不在递归调用 subs 的 layout. 依赖于 Cocoa 自身的的渲染机制最终渲染整个 dom tree.
+ * 叶子节点不会调用本方法.
+ */
 - (void)layout{
 	if(_style.resizeHeight){
 		_style.h = 0;

@@ -221,7 +221,7 @@ static NSMutableDictionary *_tagClassTable = nil;
 			src = [attributeDict objectForKey:@"href"];
 		}
 	}
-	if(src){
+	if(src && src.length > 0){
 		src = [IKitUtil buildPath:_basePath src:src];
 		IStyleSheet *sheet = [[IResourceMananger sharedMananger] loadCss:src];
 		[_styleSheet mergeWithStyleSheet:sheet];
@@ -240,7 +240,7 @@ static NSMutableDictionary *_tagClassTable = nil;
 - (IImage *)buildImageWithAttributes:(NSDictionary *)attributeDict{
 	NSString *src = [attributeDict objectForKey:@"src"];
 	IImage *img = [[IImage alloc] init];
-	if(src){
+	if(src && src.length > 0){
 		if(![IKitUtil isDataURI:src]){
 			src = [IKitUtil buildPath:_basePath src:src];
 		}
