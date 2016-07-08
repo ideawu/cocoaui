@@ -46,10 +46,12 @@
 	
 	[_btn_3 addEvent:IEventClick handler:^(IEventType event, IView *view) {
 		me.div.style.width -= 20;
+//		[me.div.style set:[NSString stringWithFormat:@"width: %f", me.div.style.width - 20]];
 		[div2.style removeClass:@"a"];
 	}];
 	[_btn_4 addEvent:IEventClick handler:^(IEventType event, IView *view) {
 		me.div.style.width += 20;
+//		[me.div.style set:[NSString stringWithFormat:@"width: %f", me.div.style.width + 20]];
 		[div2.style addClass:@"a"];
 	}];
 	

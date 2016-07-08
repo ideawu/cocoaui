@@ -168,10 +168,6 @@ typedef enum{
 - (BOOL)resizeHeight;
 - (BOOL)resizeBoth;
 
-- (void)setResizeWidth;
-
-- (void)setSize:(CGSize)size;
-
 - (void)setInnerWidth:(CGFloat)w;
 - (void)setInnerHeight:(CGFloat)h;
 - (void)setRatioWidth:(CGFloat)rw;

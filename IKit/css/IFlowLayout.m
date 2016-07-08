@@ -66,7 +66,6 @@
 
 - (void)layout{
 	if(_view.isRootView){
-		_view.level = 0;
 		if(_style.ratioWidth > 0){
 			_style.w = _style.ratioWidth * _view.superview.frame.size.width - _style.margin.left - _style.margin.right;
 		}
@@ -77,20 +76,19 @@
 		_style.y = _style.top + _style.margin.top;
 	}
 
-
 	if(_view.isPrimativeView){
 		//
 	}else{
-	}
-	if(_style.resizeHeight){
-		_style.h = 0;
-	}
-	[self layout_once];
-	// 竖直居中需要两遍布局
-	for(IView *sub in _view.subs){
-		if(sub.style.valignType != IStyleValignTop){
-			[self layout_once];
-			break;
+		if(_style.resizeHeight){
+			_style.h = 0;
+		}
+		[self layout_once];
+		// 竖直居中需要两遍布局
+		for(IView *sub in _view.subs){
+			if(sub.style.valignType != IStyleValignTop){
+				[self layout_once];
+				break;
+			}
 		}
 	}
 }
@@ -99,7 +97,6 @@
 	[self reset];
 	
 	for(IView *sub in _view.subs){
-		sub.level = _view.level + 1;
 		[self place:sub];
 		sub.style.x += _style.borderLeft.width + _style.padding.left;
 		sub.style.y += _style.borderTop.width + _style.padding.top;
@@ -173,10 +170,8 @@
 			}
 			if(style.w > 0){
 				//log_trace(@"%@ before w=%f, h=%f, _x=%f, x2=%f", view.name, style.w, style.h, _x, _x2);
-				view.level += 1;
 				//log_trace(@"%s %d call layout %@", __func__, __LINE__, view.name);
 				[view layout];
-				view.level -= 1;
 				//log_trace(@"%@ after w=%f, h=%f, _x=%f, x2=%f", view.name, style.w, style.h, _x, _x2);
 				if(style.w == 0){
 					return;
