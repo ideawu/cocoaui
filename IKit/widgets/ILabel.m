@@ -80,6 +80,7 @@
 
 - (void)layout{
 	//log_debug(@"%@ %s %@", self.name, __func__, _label.text);
+	[super layout];
 
 	UIFont *font = self.style.inheritedFont;
 	if(font){
@@ -118,9 +119,6 @@
 		//log_debug(@"resize height %f", _label.frame.size.height);
 		[self.style setInnerHeight:_label.frame.size.height];
 	}
-
-	// 先做自定义布局, 再进行父类布局
-	[super layout];
 }
 
 @end

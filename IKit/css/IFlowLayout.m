@@ -81,16 +81,16 @@
 	if(_view.isPrimativeView){
 		//
 	}else{
-		if(_style.resizeHeight){
-			_style.h = 0;
-		}
-		[self layout_once];
-		// 竖直居中需要两遍布局
-		for(IView *sub in _view.subs){
-			if(sub.style.valignType != IStyleValignTop){
-				[self layout_once];
-				break;
-			}
+	}
+	if(_style.resizeHeight){
+		_style.h = 0;
+	}
+	[self layout_once];
+	// 竖直居中需要两遍布局
+	for(IView *sub in _view.subs){
+		if(sub.style.valignType != IStyleValignTop){
+			[self layout_once];
+			break;
 		}
 	}
 }
