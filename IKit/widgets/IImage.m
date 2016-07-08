@@ -30,7 +30,6 @@
 
 - (id)init{
 	self = [super init];
-	[self.style setResizeWidth];
 	self.style.tagName = @"img";
 	return self;
 }

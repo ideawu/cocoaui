@@ -31,7 +31,6 @@
 	}
 	
 	self = [super init];
-	[self.style setResizeWidth];
 	self.style.tagName = @"label";
 
 	_label = [[UILabel alloc] init];
