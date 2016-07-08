@@ -168,6 +168,7 @@
 		_subs = [[NSMutableArray alloc] init];
 	}
 	sub.parent = self;
+	sub.level = self.level + 1;
 
 	[_subs addObject:sub];
 	[super addSubview:sub];
@@ -339,10 +340,10 @@
 }
 
 - (void)layout{
-	//log_debug(@"%@ layout begin %@", self.name, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%@ layout begin %@, #%d", self.name, NSStringFromCGRect(_style.rect), self.level);
 	_need_layout = false;
 	[_layouter layout];
-	//log_debug(@"%@ layout end %@", self.name, NSStringFromCGRect(_style.rect));
+	//log_debug(@"%@ layout end %@, #%d", self.name, NSStringFromCGRect(_style.rect), self.level);
 }
 
 #pragma mark - Events
