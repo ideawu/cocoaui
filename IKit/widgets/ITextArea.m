@@ -61,15 +61,13 @@
 
 - (void)layout{
 	//log_debug(@"%@ %s %@", self.name, __func__, _textField.text);
+	[super layout];
 	
 	UIFont *font = self.style.inheritedFont;
 	if(font){
 		_textView.font = font;
 	}
 	_textView.textAlignment = self.style.inheritedNSTextAlign;
-	
-	// 先做自定义布局, 再进行父类布局
-	[super layout];
 }
 
 @end

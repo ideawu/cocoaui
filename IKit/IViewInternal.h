@@ -46,6 +46,9 @@
 
 - (IStyleSheet *)inheritedStyleSheet;
 
+- (BOOL)isRootView;
+- (BOOL)isPrimativeView;
+
 @end
 
 #endif

@@ -39,10 +39,10 @@
 }
 
 - (void)layout{
+	[super layout];
 	// UISwitch is not resizable
 	[self.style setInnerWidth:_uiswitch.frame.size.width];
 	[self.style setInnerHeight:_uiswitch.frame.size.height];
-	[super layout];
 }
 
 - (void)onChange:(id)sender{

@@ -134,7 +134,7 @@ static CGFloat colorVal(NSString *hex){
 		return src;
 	}
 	if([IKitUtil isHttpUrl:basePath]){
-		if([src characterAtIndex:0] == '/'){
+		if(src.length > 0 && [src characterAtIndex:0] == '/'){
 			NSString *rootPath = [IKitUtil getRootPath:basePath];
 			src = [rootPath stringByAppendingString:[src substringFromIndex:1]];
 		}else{

@@ -80,6 +80,7 @@
 
 - (void)layout{
 	//log_debug(@"%@ %s %@", self.name, __func__, _src);
+	[super layout];
 	
 	if(_imageView){
 		[_imageView sizeToFit];
@@ -91,23 +92,25 @@
 			//log_debug(@"height: %f", _imageView.frame.size.height);
 			[self.style setInnerHeight:_imageView.frame.size.height];
 		}
-		if(!self.style.resizeWidth && self.style.resizeHeight){
+
+		CGFloat ratio = 1;
+		if(self.style.aspectRatio > 0){
+			ratio = self.style.aspectRatio;
+		}else{
 			// 等比缩放
-			if(_imageView.frame.size.height != 0){
-				CGFloat h = self.style.innerWidth / _imageView.frame.size.width * _imageView.frame.size.height;
-				[self.style setInnerHeight:h];
-			}
-		}else if(self.style.resizeWidth && !self.style.resizeHeight){
-			// 等比缩放
-			if(_imageView.frame.size.width != 0){
-				CGFloat w = self.style.innerHeight / _imageView.frame.size.height * _imageView.frame.size.width;
-				[self.style setInnerWidth:w];
+			if(_imageView.frame.size.width != 0 && _imageView.frame.size.height != 0){
+				ratio = _imageView.frame.size.width / _imageView.frame.size.height;
 			}
 		}
+		if(self.style.resizeHeight){
+			CGFloat h = self.style.innerWidth / ratio;
+			[self.style setInnerHeight:h];
+		}
+		if(self.style.resizeWidth){
+			CGFloat w = self.style.innerHeight * ratio;
+			[self.style setInnerWidth:w];
+		}
 	}
-	
-	// 先做自定义布局, 再进行父类布局
-	[super layout];
 }
 
 @end
