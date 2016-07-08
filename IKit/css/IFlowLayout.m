@@ -24,8 +24,8 @@
 @property (nonatomic) CGFloat y;
 @property (nonatomic) CGFloat w;
 @property (nonatomic) CGFloat h;
-@property (nonatomic) CGFloat realWidth;
-@property (nonatomic) CGFloat realHeight;
+@property (nonatomic) CGFloat contentWidth;
+@property (nonatomic) CGFloat contentHeight;
 
 - (void)reset;
 - (void)place:(IView *)view;
@@ -56,30 +56,41 @@
 	_x2 = _w;
 	_y2 = _h;
 	
-	_realWidth = 0;
-	_realHeight = 0;
+	_contentWidth = 0;
+	_contentHeight = 0;
 	if(_leftPoints != nil){
 		[_leftPoints removeAllObjects];
 		[_rightPoints removeAllObjects];
 	}
 }
 
-/**
- * 这里的 layout 算法不是严格意义上的递归, 因为只 layout 自己的 subs,
- * 而不在递归调用 subs 的 layout. 依赖于 Cocoa 自身的的渲染机制最终渲染整个 dom tree.
- * 叶子节点不会调用本方法.
- */
 - (void)layout{
-	if(_style.resizeHeight){
-		_style.h = 0;
+	if(_view.isRootView){
+		_view.level = 0;
+		if(_style.ratioWidth > 0){
+			_style.w = _style.ratioWidth * _view.superview.frame.size.width - _style.margin.left - _style.margin.right;
+		}
+		if(_style.ratioHeight > 0){
+			_style.h = _style.ratioHeight * _view.superview.frame.size.height - _style.margin.top - _style.margin.bottom;
+		}
+		_style.x = _style.left + _style.margin.left;
+		_style.y = _style.top + _style.margin.top;
 	}
 
-	[self layout_once];
-	
-	for(IView *sub in _view.subs){
-		if(sub.style.valignType != IStyleValignTop){
-			[self layout_once];
-			break;
+
+	if(_view.isPrimativeView){
+		//
+	}else{
+		if(_style.resizeHeight){
+			_style.h = 0;
+		}
+		[self layout_once];
+		// 竖直居中需要两遍布局
+		for(IView *sub in _view.subs){
+			if(sub.style.valignType != IStyleValignTop){
+				[self layout_once];
+				break;
+			}
 		}
 	}
 }
@@ -96,26 +107,22 @@
 		//log_trace(@"%@ position: %@", sub.name, NSStringFromCGRect(sub.style.rect));
 	}
 	
-	self.realWidth += _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
-	self.realHeight += _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
+	self.contentWidth += _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
+	self.contentHeight += _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
 	
 	if(_style.resizeWidth){
-		if(_style.w != self.realWidth){
-			//log_debug(@"   %@ resizeWidth: %f=>%f", self.name, _style.w, _layouter.realWidth);
-		}
+		_style.w = self.contentWidth;
+		
 		if(_style.aspectRatio > 0){
-			self.realWidth = self.realHeight * _style.aspectRatio;
+			_style.w = _style.h * _style.aspectRatio;
 		}
-		_style.w = self.realWidth;
 	}
 	if(_style.resizeHeight){
-		if(_style.h != self.realHeight){
-			//log_debug(@"   %@ resizeHeight: %f=>%f", self.name, _style.h, _layouter.realHeight);
-		}
+		_style.h = self.contentHeight;
+		
 		if(_style.aspectRatio > 0){
-			self.realHeight = self.realWidth / _style.aspectRatio;
+			_style.h = _style.w / _style.aspectRatio;
 		}
-		_style.h = self.realHeight;
 	}
 }
 
@@ -238,8 +245,8 @@
 		[self newLine: style.floatType];
 	}
 	
-	_realWidth = MAX(_realWidth, box.x + box.w);
-	_realHeight = MAX(_realHeight, box.y + box.h);
+	_contentWidth = MAX(_contentWidth, box.x + box.w);
+	_contentHeight = MAX(_contentHeight, box.y + box.h);
 }
 
 - (void)newLine:(IStyleFloatType)floatType{
@@ -304,7 +311,7 @@
 	if([_rightPoints count] == 0){
 		_x2 = _w;
 		if(_style.resizeWidth){
-			_x2 = MAX(_w, _realWidth);
+			_x2 = MAX(_w, _contentWidth);
 		}
 	}
 }

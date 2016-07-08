@@ -95,7 +95,7 @@
 	static BOOL inited = NO;
 	if(!inited){
 		inited = YES;
-		NSString *copyright = @"Copyright(c)2015 CocoaUI. All rights reserved.";
+		NSString *copyright = @"Copyright(c)2015-2016 CocoaUI. All rights reserved.";
 		// TODO: if(md5(copyright) != ""){exit();}
 		log_info(@"%@ version: %s", copyright, VERSION);
 		//NSString* appid = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
@@ -112,6 +112,7 @@
 	self.seq = id_incr++;
 	
 	_need_layout = true;
+	_layouter = [IFlowLayout layoutWithView:self];
 }
 
 - (IView *)getViewById:(NSString *)vid{
@@ -268,19 +269,6 @@
 	}
 }
 
-- (void)updateFrame{
-	//log_debug(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
-	if(self.isPrimativeView){
-		contentView.frame = CGRectMake(0, 0, _style.w, _style.h);
-	}
-	self.frame = _style.rect;
-	self.hidden = _style.hidden;
-
-	[self updateMaskView];
-	[self updateBackgroundView];
-	[self setNeedsDisplay];
-}
-
 - (void)setNeedsLayout{
 	//log_debug(@"%@ %s", self.name, __FUNCTION__);
 	_need_layout = true;
@@ -325,6 +313,7 @@
 	[self layout];
 	//log_debug(@"%d %s end %@", _seq, __FUNCTION__, NSStringFromCGRect(_style.rect));
 	
+	// ITable 相关
 	if(self.isRootView && self.cell != nil){
 		self.cell.height = _style.outerHeight;
 	}
@@ -336,38 +325,23 @@
 	[self updateFrame];
 }
 
+- (void)updateFrame{
+	//log_debug(@"%@ %s %@=>%@", self.name, __FUNCTION__, NSStringFromCGRect(self.frame), NSStringFromCGRect(_style.rect));
+	if(self.isPrimativeView){
+		contentView.frame = CGRectMake(0, 0, _style.w, _style.h);
+	}
+	self.frame = _style.rect;
+	self.hidden = _style.hidden;
+	
+	[self updateMaskView];
+	[self updateBackgroundView];
+	[self setNeedsDisplay];
+}
+
 - (void)layout{
 	//log_debug(@"%@ layout begin %@", self.name, NSStringFromCGRect(_style.rect));
 	_need_layout = false;
-	
-	if(self.isRootView){
-		self.level = 0;
-		if(_style.ratioWidth > 0){
-			_style.w = _style.ratioWidth * self.superview.frame.size.width - _style.margin.left - _style.margin.right;
-		}
-		if(_style.ratioHeight > 0){
-			_style.h = _style.ratioHeight * self.superview.frame.size.height - _style.margin.top - _style.margin.bottom;
-		}
-		_style.x = _style.left + _style.margin.left;
-		_style.y = _style.top + _style.margin.top;
-	}
-	
-	if(self.isPrimativeView){
-		//
-	}else if(_subs && _subs.count > 0){
-		if(!_layouter){
-			_layouter = [IFlowLayout layoutWithView:self];
-		}
-		[_layouter layout];
-	}else{
-		if(_style.resizeWidth && !self.isRootView){
-			_style.w = _style.borderLeft.width + _style.borderRight.width + _style.padding.left + _style.padding.right;
-		}
-		if(_style.resizeHeight){
-			_style.h = _style.borderTop.width + _style.borderBottom.width + _style.padding.top + _style.padding.bottom;
-		}
-	}
-	
+	[_layouter layout];
 	//log_debug(@"%@ layout end %@", self.name, NSStringFromCGRect(_style.rect));
 }
 
