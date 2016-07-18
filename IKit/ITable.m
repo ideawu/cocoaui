@@ -38,7 +38,6 @@
 	UIView *_headerRefreshWrapper;
 	int fps;
 }
-@property (nonatomic) UIScrollView *scrollView;
 @end
 
 @implementation ITable
