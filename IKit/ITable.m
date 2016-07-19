@@ -493,8 +493,8 @@
 	//_scrollView.layer.borderColor = [UIColor yellowColor].CGColor;
 	
 	// 预先加载不可见区域
-	minVisibleY -= 1;
-	maxVisibleY += 1;
+	minVisibleY -= visibleHeight/3;
+	maxVisibleY += visibleHeight/3;
 
 	// 可优化, 不需要从0开始, 如二分查找
 	for(NSUInteger i=0; i<_cells.count; i++){
