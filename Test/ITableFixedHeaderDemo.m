@@ -28,7 +28,7 @@
 		self.headerView = headerRow;
 	}
 	
-	for(int i=0; i<20; i++){
+	for(int i=0; i<50; i++){
 		ITableRow *row = [[ITableRow alloc] initWithNumberOfColumns:3];
 		[row.style set:@"height: 40; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
 		[row column:0 setText:[NSString stringWithFormat:@"%d", i+1]];
