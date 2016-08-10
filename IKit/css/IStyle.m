@@ -32,6 +32,7 @@
 
 @interface IStyle (){
 	CGFloat _ratioWidth, _ratioHeight;
+	CGFloat _opacity;
 	UIFont *_font;
 	UIColor *_color;
 	IStyleTextAlign _textAlign;
@@ -77,6 +78,7 @@
 	_resizeType = IStyleResizeBoth;
 	//_resizeType = IStyleResizeHeight;
 	_ratioWidth = 1;
+	_opacity = 1.0;
 	
 	_borderLeft = [[IStyleBorder alloc] init];
 	_borderRight = [[IStyleBorder alloc] init];
@@ -209,6 +211,14 @@
 
 - (CGFloat)outerHeight{
 	return _h + _margin.top + _margin.bottom;
+}
+
+- (CGFloat)opacity{
+	return _opacity;
+}
+
+- (void)setOpacity:(CGFloat)opacity{
+	[self set:[NSString stringWithFormat:@"opacity: %f", opacity]];
 }
 
 - (CGRect)rect{
@@ -578,6 +588,9 @@
 		needsDisplay = YES;
 		[self parseBackground:v baseUrl:baseUrl];
 		//log_trace(@"background: %@", self.backgroundColor);
+	}else if([k isEqualToString:@"opacity"]){
+		needsDisplay = YES;
+		_opacity = [v floatValue];
 	}else if([k isEqualToString:@"left"]){
 		needsLayout = YES;
 		_left = [v floatValue];

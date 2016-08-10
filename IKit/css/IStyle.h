@@ -53,6 +53,8 @@
  */
 @property (nonatomic, readonly) CGFloat outerHeight;
 
+@property (nonatomic) CGFloat opacity;
+
 /**
  * supported property names: float, clear, width, height, margin
  * float=center will implicitly apply clear=right
