@@ -1,5 +1,6 @@
 * 1.2.6
 	* New features:
+		- Add -[ITable removeRowContainsUIView:](2016-12-14)
 		- Support opacity in CSS(2016-08-10)
 		- Support aspect-ratio in CSS(2016-07-07)
 		- Support <textarea>(2016-05-30)
