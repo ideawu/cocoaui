@@ -12,7 +12,7 @@
 	background: #3f3;
 }
 label{margin:5 5 5 0; padding: 5;}
-.x{background: #f33;}
+.x{background: #f33; opacity: 0.6;}
 .y{background: #3f3;}
 .z{background: #ff3;}
 

@@ -252,6 +252,7 @@
 }
 
 - (void)updateBackgroundView{
+	// TODO: 优化, 不要频繁创建销毁 _backgroundView
 	if(_backgroundView){
 		[_backgroundView removeFromSuperview];
 	}
@@ -268,6 +269,8 @@
 		frame.origin = CGPointZero;
 		_backgroundView.frame = frame;
 	}
+	
+	self.layer.opacity = _style.opacity;
 }
 
 - (void)setNeedsLayout{

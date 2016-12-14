@@ -1,5 +1,6 @@
 * 1.2.6
 	* New features:
+		- Support opacity in CSS(2016-08-10)
 		- Support aspect-ratio in CSS(2016-07-07)
 		- Support <textarea>(2016-05-30)
 		- CSS support tag.class(2016-05-07)

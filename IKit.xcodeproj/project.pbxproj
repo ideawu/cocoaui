@@ -68,7 +68,6 @@
 		311609931AC9066A003C5EF2 /* ICellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311609921AC9066A003C5EF2 /* ICellView.m */; };
 		311609D61ADA3127003C5EF2 /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C254C71A63A8760095EC77 /* Http.m */; };
 		311609D71ADA3142003C5EF2 /* IDict.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254501A5E4A110095EC77 /* IDict.h */; };
-		311609D81ADA3149003C5EF2 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492601A8092CC00F0563C /* RSA.m */; };
 		312E1C641CE076C900E916EC /* ISelect.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31CFA3DB1CDAFCD100360734 /* ISelect.h */; };
 		312E1C671CFBF68800E916EC /* ITextArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 312E1C661CFBF68800E916EC /* ITextArea.m */; };
 		312E1C681CFBF69200E916EC /* ITextArea.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312E1C651CFBF68800E916EC /* ITextArea.h */; };
@@ -115,7 +114,6 @@
 		31B69CB71BF70C1200EC1908 /* ICssBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB61BF70C1200EC1908 /* ICssBlock.m */; };
 		31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254C61A63A8760095EC77 /* Http.h */; };
 		31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254881A5E71BD0095EC77 /* Text.h */; };
-		31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0854925F1A8092CC00F0563C /* RSA.h */; };
 		31CFA3DD1CDAFCD100360734 /* ISelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CFA3DC1CDAFCD100360734 /* ISelect.m */; };
 		31D2C75E1B689DA4009C1C97 /* ITablePullRefreshItem.xml in Resources */ = {isa = PBXBuildFile; fileRef = 31D2C75D1B689DA4009C1C97 /* ITablePullRefreshItem.xml */; };
 		31D2C76C1B69E90B009C1C97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D2C76B1B69E90B009C1C97 /* main.m */; };
@@ -190,7 +188,6 @@
 				311609D71ADA3142003C5EF2 /* IDict.h in CopyFiles */,
 				31CA28CA1AA5A3A6001C8647 /* Http.h in CopyFiles */,
 				31CA28CB1AA5A3A6001C8647 /* Text.h in CopyFiles */,
-				31CA28CC1AA5A3A6001C8647 /* RSA.h in CopyFiles */,
 				08C254791A5E59350095EC77 /* IObj.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,8 +209,6 @@
 		084E761D1A88D6F200BBD9C2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = IKit/PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
 		085492591A7F79E500F0563C /* IMaskUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMaskUIView.h; sourceTree = "<group>"; };
 		0854925A1A7F79E500F0563C /* IMaskUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMaskUIView.m; sourceTree = "<group>"; };
-		0854925F1A8092CC00F0563C /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
-		085492601A8092CC00F0563C /* RSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
 		085492631A81CE2400F0563C /* ITable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITable.h; sourceTree = "<group>"; };
 		085492641A81CE2400F0563C /* ITable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITable.m; sourceTree = "<group>"; };
 		085492661A81CE5500F0563C /* ICell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICell.h; sourceTree = "<group>"; };
@@ -495,8 +490,6 @@
 				08C254C71A63A8760095EC77 /* Http.m */,
 				08C254881A5E71BD0095EC77 /* Text.h */,
 				08C254891A5E71BD0095EC77 /* Text.m */,
-				0854925F1A8092CC00F0563C /* RSA.h */,
-				085492601A8092CC00F0563C /* RSA.m */,
 			);
 			path = IObj;
 			sourceTree = "<group>";
@@ -889,7 +882,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				311609D81ADA3149003C5EF2 /* RSA.m in Sources */,
 				311609D61ADA3127003C5EF2 /* Http.m in Sources */,
 				08C254731A5E569B0095EC77 /* IDict.m in Sources */,
 				08C254741A5E573D0095EC77 /* IObj.m in Sources */,
