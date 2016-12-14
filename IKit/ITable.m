@@ -191,6 +191,17 @@
 	[_cells removeObjectAtIndex:index];
 }
 
+- (void)removeRowContainsUIView:(UIView *)view{
+	while(view != nil){
+		if([view isKindOfClass:[ICellView class]]){
+			NSUInteger index = [[(ICellView *)view cell] index];
+			[self removeRowAtIndex:index];
+			break;
+		}
+		view = view.superview;
+	}
+}
+
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag{
 	[_tagClasses setObject:ivClass forKey:tag];
 	

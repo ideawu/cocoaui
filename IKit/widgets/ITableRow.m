@@ -28,7 +28,7 @@
 	_numberOfRows = num;
 	for(NSUInteger i=num; i>0; i--){
 		IView *view = [[IView alloc] init];
-		NSString *css = [NSString stringWithFormat:@"width: %f%%;", 1.0/i * 100];
+		NSString *css = [NSString stringWithFormat:@"width: %f%%; height: 100%%;", 1.0/i * 100];
 		[self addSubview:view style:css];
 	}
 	return self;
@@ -39,11 +39,19 @@
 	IView *label = view.subviews.firstObject;
 	if(label == nil){
 		label = [ILabel labelWithText:@"-"];
-		[view addSubview:label style:@"width: 100%;"];
+		[view addSubview:label style:@"valign: middle; width: 100%;"];
 	}
 	if([label isKindOfClass:[ILabel class]]){
 		[(ILabel *)label setText:text];
 	}
+}
+
+- (void)setView:(IView *)view atColumn:(NSUInteger)column{
+	IView *containerView = [self.subviews objectAtIndex:column];
+	for(UIView *v in containerView.subviews){
+		[v removeFromSuperview];
+	}
+	[containerView addSubview:view];
 }
 
 - (IView *)columnView:(NSUInteger)column{

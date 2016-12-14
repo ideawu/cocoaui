@@ -50,6 +50,7 @@
 - (void)scrollToRowAtIndex:(NSUInteger)index animated:(BOOL)animated;
 
 - (void)removeRowAtIndex:(NSUInteger)index;
+- (void)removeRowContainsUIView:(UIView *)view;
 
 - (void)registerViewClass:(Class)ivClass forTag:(NSString *)tag;
 
