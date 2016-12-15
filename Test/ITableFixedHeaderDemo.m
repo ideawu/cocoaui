@@ -41,17 +41,16 @@
 	static int seq = 0;
 	for(int i=0; i<count; i++, seq++){
 		ITableRow *row = [[ITableRow alloc] initWithNumberOfColumns:4];
-		[row.style set:@"height: 50; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
+		[row.style set:@"height: 60; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
 		[row column:0 setText:[NSString stringWithFormat:@"%d", seq+1]];
 		[row column:1 setText:[NSString stringWithFormat:@"name-%d", seq+1]];
 		[row column:2 setText:[NSString stringWithFormat:@"%d", rand()%50+1]];
 		
 		IButton *btn = [IButton buttonWithText:@"Delete"];
-		[btn.style set:@"float: center; valign: middle; padding: 3 4; color: #fff; background: #f36145; border-radius: 3;"];
+		[btn.style set:@"float: center; valign: middle; padding: 6 8; color: #fff; background: #f36145; border-radius: 3;"];
 		btn.tag = seq;
 		[btn bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-			[me removeRowContainsUIView:btn];
-			[me reload];
+			[me removeRowContainsUIView:btn animated:YES];
 		}];
 		[row setView:btn atColumn:3];
 		

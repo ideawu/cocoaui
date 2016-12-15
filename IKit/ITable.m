@@ -37,6 +37,7 @@
 	
 	UIView *_headerRefreshWrapper;
 	int fps;
+	BOOL _forceLayoutCell;
 }
 @end
 
@@ -68,6 +69,8 @@
 	
 	_headerRefreshWrapper = [[UIView alloc] init];
 	[_scrollView addSubview:_headerRefreshWrapper];
+	
+	_forceLayoutCell = YES;
 	
 	return self;
 }
@@ -178,10 +181,63 @@
 }
 
 - (void)removeRowAtIndex:(NSUInteger)index{
+	[self removeRowAtIndex:index animated:YES];
+}
+
+- (void)removeRowAtIndex:(NSUInteger)index animated:(BOOL)animated{
 	ICell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
 	}
+	
+	/*
+	[cell.view setUserInteractionEnabled:NO];
+	[UIView animateWithDuration:0.15 animations:^(){
+		cell.view.layer.opacity = 0.1;
+	} completion:^(BOOL finished) {
+		cell.height = 0;
+		
+		[cell.view removeFromSuperview];
+		cell.view = nil;
+		cell.contentView = nil;
+		[_cells removeObjectAtIndex:cell.index];
+		[self reload];
+	}];
+	*/
+	
+	CGFloat duration = 0.15;
+	CGFloat steps = 8;
+	CGFloat step_size = cell.height / steps;
+	CGFloat interval = duration / steps;
+	if(!animated){
+		interval = 0;
+		step_size = cell.height;
+	}
+	__weak typeof(self) me = self;
+	[cell.view setUserInteractionEnabled:NO];
+	[UIView animateWithDuration:duration animations:^(){
+		cell.view.layer.opacity = 0.4;
+	}];
+	_forceLayoutCell = NO;
+	[NSTimer scheduledTimerWithTimeInterval:interval repeats:YES block:^(NSTimer *timer) {
+		cell.height -= step_size;
+		cell.contentView.style.height -= step_size;
+		if(cell.contentView.style.height <= 0){
+			cell.height = 0;
+			
+			[cell.view removeFromSuperview];
+			cell.view = nil;
+			cell.contentView = nil;
+			[_cells removeObjectAtIndex:cell.index];
+			
+			_forceLayoutCell = YES;
+			[me reload];
+			
+			[timer invalidate];
+		}
+	}];
+	
+	/*
 	//_contentFrame.size.height -= cell.height;
 	cell.height = 0;
 	
@@ -189,13 +245,19 @@
 	cell.view = nil;
 	cell.contentView = nil;
 	[_cells removeObjectAtIndex:index];
+	[self reload];
+	 */
 }
 
 - (void)removeRowContainsUIView:(UIView *)view{
+	[self removeRowContainsUIView:view animated:YES];
+}
+
+- (void)removeRowContainsUIView:(UIView *)view animated:(BOOL)animated{
 	while(view != nil){
 		if([view isKindOfClass:[ICellView class]]){
 			NSUInteger index = [[(ICellView *)view cell] index];
-			[self removeRowAtIndex:index];
+			[self removeRowAtIndex:index animated:animated];
 			break;
 		}
 		view = view.superview;
@@ -468,7 +530,9 @@
 		CGRect frame = CGRectMake(cell.x, cell.y, _scrollView.contentSize.width, cell.height);
 		if(cell.contentView && !CGRectEqualToRect(old_frame, frame)){
 			cell.view.frame = frame;
-			[cell.contentView setNeedsLayout];
+			if(_forceLayoutCell){
+				[cell.contentView setNeedsLayout];
+			}
 		}
 		//log_debug(@"%d %@", (int)i, NSStringFromCGRect(cell.view.frame));
 		//log_debug(@"cell#%d y=%.1f", (int)i, cell.y);
@@ -485,7 +549,9 @@
 			frame.size.height = cell.table.view.frame.size.height;
 			if(cell.view.frame.size.height != frame.size.height){
 				cell.view.frame = frame;
-				[cell.contentView setNeedsLayout];
+				if(_forceLayoutCell){
+					[cell.contentView setNeedsLayout];
+				}
 				//log_debug(@"%.1f=>%.1f", cell.height, frame.size.height);
 			}
 		}
