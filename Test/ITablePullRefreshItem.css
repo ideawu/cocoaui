@@ -16,9 +16,7 @@ label{margin:5 5 5 0; padding: 5;}
 .y{background: #3f3;}
 .z{background: #ff3;}
 
-#div{margin: 10 0; background: #eee; width: 200; float: center; border: 2 solid #000;
-	aspect-ratio: 4/2;
-}
+#div{margin: 10 0; background: #eee; width: 200; float: center; border: 2 solid #000;}
 #div2{background: url(icon.png) no-repeat;}
 #container{background: #fff;}
 #container:hover{background: #ff6;}
