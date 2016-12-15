@@ -14,6 +14,7 @@
 - (id)initWithNumberOfColumns:(NSUInteger)num;
 
 - (void)column:(NSUInteger)column setText:(NSString *)text;
+- (void)setView:(IView *)view atColumn:(NSUInteger)column;
 - (IView *)columnView:(NSUInteger)column;
 
 @end
