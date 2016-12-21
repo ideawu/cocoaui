@@ -213,40 +213,39 @@
 		interval = 0;
 		step_size = cell.height;
 	}
-	__weak typeof(self) me = self;
 	[cell.view setUserInteractionEnabled:NO];
 	[UIView animateWithDuration:duration animations:^(){
 		cell.view.layer.opacity = 0.4;
 	}];
 	_forceLayoutCell = NO;
-	[NSTimer scheduledTimerWithTimeInterval:interval repeats:YES block:^(NSTimer *timer) {
-		cell.height -= step_size;
-		cell.contentView.style.height -= step_size;
-		if(cell.contentView.style.height <= 0){
-			cell.height = 0;
-			
-			[cell.view removeFromSuperview];
-			cell.view = nil;
-			cell.contentView = nil;
-			[_cells removeObjectAtIndex:cell.index];
-			
-			_forceLayoutCell = YES;
-			[me reload];
-			
-			[timer invalidate];
-		}
-	}];
+	[NSTimer scheduledTimerWithTimeInterval:interval
+									 target:self
+								   selector:@selector(removeRowTimerTick:)
+								   userInfo:@[cell, @(step_size)]
+									repeats:YES];
+}
+
+- (void)removeRowTimerTick:(NSTimer *)timer{
+	NSArray *arr = (NSArray *)timer.userInfo;
+	ICell *cell = (ICell *)arr[0];
+	CGFloat step_size = ((NSNumber *)arr[1]).floatValue;
 	
-	/*
-	//_contentFrame.size.height -= cell.height;
-	cell.height = 0;
-	
-	[cell.view removeFromSuperview];
-	cell.view = nil;
-	cell.contentView = nil;
-	[_cells removeObjectAtIndex:index];
-	[self reload];
-	 */
+	cell.height -= step_size;
+	cell.contentView.style.height -= step_size;
+	if(cell.contentView.style.height <= 0){
+		cell.height = 0;
+		
+		[cell.view removeFromSuperview];
+		cell.view = nil;
+		cell.contentView = nil;
+		[_cells removeObjectAtIndex:cell.index];
+		
+		_forceLayoutCell = YES;
+		[self reload];
+		
+		[timer invalidate];
+		timer = nil;
+	}
 }
 
 - (void)removeRowContainsUIView:(UIView *)view{
