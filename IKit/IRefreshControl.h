@@ -12,7 +12,14 @@
 
 #import "IView.h"
 
+typedef enum{
+	IRefreshTriggerPull,
+	IRefreshTriggerScroll,
+}IRefreshTriggerMode;
+
 @interface IRefreshControl : IView
+
+@property (nonatomic) IRefreshTriggerMode triggerMode;
 
 @property (nonatomic, readonly) IView *indicatorView;
 @property (nonatomic, readonly) IView *contentView;

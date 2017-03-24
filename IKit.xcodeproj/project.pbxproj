@@ -47,7 +47,6 @@
 		089C7BFF1B986488003CEA7F /* libIObj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C7BFB1B98645A003CEA7F /* libIObj.a */; };
 		089C7C161BF3AF00003CEA7F /* ITablePullRefreshItem.css in Resources */ = {isa = PBXBuildFile; fileRef = 089C7C151BF3AF00003CEA7F /* ITablePullRefreshItem.css */; };
 		089C7C171BF79BA5003CEA7F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31344D491AE0BE810035FEA5 /* libxml2.dylib */; };
-		08A0F14B1A7281AE007A8D2A /* IPullRefresh.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08EAD7101A6AF54B00A0822A /* IPullRefresh.h */; };
 		08A34A4A1A53F36300C1B7F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A491A53F36300C1B7F8 /* main.m */; };
 		08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A4C1A53F36300C1B7F8 /* AppDelegate.m */; };
 		08A34A551A53F36300C1B7F8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08A34A541A53F36300C1B7F8 /* Images.xcassets */; };
@@ -79,7 +78,6 @@
 		312F65331B81DF8600174F85 /* IInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65261B81DF8600174F85 /* IInput.m */; };
 		312F65341B81DF8600174F85 /* ILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65281B81DF8600174F85 /* ILabel.m */; };
 		312F65351B81DF8600174F85 /* IPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F652A1B81DF8600174F85 /* IPopover.m */; };
-		312F65361B81DF8600174F85 /* IRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F652C1B81DF8600174F85 /* IRefreshControl.m */; };
 		312F65371B81DF8600174F85 /* ISwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F652E1B81DF8600174F85 /* ISwitch.m */; };
 		312F65381B81DF8600174F85 /* ITableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65301B81DF8600174F85 /* ITableRow.m */; };
 		312F65391B81DFD300174F85 /* IButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F65211B81DF8600174F85 /* IButton.h */; };
@@ -87,7 +85,6 @@
 		312F653B1B81DFD300174F85 /* IInput.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F65251B81DF8600174F85 /* IInput.h */; };
 		312F653C1B81DFD300174F85 /* ILabel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F65271B81DF8600174F85 /* ILabel.h */; };
 		312F653D1B81DFD300174F85 /* IPopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F65291B81DF8600174F85 /* IPopover.h */; };
-		312F653E1B81DFD300174F85 /* IRefreshControl.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F652B1B81DF8600174F85 /* IRefreshControl.h */; };
 		312F653F1B81DFD300174F85 /* ISwitch.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F652D1B81DF8600174F85 /* ISwitch.h */; };
 		312F65401B81DFD300174F85 /* ITableRow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 312F652F1B81DF8600174F85 /* ITableRow.h */; };
 		312F65431B81E30600174F85 /* ICssRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65421B81E30600174F85 /* ICssRule.m */; };
@@ -104,6 +101,8 @@
 		316E3B8A1CD9E9190057B69E /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 316E3B861CD9E9190057B69E /* user.png */; };
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
 		31A3A97C1E8542F300922107 /* ITableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3A97B1E8542F300922107 /* ITableView.m */; };
+		31A3A97F1E85547800922107 /* IRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3A97E1E85547800922107 /* IRefreshControl.m */; };
+		31A3A9801E85557100922107 /* IRefreshControl.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31A3A97D1E85547800922107 /* IRefreshControl.h */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
 		31B69C521BF4414500EC1908 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C511BF4414500EC1908 /* icon@2x.png */; };
@@ -161,6 +160,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				31A3A9801E85557100922107 /* IRefreshControl.h in CopyFiles */,
 				312E1C681CFBF69200E916EC /* ITextArea.h in CopyFiles */,
 				312E1C641CE076C900E916EC /* ISelect.h in CopyFiles */,
 				312F65391B81DFD300174F85 /* IButton.h in CopyFiles */,
@@ -168,13 +168,11 @@
 				312F653B1B81DFD300174F85 /* IInput.h in CopyFiles */,
 				312F653C1B81DFD300174F85 /* ILabel.h in CopyFiles */,
 				312F653D1B81DFD300174F85 /* IPopover.h in CopyFiles */,
-				312F653E1B81DFD300174F85 /* IRefreshControl.h in CopyFiles */,
 				312F653F1B81DFD300174F85 /* ISwitch.h in CopyFiles */,
 				312F65401B81DFD300174F85 /* ITableRow.h in CopyFiles */,
 				312F651E1B81DF1200174F85 /* IStyle.h in CopyFiles */,
 				083F63C01A9C7C6100C5F9A7 /* IKitUtil.h in CopyFiles */,
 				0854926F1A826EE200F0563C /* ITable.h in CopyFiles */,
-				08A0F14B1A7281AE007A8D2A /* IPullRefresh.h in CopyFiles */,
 				08C254D31A6510F80095EC77 /* IKit.h in CopyFiles */,
 				08C254D61A6510F80095EC77 /* IView.h in CopyFiles */,
 			);
@@ -271,8 +269,6 @@
 		312F65281B81DF8600174F85 /* ILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILabel.m; sourceTree = "<group>"; };
 		312F65291B81DF8600174F85 /* IPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPopover.h; sourceTree = "<group>"; };
 		312F652A1B81DF8600174F85 /* IPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPopover.m; sourceTree = "<group>"; };
-		312F652B1B81DF8600174F85 /* IRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRefreshControl.h; sourceTree = "<group>"; };
-		312F652C1B81DF8600174F85 /* IRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRefreshControl.m; sourceTree = "<group>"; };
 		312F652D1B81DF8600174F85 /* ISwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISwitch.h; sourceTree = "<group>"; };
 		312F652E1B81DF8600174F85 /* ISwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISwitch.m; sourceTree = "<group>"; };
 		312F652F1B81DF8600174F85 /* ITableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableRow.h; sourceTree = "<group>"; };
@@ -301,6 +297,8 @@
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
 		31A3A97A1E8542F300922107 /* ITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableView.h; sourceTree = "<group>"; };
 		31A3A97B1E8542F300922107 /* ITableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableView.m; sourceTree = "<group>"; };
+		31A3A97D1E85547800922107 /* IRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRefreshControl.h; sourceTree = "<group>"; };
+		31A3A97E1E85547800922107 /* IRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRefreshControl.m; sourceTree = "<group>"; };
 		31B69C3E1BCF970700EC1908 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		31B69C481BF1E6BB00EC1908 /* ICssDecl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICssDecl.h; sourceTree = "<group>"; };
 		31B69C491BF1E6BB00EC1908 /* ICssDecl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICssDecl.m; sourceTree = "<group>"; };
@@ -431,6 +429,8 @@
 				085492641A81CE2400F0563C /* ITable.m */,
 				31A3A97A1E8542F300922107 /* ITableView.h */,
 				31A3A97B1E8542F300922107 /* ITableView.m */,
+				31A3A97D1E85547800922107 /* IRefreshControl.h */,
+				31A3A97E1E85547800922107 /* IRefreshControl.m */,
 				08EAD7101A6AF54B00A0822A /* IPullRefresh.h */,
 				08EAD7111A6AF54B00A0822A /* IPullRefresh.m */,
 				084E761D1A88D6F200BBD9C2 /* PrefixHeader.pch */,
@@ -564,8 +564,6 @@
 				31CFA3DC1CDAFCD100360734 /* ISelect.m */,
 				312F652F1B81DF8600174F85 /* ITableRow.h */,
 				312F65301B81DF8600174F85 /* ITableRow.m */,
-				312F652B1B81DF8600174F85 /* IRefreshControl.h */,
-				312F652C1B81DF8600174F85 /* IRefreshControl.m */,
 			);
 			name = widgets;
 			path = IKit/widgets;
@@ -838,6 +836,7 @@
 				311609931AC9066A003C5EF2 /* ITableCellView.m in Sources */,
 				312F65321B81DF8600174F85 /* IImage.m in Sources */,
 				312F65371B81DF8600174F85 /* ISwitch.m in Sources */,
+				31A3A97F1E85547800922107 /* IRefreshControl.m in Sources */,
 				312F65341B81DF8600174F85 /* ILabel.m in Sources */,
 				31CFA3DD1CDAFCD100360734 /* ISelect.m in Sources */,
 				08EAD7121A6AF54B00A0822A /* IPullRefresh.m in Sources */,
@@ -852,7 +851,6 @@
 				31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */,
 				31B69CB71BF70C1200EC1908 /* ICssBlock.m in Sources */,
 				08A34A881A53F80B00C1B7F8 /* IView.m in Sources */,
-				312F65361B81DF8600174F85 /* IRefreshControl.m in Sources */,
 				31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */,
 				312F65331B81DF8600174F85 /* IInput.m in Sources */,
 				312F65431B81E30600174F85 /* ICssRule.m in Sources */,

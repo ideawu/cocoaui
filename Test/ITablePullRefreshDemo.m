@@ -39,7 +39,7 @@
 	}
 	{
 		ILabel *label = [ILabel labelWithText:@"BottomBar"];
-		[label.style set:@"padding: 10; height: 100; width: 100%; background: #6cf; text-align: center;"];
+		[label.style set:@"padding: 10; height: 70; width: 100%; background: #6cf; text-align: center;"];
 		self.bottomBar = label;
 	}
 	[self initHeaderFooter];
@@ -76,6 +76,7 @@
 							  begin:@"loading..."];
 		[footer.style set:@"top: -40;"];
 		self.footerRefreshControl = footer;
+		self.footerRefreshControl.triggerMode = IRefreshTriggerPull;
 	}
 }
 

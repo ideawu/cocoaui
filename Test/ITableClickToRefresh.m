@@ -40,7 +40,7 @@
 			
 			__weak typeof(self) me = self;
 			[btn bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-				[me.pullRefresh beginHeaderRefresh];
+				[me beginRefresh:me.headerRefreshControl];
 			}];
 		}
 		
@@ -58,7 +58,7 @@
 					[view.style set:@"background: #f36145"];
 				}
 				if(event == IEventClick){
-					[me.pullRefresh beginFooterRefresh];
+					[me beginRefresh:me.footerRefreshControl];
 				}
 			}];
 		}

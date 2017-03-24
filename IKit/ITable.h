@@ -35,7 +35,6 @@
 
 @property (nonatomic, readonly) UIScrollView *scrollView;
 
-@property (nonatomic, readonly) IPullRefresh *pullRefresh;
 @property (nonatomic) IRefreshControl *headerRefreshControl;
 @property (nonatomic) IRefreshControl *footerRefreshControl;
 
@@ -101,6 +100,7 @@
  Must call endRefresh() when state is IRefreshBegin
  */
 - (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state;
+- (void)beginRefresh:(IRefreshControl *)refreshControl;
 - (void)endRefresh:(IRefreshControl *)refreshControl;
 
 /**

@@ -24,7 +24,7 @@
 	// contentView 包裹着全部的 cells
 	UIView *_contentView;
 	
-	// footerView 锚定在底部
+	// 锚定在底部
 	IView *_bottomBar;
 	
 	// headerView 正常情况固定在顶部, 但下拉刷新时会向下滑动
@@ -98,51 +98,6 @@
 	//log_debug(@"%s", __func__);
 	[super viewDidAppear:animated];
 	[self layoutViews];
-
-	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
-}
-
-- (void)deviceOrientationDidChange:(NSNotification *)notification {
-	[self layoutViews];
-}
-
-//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-//	[self layoutViews];
-//}
-/*
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	// TODO: nstimer/performselector is not accurate on time
-	fps = MAX(1, (int)(duration / 0.01));
-	for(int i=1; i<=fps; i++){
-		NSNumber *num = [NSNumber numberWithInt:i];
-		[self performSelector:@selector(func:) withObject:num afterDelay:i * duration/fps];
-	}
-}
- */
-
-- (void)func:(NSNumber *)arg{
-	int num = [arg intValue];
-
-	if(num != fps){
-		CGRect old_bounds = self.view.superview.bounds;
-		CGRect bounds = self.view.superview.bounds;
-		//CGFloat width = bounds.size.height + (bounds.size.width - bounds.size.height)/fps * num;
-		CGFloat width = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.width;
-		//CGFloat height = ((CALayer *)(self.view.layer.presentationLayer)).bounds.size.height;
-		if(_contentFrame.size.width != width){
-			//log_debug(@"%2d %.1f", num, width);
-			bounds.size.width = width;
-			//bounds.size.height = height;
-			self.view.superview.bounds = bounds;
-			[self layoutViews];
-			self.view.superview.bounds = old_bounds;
-		}
-	}else{
-		fps = 0;
-		[self layoutViews];
-	}
 }
 
 #pragma mark - datasource manipulating
@@ -869,9 +824,15 @@
 	}
 }
 
+- (void)beginRefresh:(IRefreshControl *)refreshControl{
+	if(_pullRefresh){
+		[_pullRefresh beginRefreshControll:refreshControl];
+	}
+}
+
 - (void)endRefresh:(IRefreshControl *)refreshControl{
 	if(_pullRefresh){
-		[_pullRefresh endRefresh:refreshControl];
+		[_pullRefresh endRefreshControll:refreshControl];
 		[UIView animateWithDuration:0.2 animations:^(){
 			[self layoutHeaderFooterRefreshControl];
 			[self layoutHeaderFooterView];

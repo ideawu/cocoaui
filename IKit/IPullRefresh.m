@@ -14,7 +14,6 @@
 @interface IPullRefresh (){
 	//BOOL isDragging;
 	UIScrollView *_scrollView;
-	IView *_headerView, *_footerView;
 	IRefreshState headerRefreshState, footerRefreshState;
 	UIEdgeInsets inset;
 	BOOL allowRefresh;
@@ -28,8 +27,6 @@
 	_scrollView = scrollView;
 	_headerVisibleRateToRefresh = 1;
 	_footerVisibleRateToRefresh = 1;
-	_headerTriggerMode = IRefreshTriggerPull;
-	_footerTriggerMode = IRefreshTriggerScroll;
 	allowRefresh = YES;
 	return self;
 }
@@ -84,7 +81,7 @@
 	//log_trace(@"scroll.offset.y = %f", scrollView.contentOffset.y);
 
 	if(_headerView){
-		if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
+		if(scrollView.tracking || _headerView.triggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self headerVisibleRate];
 			//log_debug(@"header = %f", rate);
 			if(rate > _headerVisibleRateToRefresh){
@@ -106,7 +103,7 @@
 	}
 	
 	if(_footerView){
-		if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
+		if(scrollView.tracking || _footerView.triggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self footerVisibleRate];
 			//log_debug(@"footer = %f", rate);
 			if(rate > _footerVisibleRateToRefresh){
@@ -125,20 +122,6 @@
 				}
 			}
 		}
-	}
-}
-
-- (void)beginHeaderRefresh{
-	if(_headerView){
-		[self setView: _headerView state: IRefreshBegin];
-		allowRefresh = YES;
-	}
-}
-
-- (void)beginFooterRefresh{
-	if(_footerView){
-		[self setView: _footerView state: IRefreshBegin];
-		allowRefresh = YES;
 	}
 }
 
@@ -223,7 +206,12 @@
 	}
 }
 
-- (void)endRefresh:(IView *)view{
+- (void)beginRefreshControll:(IView *)view{
+	[self setView:view state: IRefreshBegin];
+	allowRefresh = YES;
+}
+
+- (void)endRefreshControll:(IView *)view{
 	//log_trace(@"%s", __func__);
 	if(view == _headerView && headerRefreshState != IRefreshNone){
 		[self setView:view state:IRefreshNone];
