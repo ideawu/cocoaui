@@ -33,10 +33,14 @@
 		self.headerView = headerRow;
 	}
 	{
-		self.pullRefresh.footerTriggerMode = IRefreshTriggerPull;
 		ILabel *label = [ILabel labelWithText:@"footer"];
 		[label.style set:@"padding: 10; width: 100%; background: #cc6; text-align: center;"];
 		self.footerView = label;
+	}
+	{
+		ILabel *label = [ILabel labelWithText:@"BottomBar"];
+		[label.style set:@"padding: 10; height: 100; width: 100%; background: #6cf; text-align: center;"];
+		self.bottomBar = label;
 	}
 	[self initHeaderFooter];
 
@@ -44,7 +48,7 @@
 
 	//self.pullRefresh.footerVisibleRateToRefresh = -1;
 
-	[self loadData:1];
+	[self loadData:10];
 	
 	return self;
 }
@@ -80,7 +84,7 @@
 		// refresh
 		if(view == self.headerRefreshControl){
 			// 模拟网络请求
-			dispatch_after(0.2, dispatch_get_main_queue(), ^(void){
+			dispatch_after(1.5, dispatch_get_main_queue(), ^(void){
 				static int seq = 1000;
 				for(int i=0; i<5; i++){
 					NSString *s = [NSString stringWithFormat:@"%d", seq];
@@ -89,16 +93,21 @@
 					seq ++;
 				}
 				[self reload];
-				[self endRefresh:view];
+				[self endRefresh:self.headerRefreshControl];
 			});
 		}
 		// load more
 		if(view == self.footerRefreshControl){
-			[self loadData:5];
-			[self reload];
-			[self endRefresh:view];
+			dispatch_after(0.5, dispatch_get_main_queue(), ^(void){
+				[self loadData:5];
+				[self reload];
+				[self endRefresh:view];
+			});
 		}
 	}
+}
+
+- (void)prependData{
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{

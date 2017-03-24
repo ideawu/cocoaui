@@ -30,7 +30,8 @@
 	}
 	
 	[self initHeaderFooter];
-	[self loadData:50];
+	[self loadData:30];
+	[self reload];
 	
 	return self;
 }
@@ -59,11 +60,11 @@
 }
 
 - (void)initHeaderFooter{
-//	if(!self.headerRefreshControl){
-//		IRefreshControl *header = [[IRefreshControl alloc] init];
-//		[header.style set:@"background: #333;"];
-//		self.headerRefreshControl = header;
-//	}
+	if(!self.headerRefreshControl){
+		IRefreshControl *header = [[IRefreshControl alloc] init];
+		[header.style set:@"background: #333;"];
+		self.headerRefreshControl = header;
+	}
 	if(!self.footerRefreshControl){
 		IRefreshControl *footer = [[IRefreshControl alloc] init];
 		[footer setStateTextForNone:@"Pull up to load more"

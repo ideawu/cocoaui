@@ -42,6 +42,8 @@
 @property (nonatomic) IView *headerView;
 @property (nonatomic) IView *footerView;
 
+@property (nonatomic) IView *bottomBar;
+
 - (void)clear;
 - (void)reload;
 - (NSUInteger)count;

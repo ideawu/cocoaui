@@ -11,16 +11,16 @@
 #define IKit_ICell_h
 
 #import <UIKit/UIKit.h>
-#import "ICellView.h"
+#import "ITableCellView.h"
 
 @class IView;
 @class ITable;
 
-@interface ICell : NSObject
+@interface ITableCell : NSObject
 
 @property (nonatomic, weak) ITable *table;
 
-@property (nonatomic) ICellView *view;
+@property (nonatomic) ITableCellView *view;
 @property (nonatomic) IView *contentView;
 
 @property (nonatomic) BOOL isSeparator;

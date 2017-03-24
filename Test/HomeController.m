@@ -45,11 +45,11 @@
 }
 
 - (void)viewDidLoad {
+	[super viewDidLoad];
+	
 	NSString *css = @"   .a \n{\n    width: 100%; } ";
 	IStyleSheet *sheet = [[IStyleSheet alloc] init];
 	[sheet parseCss:css baseUrl:nil];
-	
-	[super viewDidLoad];
 	
 	self.navigationItem.title = @"Home";
 	self.navigationController.navigationBar.translucent = NO;

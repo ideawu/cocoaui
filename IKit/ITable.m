@@ -8,23 +8,29 @@
  */
 
 #import "ITableInternal.h"
-#import "ICell.h"
+#import "ITableCell.h"
 #import "IViewInternal.h"
 #import "IStyleInternal.h"
 #import "IPullRefresh.h"
 #import "IRefreshControl.h"
+#import "ITableView.h"
 
 @interface ITable() <UIScrollViewDelegate, IPullRefreshDelegate>{
 	NSUInteger _visibleCellIndexMin;
 	NSUInteger _visibleCellIndexMax;
 	IPullRefresh *_pullRefresh;
-	ICell *possibleSelectedCell;
+	ITableCell *possibleSelectedCell;
 
 	// contentView 包裹着全部的 cells
 	UIView *_contentView;
+	
+	// footerView 锚定在底部
+	IView *_bottomBar;
+	
 	// headerView 正常情况固定在顶部, 但下拉刷新时会向下滑动
-	// footerView 永远固定在底部
+	// footerView 所有内容(row)的后面
 	IView *_headerView, *_footerView;
+
 	// headerRefreshControl 在第一个 cell 前面
 	// footerRefreshControl 在最后一个 cell 后面
 	IRefreshControl *_headerRefreshControl, *_footerRefreshControl;
@@ -48,7 +54,20 @@
 	_cells = [[NSMutableArray alloc] init];
 	_tagViews = [[NSMutableDictionary alloc] init];
 	_tagClasses = [[NSMutableDictionary alloc] init];
+	_visibleCellIndexMin = NSUIntegerMax;
+	_visibleCellIndexMax = 0;
+	_cellSelectionEvents = [[NSMutableArray alloc] init];
+	_forceLayoutCell = YES;
+	
+	return self;
+}
 
+- (void)loadView{
+	self.view = [[ITableView alloc] init];
+	self.view.backgroundColor = [UIColor whiteColor];
+	
+	[(ITableView *)self.view setTable:self];
+	
 	_scrollView = [[UIScrollView alloc] init];
 	_scrollView.frame = [UIScreen mainScreen].bounds;
 	_scrollView.delegate = self;
@@ -59,26 +78,13 @@
 	//_scrollView.alwaysBounceHorizontal = YES;
 	
 	_contentView = [[UIView alloc] init];
-	_contentFrame.size.width = [UIScreen mainScreen].bounds.size.width;
-	
-	_visibleCellIndexMin = NSUIntegerMax;
-	_visibleCellIndexMax = 0;
-
 	[_scrollView addSubview:_contentView];
-	_cellSelectionEvents = [[NSMutableArray alloc] init];
 	
 	_headerRefreshWrapper = [[UIView alloc] init];
 	[_scrollView addSubview:_headerRefreshWrapper];
 	
-	_forceLayoutCell = YES;
-	
-	return self;
-}
+	_contentFrame.size.width = [UIScreen mainScreen].bounds.size.width;
 
-- (void)viewDidLoad{
-	//log_debug(@"%s", __func__);
-	[super viewDidLoad];
-	self.view.backgroundColor = [UIColor whiteColor];
 	[self.view addSubview:_scrollView];
 }
 
@@ -94,26 +100,17 @@
 	[self layoutViews];
 
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
+	//[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
-	if(!self.view.superview){
-		CGFloat width = [UIScreen mainScreen].bounds.size.width;
-		_contentFrame.size.width = width;
-		if(_scrollView.frame.size.width != width){
-			CGRect frame = _scrollView.frame;
-			frame.size.width = width;
-			_scrollView.frame = frame;
-		}
-		[self layoutViews];
-	}
+	[self layoutViews];
 }
 
 //- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
 //	[self layoutViews];
 //}
-
+/*
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	// TODO: nstimer/performselector is not accurate on time
@@ -123,6 +120,7 @@
 		[self performSelector:@selector(func:) withObject:num afterDelay:i * duration/fps];
 	}
 }
+ */
 
 - (void)func:(NSNumber *)arg{
 	int num = [arg intValue];
@@ -151,7 +149,7 @@
 
 - (void)clear{
 	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
-		ICell *cell = [_cells objectAtIndex:i];
+		ITableCell *cell = [_cells objectAtIndex:i];
 		[cell.view removeFromSuperview];
 		cell.view = nil;
 		cell.contentView = nil;
@@ -175,7 +173,7 @@
 	if(index >= _cells.count){
 		return;
 	}
-	ICell *cell = _cells[index];
+	ITableCell *cell = _cells[index];
 	CGRect frame = CGRectMake(0, cell.y, _contentFrame.size.width, cell.height);
 	[self.scrollView scrollRectToVisible:frame animated:animated];
 }
@@ -185,7 +183,7 @@
 }
 
 - (void)removeRowAtIndex:(NSUInteger)index animated:(BOOL)animated{
-	ICell *cell = [_cells objectAtIndex:index];
+	ITableCell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
 	}
@@ -227,7 +225,7 @@
 
 - (void)removeRowTimerTick:(NSTimer *)timer{
 	NSArray *arr = (NSArray *)timer.userInfo;
-	ICell *cell = (ICell *)arr[0];
+	ITableCell *cell = (ITableCell *)arr[0];
 	CGFloat step_size = ((NSNumber *)arr[1]).floatValue;
 	
 	cell.height -= step_size;
@@ -254,8 +252,8 @@
 
 - (void)removeRowContainsUIView:(UIView *)view animated:(BOOL)animated{
 	while(view != nil){
-		if([view isKindOfClass:[ICellView class]]){
-			NSUInteger index = [[(ICellView *)view cell] index];
+		if([view isKindOfClass:[ITableCellView class]]){
+			NSUInteger index = [[(ITableCellView *)view cell] index];
 			[self removeRowAtIndex:index animated:animated];
 			break;
 		}
@@ -303,7 +301,7 @@
 }
 
 - (void)updateIViewRow:(IView *)view atIndex:(NSUInteger)index{
-	ICell *cell = [_cells objectAtIndex:index];
+	ITableCell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
 	}
@@ -311,7 +309,7 @@
 }
 
 - (void)updateDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index{
-	ICell *cell = [_cells objectAtIndex:index];
+	ITableCell *cell = [_cells objectAtIndex:index];
 	if(!cell){
 		return;
 	}
@@ -326,7 +324,7 @@
 }
 
 - (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
-	ICell *cell = [[ICell alloc] init];
+	ITableCell *cell = [[ITableCell alloc] init];
 	cell.contentView = view;
 	[self insertCell:cell atIndex:index defaultHeight:height];
 }
@@ -336,24 +334,24 @@
 }
 
 - (void)insertDataRow:(id)data forTag:(NSString *)tag atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
-	ICell *cell = [[ICell alloc] init];
+	ITableCell *cell = [[ITableCell alloc] init];
 	cell.tag = tag;
 	cell.data = data;
 	[self insertCell:cell atIndex:index defaultHeight:height];
 }
 
-- (void)insertCell:(ICell *)cell atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
+- (void)insertCell:(ITableCell *)cell atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
 	// 先设置 height, 再设置 table. 如果弄反了, setHeight() 方法会自动更新 _contentFrame
 	cell.height = height;
 	cell.table = self;
 	[_cells insertObject:cell atIndex:index];
 	
-	ICell *prev = nil;
+	ITableCell *prev = nil;
 	if(index > 0){
 		prev = [_cells objectAtIndex:index-1];
 	}
 	for(NSUInteger i=index; i<_cells.count; i++){
-		ICell *cell = [_cells objectAtIndex:i];
+		ITableCell *cell = [_cells objectAtIndex:i];
 		if(!prev){
 			cell.y = 0;
 		}else{
@@ -370,6 +368,8 @@
 		offset.y += cell.height;
 		_scrollView.contentOffset = offset;
 	}
+	
+	[self layoutViews];
 }
 
 
@@ -381,7 +381,7 @@
 	IView *view = [[IView alloc] init];
 	[view.style set:[NSString stringWithFormat:@"height: %f; background: #efeff4;", height]];
 	[view.style set:css];
-	ICell *cell = [[ICell alloc] init];
+	ITableCell *cell = [[ITableCell alloc] init];
 	cell.isSeparator = YES;
 	cell.contentView = view;
 	[self insertCell:cell atIndex:_cells.count defaultHeight:view.style.outerHeight];
@@ -398,12 +398,12 @@
 
 #pragma mark - layout views
 
-- (void)cell:(ICell *)cell didResizeHeightDelta:(CGFloat)delta{
+- (void)cell:(ITableCell *)cell didResizeHeightDelta:(CGFloat)delta{
 	NSUInteger index = [_cells indexOfObject:cell];
 	_contentFrame.size.height += delta;
 	//log_debug(@"%s %d %.1f height: %.1f", __func__, (int)index, delta, _contentFrame.size.height);
 	for(NSUInteger i=index; i<_cells.count; i++){
-		ICell *cell = [_cells objectAtIndex:i];
+		ITableCell *cell = [_cells objectAtIndex:i];
 		if(i != index){
 			cell.y += delta;
 		}
@@ -413,7 +413,7 @@
 
 - (void)addVisibleCellAtIndex:(NSUInteger)index{
 	//log_debug(@"%s %d", __func__, (int)index);
-	ICell *cell = [self cellForRowAtIndex:index];
+	ITableCell *cell = [self cellForRowAtIndex:index];
 	[_contentView addSubview:cell.view];
 }
 
@@ -422,7 +422,7 @@
 	if(index >= _cells.count){
 		return;
 	}
-	ICell *cell = [_cells objectAtIndex:index];
+	ITableCell *cell = [_cells objectAtIndex:index];
 	if(cell.contentView){
 		[cell.contentView setDataInternal:nil];
 		cell.contentView.cell = nil;
@@ -441,9 +441,9 @@
 	}
 }
 
-- (ICell *)cellForRowAtIndex:(NSUInteger)index{
+- (ITableCell *)cellForRowAtIndex:(NSUInteger)index{
 	//log_debug(@"%s %d", __func__, (int)index);
-	ICell *cell = [_cells objectAtIndex:index];
+	ITableCell *cell = [_cells objectAtIndex:index];
 	if(!cell.view){
 		if(cell.tag){
 			NSMutableArray *views = [_tagViews objectForKey:cell.tag];
@@ -454,7 +454,7 @@
 				[cell.contentView setNeedsLayout];
 				//log_debug(@"dequeue cell for tag: %@, count: %d", cell.tag, (int)views.count);
 			}else{
-				cell.view = [[ICellView alloc] init];
+				cell.view = [[ITableCellView alloc] init];
 				//cell.uiview.clipsToBounds = YES;
 				Class cls = [_tagClasses objectForKey:cell.tag];
 				if(cls){
@@ -465,7 +465,7 @@
 				}
 			}
 		}else{
-			cell.view = [[ICellView alloc] init];
+			cell.view = [[ITableCellView alloc] init];
 			//cell.uiview.clipsToBounds = YES;
 			if(cell.contentView){
 				[cell.contentView.style set:@"width: 100%;"];
@@ -481,24 +481,50 @@
 	return cell;
 }
 
+- (IView *)bottomBar{
+	return _bottomBar;
+}
+
+- (void)setBottomBar:(IView *)bottomBar{
+	if(_bottomBar){
+		[_bottomBar removeFromSuperview];
+	}
+	_bottomBar = bottomBar;
+	if(bottomBar){
+		[self.view addSubview:bottomBar];
+	}
+}
+
 - (void)layoutViews{
 	//log_debug(@"%s", __func__);
+	
+	if(_bottomBar){
+		CGFloat y = self.view.frame.size.height - _bottomBar.style.outerHeight;
+		if(_bottomBar.style.top != y){
+			[_bottomBar.style set:[NSString stringWithFormat:@"top: %f", y]];
+		}
+	}
 
+	if(self.view.superview){
+		CGSize contentFrameSize = self.view.frame.size;
+		if(_bottomBar){
+			contentFrameSize.height -= _bottomBar.style.outerHeight;
+		}
+		if(!CGSizeEqualToSize(_scrollView.frame.size, contentFrameSize)){
+			log_debug(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, contentFrameSize.width, _scrollView.frame.size.height, contentFrameSize.height);
+			CGRect frame = _scrollView.frame;
+			frame.size = contentFrameSize;
+			_scrollView.frame = frame;
+		}
+	}
+	
 	_contentFrame.origin.y = 0;
 	if(_headerView){
 		_contentFrame.origin.y += _headerView.style.outerHeight;
 	}
-	if(self.view.superview){
-		//_contentFrame.size.width = self.view.superview.bounds.size.width;
-		if(!CGSizeEqualToSize(_scrollView.frame.size, self.view.frame.size)){
-			log_debug(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, self.view.frame.size.width, _scrollView.frame.size.height, self.view.frame.size.height);
-			CGRect frame = _scrollView.frame;
-			frame.size = self.view.frame.size;
-			_scrollView.frame = frame;
-			_contentFrame.size.width = self.view.frame.size.width;
-		}
-	}
+	_contentFrame.size.width = self.view.frame.size.width;
 	_contentView.frame = _contentFrame;
+
 	
 	CGSize scrollSize = _contentFrame.size;
 	if(_headerView){
@@ -524,7 +550,7 @@
 
 - (void)layoutVisibleCells{
 	for(NSUInteger i=_visibleCellIndexMin; i<=_visibleCellIndexMax; i++){
-		ICell *cell = [_cells objectAtIndex:i];
+		ITableCell *cell = [_cells objectAtIndex:i];
 		CGRect old_frame = cell.view.frame;
 		CGRect frame = CGRectMake(cell.x, cell.y, _scrollView.contentSize.width, cell.height);
 		if(cell.contentView && !CGRectEqualToRect(old_frame, frame)){
@@ -574,7 +600,7 @@
 
 	// 可优化, 不需要从0开始, 如二分查找
 	for(NSUInteger i=0; i<_cells.count; i++){
-		ICell *cell = [_cells objectAtIndex:i];
+		ITableCell *cell = [_cells objectAtIndex:i];
 		CGFloat min_y = cell.y;
 		CGFloat max_y = min_y + cell.height;
 		if(min_y > maxVisibleY){
@@ -600,7 +626,7 @@
 		if(index >= _cells.count){
 			break;
 		}
-		ICell *cell = [_cells objectAtIndex:index];
+		ITableCell *cell = [_cells objectAtIndex:index];
 		if(index < minIndex || index > maxIndex){
 			if(cell.view.superview){
 				[self removeVisibleCellAtIndex:index];
@@ -641,7 +667,7 @@
 }
 
 - (void)setFooterView:(IView *)footerView{
-	if(footerView){
+	if(_footerView){
 		[_footerView removeFromSuperview];
 	}
 	_footerView = footerView;

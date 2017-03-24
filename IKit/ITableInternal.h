@@ -12,13 +12,15 @@
 
 #import "ITable.h"
 
-@class ICell;
+@class ITableCell;
 
 @interface ITable()
 
 @property (nonatomic) NSMutableArray *cells;
 
-- (void)cell:(ICell *)cell didResizeHeightDelta:(CGFloat)delta;
+- (void)cell:(ITableCell *)cell didResizeHeightDelta:(CGFloat)delta;
+
+- (void)layoutViews;
 
 @end
 

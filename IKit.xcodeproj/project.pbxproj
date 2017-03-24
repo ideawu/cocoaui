@@ -36,7 +36,7 @@
 		083F63C01A9C7C6100C5F9A7 /* IKitUtil.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 083F63971A9C7AA700C5F9A7 /* IKitUtil.h */; };
 		0854925B1A7F79E500F0563C /* IMaskUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0854925A1A7F79E500F0563C /* IMaskUIView.m */; };
 		085492651A81CE2400F0563C /* ITable.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492641A81CE2400F0563C /* ITable.m */; };
-		085492681A81CE5500F0563C /* ICell.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492671A81CE5500F0563C /* ICell.m */; };
+		085492681A81CE5500F0563C /* ITableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492671A81CE5500F0563C /* ITableCell.m */; };
 		0854926F1A826EE200F0563C /* ITable.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 085492631A81CE2400F0563C /* ITable.h */; };
 		085492791A8342F700F0563C /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085492781A8342F700F0563C /* HomeController.m */; };
 		0875F0D71A6A80E900870619 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0875F0D61A6A80E900870619 /* LoginController.m */; };
@@ -65,7 +65,7 @@
 		08EAD7121A6AF54B00A0822A /* IPullRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EAD7111A6AF54B00A0822A /* IPullRefresh.m */; };
 		08FD76A51A846DFB00FB249C /* ic_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD769F1A846DFB00FB249C /* ic_down.png */; };
 		08FD76A61A846DFB00FB249C /* ic_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 08FD76A01A846DFB00FB249C /* ic_up.png */; };
-		311609931AC9066A003C5EF2 /* ICellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311609921AC9066A003C5EF2 /* ICellView.m */; };
+		311609931AC9066A003C5EF2 /* ITableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311609921AC9066A003C5EF2 /* ITableCellView.m */; };
 		311609D61ADA3127003C5EF2 /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C254C71A63A8760095EC77 /* Http.m */; };
 		311609D71ADA3142003C5EF2 /* IDict.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 08C254501A5E4A110095EC77 /* IDict.h */; };
 		312E1C641CE076C900E916EC /* ISelect.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31CFA3DB1CDAFCD100360734 /* ISelect.h */; };
@@ -103,6 +103,7 @@
 		316E3B891CD9E9190057B69E /* ic_pass.png in Resources */ = {isa = PBXBuildFile; fileRef = 316E3B851CD9E9190057B69E /* ic_pass.png */; };
 		316E3B8A1CD9E9190057B69E /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 316E3B861CD9E9190057B69E /* user.png */; };
 		3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */; };
+		31A3A97C1E8542F300922107 /* ITableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3A97B1E8542F300922107 /* ITableView.m */; };
 		31B69C3F1BCF970700EC1908 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C3E1BCF970700EC1908 /* icon.png */; };
 		31B69C4A1BF1E6BB00EC1908 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
 		31B69C521BF4414500EC1908 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31B69C511BF4414500EC1908 /* icon@2x.png */; };
@@ -211,8 +212,8 @@
 		0854925A1A7F79E500F0563C /* IMaskUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMaskUIView.m; sourceTree = "<group>"; };
 		085492631A81CE2400F0563C /* ITable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITable.h; sourceTree = "<group>"; };
 		085492641A81CE2400F0563C /* ITable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITable.m; sourceTree = "<group>"; };
-		085492661A81CE5500F0563C /* ICell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICell.h; sourceTree = "<group>"; };
-		085492671A81CE5500F0563C /* ICell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICell.m; sourceTree = "<group>"; };
+		085492661A81CE5500F0563C /* ITableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableCell.h; sourceTree = "<group>"; };
+		085492671A81CE5500F0563C /* ITableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableCell.m; sourceTree = "<group>"; };
 		085492701A82713200F0563C /* ITableInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITableInternal.h; sourceTree = "<group>"; };
 		085492771A8342F700F0563C /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
 		085492781A8342F700F0563C /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
@@ -251,8 +252,8 @@
 		08EAD7111A6AF54B00A0822A /* IPullRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPullRefresh.m; sourceTree = "<group>"; };
 		08FD769F1A846DFB00FB249C /* ic_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_down.png; sourceTree = "<group>"; };
 		08FD76A01A846DFB00FB249C /* ic_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_up.png; sourceTree = "<group>"; };
-		311609911AC9066A003C5EF2 /* ICellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICellView.h; sourceTree = "<group>"; };
-		311609921AC9066A003C5EF2 /* ICellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICellView.m; sourceTree = "<group>"; };
+		311609911AC9066A003C5EF2 /* ITableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableCellView.h; sourceTree = "<group>"; };
+		311609921AC9066A003C5EF2 /* ITableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableCellView.m; sourceTree = "<group>"; };
 		312E1C651CFBF68800E916EC /* ITextArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITextArea.h; sourceTree = "<group>"; };
 		312E1C661CFBF68800E916EC /* ITextArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITextArea.m; sourceTree = "<group>"; };
 		312F65141B81DE8F00174F85 /* IStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStyleSheet.h; sourceTree = "<group>"; };
@@ -298,6 +299,8 @@
 		316E3B861CD9E9190057B69E /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
 		3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableClickToRefresh.h; sourceTree = "<group>"; };
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
+		31A3A97A1E8542F300922107 /* ITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableView.h; sourceTree = "<group>"; };
+		31A3A97B1E8542F300922107 /* ITableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableView.m; sourceTree = "<group>"; };
 		31B69C3E1BCF970700EC1908 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		31B69C481BF1E6BB00EC1908 /* ICssDecl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICssDecl.h; sourceTree = "<group>"; };
 		31B69C491BF1E6BB00EC1908 /* ICssDecl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICssDecl.m; sourceTree = "<group>"; };
@@ -419,13 +422,15 @@
 				08A34A871A53F80B00C1B7F8 /* IView.m */,
 				085492591A7F79E500F0563C /* IMaskUIView.h */,
 				0854925A1A7F79E500F0563C /* IMaskUIView.m */,
-				085492661A81CE5500F0563C /* ICell.h */,
-				085492671A81CE5500F0563C /* ICell.m */,
-				311609911AC9066A003C5EF2 /* ICellView.h */,
-				311609921AC9066A003C5EF2 /* ICellView.m */,
+				085492661A81CE5500F0563C /* ITableCell.h */,
+				085492671A81CE5500F0563C /* ITableCell.m */,
+				311609911AC9066A003C5EF2 /* ITableCellView.h */,
+				311609921AC9066A003C5EF2 /* ITableCellView.m */,
 				085492631A81CE2400F0563C /* ITable.h */,
 				085492701A82713200F0563C /* ITableInternal.h */,
 				085492641A81CE2400F0563C /* ITable.m */,
+				31A3A97A1E8542F300922107 /* ITableView.h */,
+				31A3A97B1E8542F300922107 /* ITableView.m */,
 				08EAD7101A6AF54B00A0822A /* IPullRefresh.h */,
 				08EAD7111A6AF54B00A0822A /* IPullRefresh.m */,
 				084E761D1A88D6F200BBD9C2 /* PrefixHeader.pch */,
@@ -830,7 +835,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				311609931AC9066A003C5EF2 /* ICellView.m in Sources */,
+				311609931AC9066A003C5EF2 /* ITableCellView.m in Sources */,
 				312F65321B81DF8600174F85 /* IImage.m in Sources */,
 				312F65371B81DF8600174F85 /* ISwitch.m in Sources */,
 				312F65341B81DF8600174F85 /* ILabel.m in Sources */,
@@ -843,6 +848,7 @@
 				3143BE191C14089800C7ACB1 /* IResourceMananger.m in Sources */,
 				31B69CB11BF5B28C00EC1908 /* INSXmlViewLoader.m in Sources */,
 				312F65351B81DF8600174F85 /* IPopover.m in Sources */,
+				31A3A97C1E8542F300922107 /* ITableView.m in Sources */,
 				31B69CB41BF5B29B00EC1908 /* IDTHTMLViewLoader.m in Sources */,
 				31B69CB71BF70C1200EC1908 /* ICssBlock.m in Sources */,
 				08A34A881A53F80B00C1B7F8 /* IView.m in Sources */,
@@ -855,7 +861,7 @@
 				312F65381B81DF8600174F85 /* ITableRow.m in Sources */,
 				31B69CAE1BF5AFC400EC1908 /* IViewLoader.m in Sources */,
 				312F65311B81DF8600174F85 /* IButton.m in Sources */,
-				085492681A81CE5500F0563C /* ICell.m in Sources */,
+				085492681A81CE5500F0563C /* ITableCell.m in Sources */,
 				312F65161B81DE8F00174F85 /* IStyleSheet.m in Sources */,
 				083F63991A9C7AA700C5F9A7 /* IKitUtil.m in Sources */,
 			);
