@@ -39,9 +39,18 @@
 @property (nonatomic) IRefreshControl *headerRefreshControl;
 @property (nonatomic) IRefreshControl *footerRefreshControl;
 
+/**
+ * At the top of contents(cells), and only follow pull down to refresh.
+ */
 @property (nonatomic) IView *headerView;
+/**
+ * At the bottom of contents(cells) and follow scroll.
+ */
 @property (nonatomic) IView *footerView;
 
+/**
+ * Will dock at the bottom and will not scroll.
+ */
 @property (nonatomic) IView *bottomBar;
 
 - (void)clear;
