@@ -20,12 +20,11 @@
 	NSUInteger _visibleCellIndexMax;
 	IPullRefresh *_pullRefresh;
 	ITableCell *possibleSelectedCell;
+	
+	ITableView *_tableView;
 
 	// contentView 包裹着全部的 cells
 	UIView *_contentView;
-	
-	// 锚定在底部
-	IView *_bottomBar;
 	
 	// headerView 正常情况固定在顶部, 但下拉刷新时会向下滑动
 	// footerView 所有内容(row)的后面
@@ -63,19 +62,13 @@
 }
 
 - (void)loadView{
-	self.view = [[ITableView alloc] init];
-	self.view.backgroundColor = [UIColor whiteColor];
+	_tableView = [[ITableView alloc] init];
+	_tableView.table = self;
 	
-	[(ITableView *)self.view setTable:self];
+	self.view = _tableView;
 	
-	_scrollView = [[UIScrollView alloc] init];
-	_scrollView.frame = [UIScreen mainScreen].bounds;
+	_scrollView = _tableView.scrollView;
 	_scrollView.delegate = self;
-	_scrollView.backgroundColor = [UIColor clearColor];
-	_scrollView.scrollEnabled = YES;
-	_scrollView.bounces = YES;
-	_scrollView.alwaysBounceVertical = YES;
-	//_scrollView.alwaysBounceHorizontal = YES;
 	
 	_contentView = [[UIView alloc] init];
 	[_scrollView addSubview:_contentView];
@@ -84,8 +77,6 @@
 	[_scrollView addSubview:_headerRefreshWrapper];
 	
 	_contentFrame.size.width = [UIScreen mainScreen].bounds.size.width;
-
-	[self.view addSubview:_scrollView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -168,7 +159,7 @@
 	}
 	[cell.view setUserInteractionEnabled:NO];
 	[UIView animateWithDuration:duration animations:^(){
-		cell.view.layer.opacity = 0.4;
+		cell.view.layer.opacity = 0.2;
 	}];
 	_forceLayoutCell = NO;
 	[NSTimer scheduledTimerWithTimeInterval:interval
@@ -370,6 +361,7 @@
 	//log_debug(@"%s %d", __func__, (int)index);
 	ITableCell *cell = [self cellForRowAtIndex:index];
 	[_contentView addSubview:cell.view];
+	[cell.contentView setNeedsLayout];
 }
 
 - (void)removeVisibleCellAtIndex:(NSUInteger)index{
@@ -406,7 +398,6 @@
 				cell.view = views.lastObject;
 				[views removeLastObject];
 				cell.contentView = [cell.view.subviews objectAtIndex:0];
-				[cell.contentView setNeedsLayout];
 				//log_debug(@"dequeue cell for tag: %@, count: %d", cell.tag, (int)views.count);
 			}else{
 				cell.view = [[ITableCellView alloc] init];
@@ -436,42 +427,8 @@
 	return cell;
 }
 
-- (IView *)bottomBar{
-	return _bottomBar;
-}
-
-- (void)setBottomBar:(IView *)bottomBar{
-	if(_bottomBar){
-		[_bottomBar removeFromSuperview];
-	}
-	_bottomBar = bottomBar;
-	if(bottomBar){
-		[self.view addSubview:bottomBar];
-	}
-}
-
 - (void)layoutViews{
 	//log_debug(@"%s", __func__);
-	
-	if(_bottomBar){
-		CGFloat y = self.view.frame.size.height - _bottomBar.style.outerHeight;
-		if(_bottomBar.style.top != y){
-			[_bottomBar.style set:[NSString stringWithFormat:@"top: %f", y]];
-		}
-	}
-
-	if(self.view.superview){
-		CGSize contentFrameSize = self.view.frame.size;
-		if(_bottomBar){
-			contentFrameSize.height -= _bottomBar.style.outerHeight;
-		}
-		if(!CGSizeEqualToSize(_scrollView.frame.size, contentFrameSize)){
-			log_debug(@"change size, w: %.1f=>%.1f, h: %.1f=>%.1f", _scrollView.frame.size.width, contentFrameSize.width, _scrollView.frame.size.height, contentFrameSize.height);
-			CGRect frame = _scrollView.frame;
-			frame.size = contentFrameSize;
-			_scrollView.frame = frame;
-		}
-	}
 	
 	_contentFrame.origin.y = 0;
 	if(_headerView){
@@ -550,8 +507,8 @@
 	//_scrollView.layer.borderColor = [UIColor yellowColor].CGColor;
 	
 	// 预先加载不可见区域
-	minVisibleY -= visibleHeight/3;
-	maxVisibleY += visibleHeight/3;
+	minVisibleY -= visibleHeight/4;
+	maxVisibleY += visibleHeight/4;
 
 	// 可优化, 不需要从0开始, 如二分查找
 	for(NSUInteger i=0; i<_cells.count; i++){
@@ -598,6 +555,14 @@
 }
 
 #pragma mark - HeaderView and FooterView
+
+- (IView *)bottomBar{
+	return _tableView.bottomBar;
+}
+
+- (void)setBottomBar:(IView *)bottomBar{
+	_tableView.bottomBar = bottomBar;
+}
 
 - (IView *)headerView{
 	return _headerView;
@@ -704,6 +669,8 @@
 	_pullRefresh.footerView = _footerRefreshControl;
 	_headerRefreshControl.pullRefresh = _pullRefresh;
 	_footerRefreshControl.pullRefresh = _pullRefresh;
+	_headerRefreshControl.table = self;
+	_footerRefreshControl.table = self;
 }
 
 - (IRefreshControl *)headerRefreshControl{
@@ -821,6 +788,13 @@
 
 - (void)endRefresh:(IRefreshControl *)refreshControl{
 	[refreshControl endRefresh];
+	// 如果没有动画, prepend 之后RefreshControl收回时不会显示动画.
+	[UIView animateWithDuration:0.2 animations:^(){
+		//[self layoutHeaderFooterRefreshControl];
+		//[self layoutHeaderFooterView];
+		[self layoutViews];
+	} completion:^(BOOL finished){
+	}];
 }
 
 - (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{

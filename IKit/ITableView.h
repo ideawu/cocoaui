@@ -10,10 +10,14 @@
 #import <UIKit/UIKit.h>
 
 @class ITable;
+@class IView;
 
 @interface ITableView : UIView
 
 @property (nonatomic, weak) ITable *table;
 
+@property (nonatomic, readonly) UIScrollView *scrollView;
+
+@property (nonatomic) IView *bottomBar;
 
 @end

@@ -16,6 +16,8 @@
 
 @interface ITable()
 
+@property (nonatomic, readonly) UIScrollView *scrollView;
+
 @property (nonatomic) NSMutableArray *cells;
 
 - (void)cell:(ITableCell *)cell didResizeHeightDelta:(CGFloat)delta;

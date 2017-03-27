@@ -96,7 +96,8 @@
 					seq ++;
 				}
 				[self reload];
-				[refreshControl endRefresh];
+				//[refreshControl endRefresh];
+				[self endRefresh:refreshControl];
 			});
 		}
 		// load more

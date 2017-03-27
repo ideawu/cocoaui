@@ -220,11 +220,8 @@
 	}else{
 		return;
 	}
-	//if(_triggerMode == IRefreshTriggerPull){
-		[UIView animateWithDuration:0.2 animations:^(){
-			_scrollView.contentInset = inset;
-		}];
-	//}
+	[UIView animateWithDuration:0.2 animations:^(){
+		_scrollView.contentInset = inset;
+	}];
 }
-
 @end

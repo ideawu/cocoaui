@@ -21,6 +21,8 @@ typedef enum{
 
 @interface IRefreshControl : IView
 
+@property (nonatomic, weak) ITable *table;
+
 @property (nonatomic, weak) IPullRefresh *pullRefresh;
 @property (nonatomic) IRefreshTriggerMode triggerMode;
 

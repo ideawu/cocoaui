@@ -30,7 +30,7 @@
 	}
 	
 	[self initHeaderFooter];
-	[self loadData:30];
+	[self loadData:20];
 	[self reload];
 	
 	return self;
@@ -43,9 +43,9 @@
 	for(int i=0; i<count; i++, seq++){
 		ITableRow *row = [[ITableRow alloc] initWithNumberOfColumns:4];
 		[row.style set:@"height: 60; text-align: center; border-bottom: 1 solid #eee; background: #fff;"];
-		[row column:0 setText:[NSString stringWithFormat:@"%d", seq+1]];
-		[row column:1 setText:[NSString stringWithFormat:@"name-%d", seq+1]];
-		[row column:2 setText:[NSString stringWithFormat:@"%d", rand()%50+1]];
+		[row column:0 setText:[NSString stringWithFormat:@"%d", seq]];
+		[row column:1 setText:[NSString stringWithFormat:@"name-%d", seq]];
+		[row column:2 setText:[NSString stringWithFormat:@"%d", rand()%50]];
 		
 		IButton *btn = [IButton buttonWithText:@"Delete"];
 		[btn.style set:@"float: center; valign: middle; padding: 6 8; color: #fff; background: #f36145; border-radius: 3;"];

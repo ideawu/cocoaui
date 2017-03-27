@@ -31,8 +31,6 @@
 
 @interface ITable : UIViewController
 
-@property (nonatomic, readonly) UIScrollView *scrollView;
-
 @property (nonatomic) IRefreshControl *headerRefreshControl;
 @property (nonatomic) IRefreshControl *footerRefreshControl;
 
