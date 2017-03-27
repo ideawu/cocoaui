@@ -45,12 +45,12 @@
 /**
  * Must call ITable.endRefresh() when state is IRefreshBegin
  */
-- (void)table:(ITable *)table onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
+- (void)table:(ITable *)table onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
 	if(state == IRefreshBegin){
 		// refresh
-		if(view == _table.headerRefreshControl){
+		if(refreshControl == _table.headerRefreshControl){
 			// 模拟网络请求
-			dispatch_after(0.2, dispatch_get_main_queue(), ^(void){
+			dispatch_after(dispatch_time(0, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				static int seq = 1000;
 				for(int i=0; i<5; i++){
 					NSString *s = [NSString stringWithFormat:@"%d", seq];
@@ -59,14 +59,14 @@
 					seq ++;
 				}
 				[_table reload];
-				[_table endRefresh:view];
+				[refreshControl endRefresh];
 			});
 		}
 		// load more
-		if(view == _table.footerRefreshControl){
+		if(refreshControl == _table.footerRefreshControl){
 			[self loadData:5];
 			[_table reload];
-			[_table endRefresh:view];
+			[refreshControl endRefresh];
 		}
 	}
 }

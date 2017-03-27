@@ -1,6 +1,8 @@
 * 1.2.7
 	* New features:
 		- Add ITable.bottomBar, which archor at the bottom of ITable(2017-03-24)
+	* Incompatible changes:
+		- Modify ITable APIs about Pull Refresh(2017-03-27)
 * 1.2.6
 	* New features:
 		- Add -[ITable removeRowContainsUIView:](2016-12-14)

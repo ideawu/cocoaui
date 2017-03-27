@@ -702,6 +702,8 @@
 	}
 	_pullRefresh.headerView = _headerRefreshControl;
 	_pullRefresh.footerView = _footerRefreshControl;
+	_headerRefreshControl.pullRefresh = _pullRefresh;
+	_footerRefreshControl.pullRefresh = _pullRefresh;
 }
 
 - (IRefreshControl *)headerRefreshControl{
@@ -813,31 +815,19 @@
 	}
 }
 
-- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
-	//log_trace(@"%s %d", __func__, state);
-	//[self layoutHeaderAndFooter];
-	if(state == IRefreshBegin){
-		[self endRefresh:refreshControl];
-	}
-	if(_delegate && [_delegate respondsToSelector:@selector(table:onRefresh:state:)]){
-		[_delegate table:self onRefresh:refreshControl state:state];
-	}
-}
-
 - (void)beginRefresh:(IRefreshControl *)refreshControl{
-	if(_pullRefresh){
-		[_pullRefresh beginRefreshControll:refreshControl];
-	}
+	[refreshControl beginRefresh];
 }
 
 - (void)endRefresh:(IRefreshControl *)refreshControl{
-	if(_pullRefresh){
-		[_pullRefresh endRefreshControll:refreshControl];
-		[UIView animateWithDuration:0.2 animations:^(){
-			[self layoutHeaderFooterRefreshControl];
-			[self layoutHeaderFooterView];
-		} completion:^(BOOL finished){
-		}];
+	[refreshControl endRefresh];
+}
+
+- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
+	//log_trace(@"%s %d", __func__, state);
+	//[self layoutHeaderAndFooter];
+	if(_delegate && [_delegate respondsToSelector:@selector(table:onRefresh:state:)]){
+		[_delegate table:self onRefresh:refreshControl state:state];
 	}
 }
 

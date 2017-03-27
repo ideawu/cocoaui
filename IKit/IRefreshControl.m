@@ -11,6 +11,7 @@
 #import "ILabel.h"
 #import "IStyleInternal.h"
 #import "IViewInternal.h"
+#import "IPullRefresh.h"
 
 @interface IRefreshControl(){
 	NSString *_maybeText, *_noneText, *_beginText;
@@ -107,6 +108,14 @@
 		frame.origin.y = (_label.style.height - frame.size.height)/2 + 1;
 		_indicatorWrapper.frame = frame;
 	}
+}
+
+- (void)beginRefresh{
+	[_pullRefresh beginRefreshControll:self];
+}
+
+- (void)endRefresh{
+	[_pullRefresh endRefreshControll:self];
 }
 
 @end

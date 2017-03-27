@@ -13,7 +13,7 @@
 
 @interface ITableView : UIView
 
-@property (nonatomic) ITable *table;
+@property (nonatomic, weak) ITable *table;
 
 
 @end

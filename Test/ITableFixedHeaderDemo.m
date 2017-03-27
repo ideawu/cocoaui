@@ -72,24 +72,25 @@
 							  begin:@"loading..."];
 		[footer.style set:@"top: -40;"];
 		self.footerRefreshControl = footer;
+		self.footerRefreshControl.triggerMode = IRefreshTriggerScroll;
 	}
 }
 
-- (void)onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
+- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
 	if(state == IRefreshBegin){
 		// refresh
-		if(view == self.headerRefreshControl){
+		if(refreshControl == self.headerRefreshControl){
 			// 模拟网络请求
-			dispatch_after(0.2, dispatch_get_main_queue(), ^(void){
+			dispatch_after(dispatch_time(0, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				[self reload];
-				[self endRefresh:view];
+				[refreshControl endRefresh];
 			});
 		}
 		// load more
-		if(view == self.footerRefreshControl){
+		if(refreshControl == self.footerRefreshControl){
 			[self loadData:30];
 			[self reload];
-			[self endRefresh:view];
+			[refreshControl endRefresh];
 		}
 	}
 }

@@ -17,8 +17,11 @@ typedef enum{
 	IRefreshTriggerScroll,
 }IRefreshTriggerMode;
 
+@class IPullRefresh;
+
 @interface IRefreshControl : IView
 
+@property (nonatomic, weak) IPullRefresh *pullRefresh;
 @property (nonatomic) IRefreshTriggerMode triggerMode;
 
 @property (nonatomic, readonly) IView *indicatorView;
@@ -26,6 +29,15 @@ typedef enum{
 @property (nonatomic) IRefreshState state;
 
 - (void)setStateTextForNone:(NSString *)none maybe:(NSString *)maybe begin:(NSString *)begin;
+
+/**
+ * Programmatically trigger a refresh event.
+ */
+- (void)beginRefresh;
+/**
+ * Must be called to end refresh state.
+ */
+- (void)endRefresh;
 
 @end
 

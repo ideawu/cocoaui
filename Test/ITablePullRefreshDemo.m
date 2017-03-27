@@ -80,12 +80,14 @@
 	}
 }
 
-- (void)onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
+- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
 	if(state == IRefreshBegin){
 		// refresh
-		if(view == self.headerRefreshControl){
+		if(refreshControl == self.headerRefreshControl){
 			// 模拟网络请求
-			dispatch_after(1.5, dispatch_get_main_queue(), ^(void){
+			log_debug(@"");
+			dispatch_after(dispatch_time(0, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				log_debug(@"");
 				static int seq = 1000;
 				for(int i=0; i<5; i++){
 					NSString *s = [NSString stringWithFormat:@"%d", seq];
@@ -94,15 +96,15 @@
 					seq ++;
 				}
 				[self reload];
-				[self endRefresh:self.headerRefreshControl];
+				[refreshControl endRefresh];
 			});
 		}
 		// load more
-		if(view == self.footerRefreshControl){
-			dispatch_after(0.5, dispatch_get_main_queue(), ^(void){
+		if(refreshControl == self.footerRefreshControl){
+			dispatch_after(dispatch_time(0, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				[self loadData:5];
 				[self reload];
-				[self endRefresh:view];
+				[refreshControl endRefresh];
 			});
 		}
 	}
