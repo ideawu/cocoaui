@@ -32,6 +32,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0820ED0D1FB868F300CA5AF2 /* ISelectDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0820ED0C1FB868F300CA5AF2 /* ISelectDemo.m */; };
+		0820ED0F1FB8695F00CA5AF2 /* ISelectDemo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0820ED0E1FB8695F00CA5AF2 /* ISelectDemo.xml */; };
+		0820ED111FB86B7800CA5AF2 /* ITableNestedDemo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0820ED101FB86B7800CA5AF2 /* ITableNestedDemo.xml */; };
+		0820ED141FB86B8900CA5AF2 /* ITableNestedDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0820ED131FB86B8900CA5AF2 /* ITableNestedDemo.m */; };
 		083F63991A9C7AA700C5F9A7 /* IKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 083F63981A9C7AA700C5F9A7 /* IKitUtil.m */; };
 		083F63C01A9C7C6100C5F9A7 /* IKitUtil.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 083F63971A9C7AA700C5F9A7 /* IKitUtil.h */; };
 		0854925B1A7F79E500F0563C /* IMaskUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0854925A1A7F79E500F0563C /* IMaskUIView.m */; };
@@ -203,6 +207,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0820ED0B1FB868F300CA5AF2 /* ISelectDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISelectDemo.h; sourceTree = "<group>"; };
+		0820ED0C1FB868F300CA5AF2 /* ISelectDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISelectDemo.m; sourceTree = "<group>"; };
+		0820ED0E1FB8695F00CA5AF2 /* ISelectDemo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ISelectDemo.xml; sourceTree = "<group>"; };
+		0820ED101FB86B7800CA5AF2 /* ITableNestedDemo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITableNestedDemo.xml; sourceTree = "<group>"; };
+		0820ED121FB86B8900CA5AF2 /* ITableNestedDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableNestedDemo.h; sourceTree = "<group>"; };
+		0820ED131FB86B8900CA5AF2 /* ITableNestedDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableNestedDemo.m; sourceTree = "<group>"; };
 		083F63971A9C7AA700C5F9A7 /* IKitUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKitUtil.h; sourceTree = "<group>"; };
 		083F63981A9C7AA700C5F9A7 /* IKitUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKitUtil.m; sourceTree = "<group>"; };
 		084E761D1A88D6F200BBD9C2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = IKit/PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
@@ -466,6 +476,12 @@
 				08A49C681A76706400748605 /* IPopoverDemo.m */,
 				3144022B1CAA309F00A50D1D /* ITableInUIView.h */,
 				3144022C1CAA309F00A50D1D /* ITableInUIView.m */,
+				0820ED0B1FB868F300CA5AF2 /* ISelectDemo.h */,
+				0820ED0C1FB868F300CA5AF2 /* ISelectDemo.m */,
+				0820ED0E1FB8695F00CA5AF2 /* ISelectDemo.xml */,
+				0820ED121FB86B8900CA5AF2 /* ITableNestedDemo.h */,
+				0820ED131FB86B8900CA5AF2 /* ITableNestedDemo.m */,
+				0820ED101FB86B7800CA5AF2 /* ITableNestedDemo.xml */,
 				08A34A471A53F36300C1B7F8 /* Supporting Files */,
 			);
 			path = Test;
@@ -771,6 +787,7 @@
 				31D2C75E1B689DA4009C1C97 /* ITablePullRefreshItem.xml in Resources */,
 				316E3B811CD9E8BB0057B69E /* login.css in Resources */,
 				31E0ED271C0D4AB300331C0D /* Test.xml in Resources */,
+				0820ED111FB86B7800CA5AF2 /* ITableNestedDemo.xml in Resources */,
 				31B69C521BF4414500EC1908 /* icon@2x.png in Resources */,
 				316E3B881CD9E9190057B69E /* ic_name.png in Resources */,
 				08A34A581A53F36300C1B7F8 /* LaunchScreen.xib in Resources */,
@@ -780,6 +797,7 @@
 				316E3B871CD9E9190057B69E /* ic_captcha.png in Resources */,
 				316E3B891CD9E9190057B69E /* ic_pass.png in Resources */,
 				316E3B8A1CD9E9190057B69E /* user.png in Resources */,
+				0820ED0F1FB8695F00CA5AF2 /* ISelectDemo.xml in Resources */,
 				08A34A551A53F36300C1B7F8 /* Images.xcassets in Resources */,
 				08FD76A61A846DFB00FB249C /* ic_up.png in Resources */,
 				089C7C161BF3AF00003CEA7F /* ITablePullRefreshItem.css in Resources */,
@@ -873,10 +891,12 @@
 				08A49C691A76706400748605 /* IPopoverDemo.m in Sources */,
 				3194B6601B2068C600CAD469 /* ITableClickToRefresh.m in Sources */,
 				08A34A4D1A53F36300C1B7F8 /* AppDelegate.m in Sources */,
+				0820ED0D1FB868F300CA5AF2 /* ISelectDemo.m in Sources */,
 				08914B8B1A70C7A1004A93EF /* ITableFixedHeaderDemo.m in Sources */,
 				314402301CAA314300A50D1D /* ITablePullRefreshItem.m in Sources */,
 				085492791A8342F700F0563C /* HomeController.m in Sources */,
 				3144022D1CAA309F00A50D1D /* ITableInUIView.m in Sources */,
+				0820ED141FB86B8900CA5AF2 /* ITableNestedDemo.m in Sources */,
 				08AEEF901A7C94FD0015D2D6 /* ITablePullRefreshDemo.m in Sources */,
 				31E0ED251C0D4A6A00331C0D /* TestController.m in Sources */,
 				08A34A4A1A53F36300C1B7F8 /* main.m in Sources */,

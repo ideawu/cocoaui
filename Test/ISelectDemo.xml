@@ -1,0 +1,68 @@
+<div style="height: 100%; border: 2px solid #3cf;">
+	<style>
+		select{
+		}
+		select .label{
+		}
+		select .arrow{
+		}
+	</style>
+
+	<br/>
+
+	<span style="width: 40;">aaa:</span>
+	<select style="width: 200;" id="select1">
+		<option value="a1">选项 1</option>
+		<option value="a2">选项 2</option>
+		<option value="a3" selected="selected">选项 3</option>
+		<option value="a4">选项 4</option>
+		<option value="a5">选项 5</option>
+		<option value="a6">选项 6</option>
+		<option value="a7">选项 7</option>
+		<option value="a8">选项 8</option>
+		<option value="a9">选项 9</option>
+		<option value="a10">选项 10</option>
+		<option value="a11">选项 11</option>
+		<option value="a12">选项 12</option>
+		<option value="a13">选项 13</option>
+		<option value="a14">选项 14</option>
+		<option value="a15">选项 15</option>
+		<option value="a16">选项 16</option>
+		<option value="a17">选项 17</option>
+		<option value="a18">选项 18</option>
+		<option value="a19">选项 19</option>
+		<option value="a20">选项 20</option>
+		<option value="a21">选项 21</option>
+		<option value="a22">选项 22</option>
+		<option value="a23">选项 23</option>
+		<option value="a24">选项 24</option>
+		<option value="a25">选项 25</option>
+		<option value="a26">选项 26</option>
+		<option value="a27">选项 27</option>
+		<option value="a28">选项 28</option>
+		<option value="a29">选项 29</option>
+		<option value="a30">选项 30</option>
+		<option value="a31">选项 31</option>
+		<option value="a32">选项 32</option>
+		<option value="a33">选项 33</option>
+		<option value="a34">选项 34</option>
+		<option value="a35">选项 35</option>
+		<option value="a36">选项 36</option>
+		<option value="a37">选项 37</option>
+		<option value="a38">选项 38</option>
+		<option value="a39">选项 39</option>
+		<option value="a40">选项 40</option>
+		<option value="a41">选项 41</option>
+	</select>
+
+	<br/>
+
+	<span style="width: 40;">bbb:</span>
+	<select id="select2" class="b">
+		<option value="1">option aaaaaa1</option>
+		<option value="2">option 2</option>
+		<option value="3">option 3</option>
+		<option value="4">option 4</option>
+	</select>
+</div>
+

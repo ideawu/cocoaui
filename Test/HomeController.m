@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014 ideawu. All rights reserved.
+ Copyright (c) 2014-2017 ideawu. All rights reserved.
  Use of this source code is governed by a license that can be
  found in the LICENSE file.
  
@@ -17,6 +17,8 @@
 #import "IStyleSheet.h"
 #import "Http.h"
 #import "ITableInUIView.h"
+#import "ISelectDemo.h"
+#import "ITableNestedDemo.h"
 
 @implementation HomeController
 
@@ -55,111 +57,23 @@
 	self.navigationController.navigationBar.translucent = NO;
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
-//	{
-//		ILabel *label = [ILabel labelWithText:@"aaaa"];
-//		[label.style set:@"text-align: center;"];
-//		[self addIViewRow:label];
-//	}
-	
-	/*
-	IView *view = [[IView alloc] init];
-	[view.style set:@"height: 100; background: #ff3;"];
-	IView *sub = [[IView alloc] init];
-	[sub.style set:@"width: 100; height: 50; background: #ccf;"];
-	[view addSubview:sub];
-	[self addIViewRow:view];
-	 //[view bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-	 //	log_debug(@"%s:%d %@", __func__, __LINE__, view);
-	 //}];
-	 [sub bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-		log_debug(@"%s:%d %@", __func__, __LINE__, view);
-	 }];
-	*/
-	
-#if 0
-	{
-		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
-		log_debug(@"start");
-		for(int i=0; i<10000; i++){
-			IView *view = [IView viewFromXml:xml];
-		}
-		log_debug(@"end");
-	}
-#endif
-	
-#if 0
-	{
-		NSString *s = @"padding: 2; border: 1 solid #333; margin: 3;";
-		IView *view = [[IView alloc] init];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"中国人在的要国为中国人在的要国为中国人在的要国为"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaawww"] style:s];
-		[self addIViewRow:view];
-	}
-#endif
-
-#if 0
-	{
-		NSString *xml = @"<div><div id=\"pan\" style=\"background: url(coupon_ic_up.png); width: 100%; margin: 10; height: 100;\"><span style=\"float: center; valign: middle;\">Drag me</span></div></div>";
-		IView *view = [IView viewFromXml:xml];
-		IView *pan = [view getViewById:@"pan"];
-		[self addIViewRow:view];
-		[view addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
-			log_debug(@"%d", event);
-			if(event == IEventHighlight){
-				[pan setNeedsDisplay];
-				[pan.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
-			}
-			if(event == IEventUnhighlight){
-				[pan.style set:@"padding: 8; background: #0fff url(coupon_ic_up.png)"];
-			}
-		}];
-		return;
-	}
-#endif
-	
-	/*
-	{
-		http_get_raw(@"http://www.cocoaui.com/", nil, ^(NSData *data) {
-			NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			log_debug(@"%@", str);
-			IView *view = [IView viewFromXml:str];
-			[self addIViewRow:view];
-			[self reload];
-		});
-	}
-	*/
-	
 	[self add_btn:@"Login"];
 	[self add_btn:@"ITableFixedHeaderDemo"];
 	[self add_btn:@"ITablePullRefreshDemo"];
 	[self add_btn:@"ITableClickToRefresh"];
+	[self add_btn:@"ITableInUIView"];
+	[self add_btn:@"ITableNestedDemo"];
 	[self add_btn:@"Test"];
 	[self add_btn:@"IPopoverDemo"];
-	[self add_btn:@"ITableInUIView"];
+	[self add_btn:@"ISelectDemo"];
 
-	[self addSeparator:@"height: 8;"];
+	[self addSeparator:@"height: 18;"];
 	[self add_btn:@"Detect memory leak"];
 	
 	[self addSeparator:@"height: 8;"];
 	
 	// 测试内存泄露
 	//[self autoload];
-}
-
-- (void)autoload{
-	[self performSelector:@selector(autoload) withObject:nil afterDelay:0.1];
-	[self load];
-}
-
-- (void)load{
-	IView *view = [IView new];
-	for(int i=0; i<1000; i++){
-		ILabel *label = [ILabel labelWithText:@"aaaaaaa"];
-		[view addSubview:label style:@"background: #f33;"];
-	}
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
@@ -190,6 +104,12 @@
 	}
 	if([text isEqualToString:@"ITableInUIView"]){
 		controller = [[ITableInUIView alloc] init];
+	}
+	if([text isEqualToString:@"ISelectDemo"]){
+		controller = [[ISelectDemo alloc] init];
+	}
+	if([text isEqualToString:@"ITableNestedDemo"]){
+		controller = [[ITableNestedDemo alloc] init];
 	}
 	if([text isEqualToString:@"Detect memory leak"]){
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
