@@ -603,7 +603,15 @@
 - (void)layoutHeaderFooterView{
 	//log_debug(@"%s", __func__);
 	if(_headerView){
-		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+        CGFloat y = 0;
+        
+        //fix ios 11 adjustedContentInset by xusion
+        if (@available(iOS 11.0, *)) {
+            y = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+        }else{
+            y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+        }
+        
 		if(y < 0){
 			y = 0;
 		}
