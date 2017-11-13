@@ -3,6 +3,8 @@
 		- Add ITable.bottomBar, which archor at the bottom of ITable(2017-03-24)
 	* Incompatible changes:
 		- Modify ITable APIs about Pull Refresh(2017-03-27)
+	* Bug fixes:
+		- Fix IPopover margin-top error on iOS 11(2017-11-13)
 * 1.2.6
 	* New features:
 		- Add -[ITable removeRowContainsUIView:](2016-12-14)

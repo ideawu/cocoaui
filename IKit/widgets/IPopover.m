@@ -94,7 +94,7 @@
 - (void)my_presentView:(UIView *)view onView:(UIView *)containerView{
 	[self removeFromSuperview];
 	[containerView addSubview:self];
-	
+
 	self.frame = containerView.bounds;
 	[self setContentView:view];
 	[self show];
@@ -106,8 +106,15 @@
 
 - (void)presentView:(UIView *)view onViewController:(UIViewController *)controller{
 	if([controller isKindOfClass:[UINavigationController class]]){
-		CGRect frame = [(UINavigationController *)controller navigationBar].frame;
-		CGFloat offset = frame.origin.y + frame.size.height;
+		UIApplication *app = [UIApplication sharedApplication];
+		UINavigationController *nav = (UINavigationController *)controller;
+		CGFloat offset = 0;
+		if(!app.statusBarHidden){
+			offset += app.statusBarFrame.size.height;
+		}
+		if(!nav.isNavigationBarHidden){
+			offset += nav.navigationBar.frame.size.height;
+		}
 		[_wrapperView.style set:[NSString stringWithFormat:@"margin-top: %f", offset]];
 	}
 	[self my_presentView:view onView:controller.view];
