@@ -498,6 +498,13 @@
 - (void)constructVisibleCells{
 	CGFloat visibleHeight = _scrollView.frame.size.height - _scrollView.contentInset.top;
 	CGFloat minVisibleY = _scrollView.contentOffset.y + _scrollView.contentInset.top - _contentView.frame.origin.y;
+    
+	//fix IOS 11 adjustedContentInset by xusion
+	if (@available(iOS 11.0, *)) {
+		visibleHeight = _scrollView.frame.size.height - _scrollView.adjustedContentInset.top;
+		minVisibleY = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top - _contentView.frame.origin.y;
+	}
+    
 	CGFloat maxVisibleY = minVisibleY + visibleHeight;
 	NSUInteger minIndex = NSUIntegerMax;
 	NSUInteger maxIndex = 0;
@@ -604,6 +611,12 @@
 	//log_debug(@"%s", __func__);
 	if(_headerView){
 		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+        
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			y = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+		}
+        
 		if(y < 0){
 			y = 0;
 		}
@@ -734,6 +747,12 @@
 	//log_trace(@"%s", __func__);
 	if(_headerRefreshControl){
 		CGFloat y = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+        
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			y = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+		}
+        
 		if(y < 0){
 			y = 0;
 		}
