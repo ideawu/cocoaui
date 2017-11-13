@@ -9,6 +9,9 @@
 	</style>
 
 	<br/>
+	
+	<button id="toggle">Toggle Navigation Bar</button>
+	<br/>
 
 	<span style="width: 40;">aaa:</span>
 	<select style="width: 200;" id="select1">

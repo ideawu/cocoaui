@@ -31,7 +31,31 @@
 		self.navigationItem.rightBarButtonItem = btn;
 	}
 	
-	[self addIViewRow:[ILabel labelWithText:@"Test"]];
+	// iOS 11
+	{
+		IButton *btn = [IButton buttonWithText:@"Toggle Navigation Bar"];
+		[btn.style set:@"margin-bottom: 0; width: 100%; height: 40; background: #fff; border-bottom: 1px solid #ddd;"];
+		
+		__weak typeof(self) me = self;
+		[btn addEvent:IEventClick handler:^(IEventType event, IView *view) {
+			[me.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+		}];
+		[self addIViewRow:btn];
+	}
+	
+	{
+		IButton *btn = [IButton buttonWithText:@"Pop Up"];
+		[btn.style set:@"margin-bottom: 0; width: 100%; height: 40; background: #fff; border-bottom: 1px solid #ddd;"];
+		
+		__weak typeof(self) me = self;
+		[btn addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
+			if(event == IEventClick){
+				[me showPopover];
+			}
+		}];
+		[self addIViewRow:btn];
+	}
+
 }
 
 - (void)showPopover{
@@ -41,7 +65,7 @@
 	IView *view = [[IView alloc] init];
 	//[view.style set:@"margin-top: 64;"];
 	
-	NSString *css = @"height: 150; color: #333; background: #fff; border-bottom: 1 solid #eee;";
+	NSString *css = @"height: 150; color: #333; background: #fff; border: 1 solid #eee;";
 	{
 		IButton *btn = [IButton buttonWithText:@"A"];
 		[btn.style set:css];

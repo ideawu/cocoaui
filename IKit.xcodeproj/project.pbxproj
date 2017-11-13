@@ -752,6 +752,7 @@
 					};
 					31D2C7661B69E90B009C1C97 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 984G66F55J;
 					};
 				};
 			};
@@ -1266,6 +1267,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 984G66F55J;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1299,6 +1301,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 984G66F55J;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = IKit/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
