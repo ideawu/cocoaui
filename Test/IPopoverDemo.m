@@ -37,10 +37,8 @@
 		[btn.style set:@"margin-bottom: 0; width: 100%; height: 40; background: #fff; border-bottom: 1px solid #ddd;"];
 		
 		__weak typeof(self) me = self;
-		[btn addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
-			if(event == IEventClick){
-				[me.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
-			}
+		[btn addEvent:IEventClick handler:^(IEventType event, IView *view) {
+			[me.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
 		}];
 		[self addIViewRow:btn];
 	}

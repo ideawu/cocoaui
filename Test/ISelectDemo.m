@@ -21,5 +21,13 @@
 
 	IView *view = [IView namedView:@"ISelectDemo"];
 	[self addIViewRow:view];
+	
+	// https://github.com/ideawu/cocoaui/issues/67
+	__weak typeof(self) me = self;
+	IButton *btn = (IButton *)[view getViewById:@"toggle"];
+	[btn bindEvent:IEventClick handler:^(IEventType event, IView *view) {
+		[me.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+	}];
 }
+
 @end

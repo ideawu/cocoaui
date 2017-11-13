@@ -58,15 +58,15 @@
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
 	_config = @[
-				@[@"Login Page", [LoginController class]],
+				@[@"Single Page Demo", [LoginController class]],
 				@[@"ITable with Fixed Header", [ITableFixedHeaderDemo class]],
 				@[@"ITable Pull to Refresh", [ITablePullRefreshDemo class]],
 				@[@"ITable Click to Refresh", [ITableClickToRefresh class]],
 				@[@"ITable in UIView", [ITableInUIView class]],
 				@[@"Nested ITable", [ITableNestedDemo class]],
 				@[@"divider", @"height: 18;"],
-				@[@"Popover", [IPopoverDemo class]],
-				@[@"Select/Dropdown Menu", [ISelectDemo class]],
+				@[@"IPopover", [IPopoverDemo class]],
+				@[@"ISelect/Dropdown Menu", [ISelectDemo class]],
 				@[@"divider", @"height: 18;"],
 				@[@"Detect memory leak", [ISelectDemo class]],
 				];

@@ -69,22 +69,36 @@
 		[_table addIViewRow:row];
 	}
 	
-	IView *wrapper = [[IView alloc] init];
-	[wrapper.style set:@"float: center; border: 1px solid #ccc; border-radius: 10;"];
+//	IView *wrapper = [[IView alloc] init];
+//	[wrapper.style set:@"float: center; border: 1px solid #ccc; border-radius: 10;"];
+//
+//	CGFloat w = self.viewController.view.frame.size.width * 0.8;
+//	CGFloat h = self.viewController.view.frame.size.height * 0.9;
+//	w = MIN(w, 300);
+//	h = MIN(h, 420);
+//	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
+//	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
+//
+//	// 如果不用 uiview 包裹 ITable.view, ITable.view 会布局错误.
+//	UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, w, h)];
+//	_table.view.frame = v.bounds;
+//	[v addSubview:_table.view];
+//	[wrapper addSubview:v];
 	
 	CGFloat w = self.viewController.view.frame.size.width * 0.8;
 	CGFloat h = self.viewController.view.frame.size.height * 0.9;
 	w = MIN(w, 300);
 	h = MIN(h, 420);
+	CGFloat x = (self.viewController.view.frame.size.width - w)/2;
 	CGFloat y = (self.viewController.view.frame.size.height - h)/2 * 0.6;
-	[wrapper.style set:[NSString stringWithFormat:@"margin-top: %f", y]];
-	
-	// 如果不用 uiview 包裹 ITable.view, ITable.view 会布局错误.
-	UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, w, h)];
-	_table.view.frame = v.bounds;
-	[v addSubview:_table.view];
-	[wrapper addSubview:v];
-	
+
+	_table.view.frame = CGRectMake(x, y, w, h);
+	_table.view.layer.cornerRadius = 10;
+
+	// 用一个 100% 的 wrapper 包裹 ITable，因为 IPopover 只从 0 开始布局
+	UIView *wrapper = [[UIView alloc] initWithFrame:self.viewController.view.frame];
+	[wrapper addSubview:_table.view];
+
 	__weak typeof(self) me = self;
 	_pop = [[IPopover alloc] init];
 	[UIView animateWithDuration:0.2 animations:^(){
@@ -95,7 +109,7 @@
 			me.arrow.label.transform = CGAffineTransformMakeRotation(M_PI_2);
 		}];
 	}];
-	[_pop presentView:wrapper onViewController:self.viewController];
+	[_pop presentView:wrapper onViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
 	
 	if(self.selectedIndex >= 0){
 		NSUInteger index = self.selectedIndex;
