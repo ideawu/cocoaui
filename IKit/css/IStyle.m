@@ -674,7 +674,7 @@
 }
 
 - (UIEdgeInsets)parseEdge:(NSString *)v{
-	UIEdgeInsets edge;
+	UIEdgeInsets edge = UIEdgeInsetsZero;
 	NSArray *ps = [IKitUtil split:v];
 	if(ps.count == 1){
 		edge.left = edge.right = edge.top = edge.bottom = [ps[0] floatValue];
