@@ -35,10 +35,10 @@
 	if(_headerView && _headerView.frame.size.height > 0){
 		CGFloat visibleHeight = - (_scrollView.contentInset.top + _scrollView.contentOffset.y);
         
-        //fix IOS 11 adjustedContentInset by xusion
-        if (@available(iOS 11.0, *)) {
-            visibleHeight = - (_scrollView.adjustedContentInset.top + _scrollView.contentOffset.y);
-        }
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			visibleHeight = - (_scrollView.adjustedContentInset.top + _scrollView.contentOffset.y);
+		}
         
 		//log_trace(@"header: visibleHeight=%f height=%f", visibleHeight, _headerView.frame.size.height);
 		CGFloat rate = visibleHeight / _headerView.frame.size.height;
@@ -51,20 +51,20 @@
 	if(_footerView && _footerView.frame.size.height > 0){
 		CGFloat visibleHeight;
         
-        //fix IOS 11 adjustedContentInset by xusion
-        if (@available(iOS 11.0, *)) {
-            if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top > _scrollView.frame.size.height){
-                visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
-            }else{
-                visibleHeight = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
-            }
-        }else{
-            if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
-                visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
-            }else{
-                visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
-            }
-        }
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+			}
+		}else{
+			if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			}
+		}
 		
 		//log_trace(@"footer: visibleHeight=%f height=%f", visibleHeight, _footerView.frame.size.height);
 		//log_trace(@"footer.frame: %@, content: %f, offset: %f", NSStringFromCGRect(_footerView.frame), _scrollView.contentSize.height, _scrollView.contentOffset.y);
@@ -197,20 +197,20 @@
 		}else{
 			tmp_inset.bottom = _footerView.frame.size.height * _footerVisibleRateToRefresh;
 			
-            //fix IOS 11 adjustedContentInset by xusion
-            if (@available(iOS 11.0, *)) {
-                if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
-                    offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
-                }else{
-                    offset.y = 0;
-                }
-            }else{
-                if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
-                    offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
-                }else{
-                    offset.y = 0;
-                }
-            }
+			//fix IOS 11 adjustedContentInset by xusion
+			if (@available(iOS 11.0, *)) {
+				if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
+			}else{
+				if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
+			}
 			
 		}
 		//log_debug(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
