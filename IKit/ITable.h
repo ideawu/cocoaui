@@ -16,6 +16,22 @@
 @class IRefreshControl;
 @class ITable;
 
+/*
+ ITable
+	 _tableView
+		 _scrollView
+			 _headerRefreshWrapper
+				_headerRefreshControl
+			 ------------------visible top------------------
+			 _headerView(position: auto-docked)
+			 _contentView(_contentFrame)
+				cells
+			 _footerView
+			 _footerRefreshControl
+		 _bottomBar(position: fixed)
+
+ */
+
 
 @protocol ITableDelegate <NSObject>
 @optional
