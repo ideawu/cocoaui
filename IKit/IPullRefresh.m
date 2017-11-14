@@ -34,6 +34,10 @@
 - (CGFloat)headerVisibleRate{
 	if(_headerView && _headerView.frame.size.height > 0){
 		CGFloat visibleHeight = - (_scrollView.contentInset.top + _scrollView.contentOffset.y);
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			visibleHeight = - (_scrollView.adjustedContentInset.top + _scrollView.contentOffset.y);
+		}
 		//log_trace(@"header: visibleHeight=%f height=%f", visibleHeight, _headerView.frame.size.height);
 		CGFloat rate = visibleHeight / _headerView.frame.size.height;
 		return rate;
@@ -44,11 +48,22 @@
 - (CGFloat)footerVisibleRate{
 	if(_footerView && _footerView.frame.size.height > 0){
 		CGFloat visibleHeight;
-		if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
-			visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+		if (@available(iOS 11.0, *)) {
+			CGFloat homeHeight = _scrollView.adjustedContentInset.bottom - _scrollView.contentInset.bottom;
+			if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + homeHeight > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+				visibleHeight -= homeHeight;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+			}
 		}else{
-			visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			}
 		}
+		
 		//log_trace(@"footer: visibleHeight=%f height=%f", visibleHeight, _footerView.frame.size.height);
 		//log_trace(@"footer.frame: %@, content: %f, offset: %f", NSStringFromCGRect(_footerView.frame), _scrollView.contentSize.height, _scrollView.contentOffset.y);
 		CGFloat rate = visibleHeight / _footerView.frame.size.height;
@@ -180,11 +195,21 @@
 		}else{
 			tmp_inset.bottom = _footerView.frame.size.height * _footerVisibleRateToRefresh;
 			
-			if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
-				offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+			//fix IOS 11 adjustedContentInset by xusion
+			if (@available(iOS 11.0, *)) {
+				if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
 			}else{
-				offset.y = 0;
+				if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
 			}
+			
 		}
 		//log_debug(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
 		//log_debug(@"inset.top: %.1f, frame.h: %.1f", _scrollView.contentInset.top, _scrollView.frame.size.height);
