@@ -12,13 +12,34 @@
 
 #import "IView.h"
 
+typedef enum{
+	IRefreshTriggerPull,
+	IRefreshTriggerScroll,
+}IRefreshTriggerMode;
+
+@class IPullRefresh;
+
 @interface IRefreshControl : IView
+
+@property (nonatomic, weak) ITable *table;
+
+@property (nonatomic, weak) IPullRefresh *pullRefresh;
+@property (nonatomic) IRefreshTriggerMode triggerMode;
 
 @property (nonatomic, readonly) IView *indicatorView;
 @property (nonatomic, readonly) IView *contentView;
 @property (nonatomic) IRefreshState state;
 
 - (void)setStateTextForNone:(NSString *)none maybe:(NSString *)maybe begin:(NSString *)begin;
+
+/**
+ * Programmatically trigger a refresh event.
+ */
+- (void)beginRefresh;
+/**
+ * Must be called to end refresh state.
+ */
+- (void)endRefresh;
 
 @end
 

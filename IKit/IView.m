@@ -11,7 +11,7 @@
 #import "IFlowLayout.h"
 #import "IStyleInternal.h"
 #import "IMaskUIView.h"
-#import "ICell.h"
+#import "ITableCell.h"
 #import "IViewLoader.h"
 #import "IStyleSheet.h"
 #import "ICssRule.h"

@@ -40,7 +40,7 @@
 			
 			__weak typeof(self) me = self;
 			[btn bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-				[me.pullRefresh beginHeaderRefresh];
+				[me.headerRefreshControl beginRefresh];
 			}];
 		}
 		
@@ -58,7 +58,7 @@
 					[view.style set:@"background: #f36145"];
 				}
 				if(event == IEventClick){
-					[me.pullRefresh beginFooterRefresh];
+					[me.footerRefreshControl beginRefresh];
 				}
 			}];
 		}
@@ -86,19 +86,19 @@
     // Do any additional setup after loading the view.
 }
 
-- (void)onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
-	NSString *n = view == self.headerRefreshControl? @"header" : @"footer";
+- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
+	NSString *n = refreshControl == self.headerRefreshControl? @"header" : @"footer";
 	log_debug(@"%@ %d", n, (int)state);
 	if(state == IRefreshBegin){
 		// refresh
-		[self performSelector:@selector(afterReloadData:) withObject:view afterDelay:1.0];
+		[self performSelector:@selector(afterReloadData:) withObject:refreshControl afterDelay:1.0];
 		return;
 	}
-	[super onRefresh:view state:state];
+	[super onRefresh:refreshControl state:state];
 }
 
 - (void)afterReloadData:(IRefreshControl *)view{
-	[self endRefresh:view];
+	[view endRefresh];
 }
 
 @end

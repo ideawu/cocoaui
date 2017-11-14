@@ -7,11 +7,11 @@
  @website: http://www.cocoaui.com/
  */
 
-#import "ICellView.h"
-#import "ICell.h"
+#import "ITableCellView.h"
+#import "ITableCell.h"
 #import "ITableInternal.h"
 
-@implementation ICellView
+@implementation ITableCellView
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 	//log_trace(@"%s", __func__);

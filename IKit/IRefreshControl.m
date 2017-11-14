@@ -11,6 +11,8 @@
 #import "ILabel.h"
 #import "IStyleInternal.h"
 #import "IViewInternal.h"
+#import "IPullRefresh.h"
+#import "ITableInternal.h"
 
 @interface IRefreshControl(){
 	NSString *_maybeText, *_noneText, *_beginText;
@@ -106,6 +108,20 @@
 		CGRect frame = _indicatorWrapper.frame;
 		frame.origin.y = (_label.style.height - frame.size.height)/2 + 1;
 		_indicatorWrapper.frame = frame;
+	}
+}
+
+- (void)beginRefresh{
+	[_pullRefresh beginRefreshControll:self];
+}
+
+- (void)endRefresh{
+	[_pullRefresh endRefreshControll:self];
+	if(_table){
+		[UIView animateWithDuration:0.2 animations:^(){
+			// 如果没有动画, prepend 之后RefreshControl收回时不会显示动画.
+			[_table layoutViews];
+		}];
 	}
 }
 

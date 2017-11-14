@@ -34,41 +34,11 @@
 	nav.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
-	//TableViewController *table = [[TableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	table = [[ITable alloc] init];
-	table.navigationItem.title = @"Table";
-	//log_debug(@"%@", table.tableView);
-	//table.tableView.backgroundColor = [UIColor blackColor];
-	
 	self.window.rootViewController = nav;
 	[self.window makeKeyAndVisible];
 
-	/*
-	IView *v4 = [[IView alloc] init];
-	[v4 addSubview:make_btn(@"Btn10", 53, 40) style:@"float: left;"];
-	[self.iview addSubview:v4 style:@"margin: 10 0; float: center; background: #fff; border-bottom: 1px solid #aaa;"];
-	 */
-	
-	int yn = 1;
-	if(yn){
-		UIViewController *controller = [[HomeController alloc] init];
-		[nav pushViewController:controller animated:YES];
-		return YES;
-	}else{
-		//[nav pushViewController:table animated:YES];
-		ITable *page = [[ITable alloc] init];
-		for(int i=0; i<100; i++){
-			[page addDataRow:nil forTag:@"item" defaultHeight:0];
-		}
-		[nav pushViewController:page animated:YES];
-	}
-	
-	self.iview = [[IView alloc] init];
-	[self.iview.style set:@"margin: 10; border: 3px solid #33f; background: #eee; border-left: 5px dashed #f33; border-radius: 12;"];
-	[table addIViewRow:self.iview];
-
-	
-	[self test];
+	UIViewController *controller = [[HomeController alloc] init];
+	[nav pushViewController:controller animated:YES];
 	return YES;
 }
 

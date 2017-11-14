@@ -13,7 +13,7 @@
 #import "IView.h"
 #import "IStyleSheet.h"
 
-@class ICell;
+@class ITableCell;
 @class IViewLoader;
 
 @interface IView ()
@@ -23,7 +23,7 @@
 @property (nonatomic, weak) IView *parent;
 @property (nonatomic, readonly) NSMutableArray *subs;
 
-@property (nonatomic, weak) ICell *cell;
+@property (nonatomic, weak) ITableCell *cell;
 @property (nonatomic) int seq;
 @property (nonatomic) int level;
 @property (nonatomic) NSString *vid;

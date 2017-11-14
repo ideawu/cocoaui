@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014 ideawu. All rights reserved.
+ Copyright (c) 2014-2017 ideawu. All rights reserved.
  Use of this source code is governed by a license that can be
  found in the LICENSE file.
  
@@ -17,6 +17,13 @@
 #import "IStyleSheet.h"
 #import "Http.h"
 #import "ITableInUIView.h"
+#import "ISelectDemo.h"
+#import "ITableNestedDemo.h"
+
+@interface HomeController(){
+	NSArray *_config;
+}
+@end
 
 @implementation HomeController
 
@@ -45,120 +52,33 @@
 }
 
 - (void)viewDidLoad {
-	NSString *css = @"   .a \n{\n    width: 100%; } ";
-	IStyleSheet *sheet = [[IStyleSheet alloc] init];
-	[sheet parseCss:css baseUrl:nil];
-	
 	[super viewDidLoad];
-	
 	self.navigationItem.title = @"Home";
 	self.navigationController.navigationBar.translucent = NO;
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
-//	{
-//		ILabel *label = [ILabel labelWithText:@"aaaa"];
-//		[label.style set:@"text-align: center;"];
-//		[self addIViewRow:label];
-//	}
+	_config = @[
+				@[@"Single Page Demo", [LoginController class]],
+				@[@"ITable with Fixed Header", [ITableFixedHeaderDemo class]],
+				@[@"ITable Pull to Refresh", [ITablePullRefreshDemo class]],
+				@[@"ITable Click to Refresh", [ITableClickToRefresh class]],
+				@[@"ITable in UIView", [ITableInUIView class]],
+				@[@"Nested ITable", [ITableNestedDemo class]],
+				@[@"divider", @"height: 18;"],
+				@[@"IPopover", [IPopoverDemo class]],
+				@[@"ISelect/Dropdown Menu", [ISelectDemo class]],
+				@[@"divider", @"height: 18;"],
+				@[@"Detect memory leak", [ISelectDemo class]],
+				];
 	
-	/*
-	IView *view = [[IView alloc] init];
-	[view.style set:@"height: 100; background: #ff3;"];
-	IView *sub = [[IView alloc] init];
-	[sub.style set:@"width: 100; height: 50; background: #ccf;"];
-	[view addSubview:sub];
-	[self addIViewRow:view];
-	 //[view bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-	 //	log_debug(@"%s:%d %@", __func__, __LINE__, view);
-	 //}];
-	 [sub bindEvent:IEventClick handler:^(IEventType event, IView *view) {
-		log_debug(@"%s:%d %@", __func__, __LINE__, view);
-	 }];
-	*/
-	
-#if 0
-	{
-		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
-		log_debug(@"start");
-		for(int i=0; i<10000; i++){
-			IView *view = [IView viewFromXml:xml];
+	for(NSArray *item in _config){
+		NSString *key = item[0];
+		if([key isEqualToString:@"divider"]){
+			NSString *val = [item[1] description];
+			[self addSeparator:val];
+		}else{
+			[self add_btn:key];
 		}
-		log_debug(@"end");
-	}
-#endif
-	
-#if 0
-	{
-		NSString *s = @"padding: 2; border: 1 solid #333; margin: 3;";
-		IView *view = [[IView alloc] init];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaa"] style:s];
-		[view addSubview:[ILabel labelWithText:@"中国人在的要国为中国人在的要国为中国人在的要国为"] style:s];
-		[view addSubview:[ILabel labelWithText:@"aaabbbaaawww"] style:s];
-		[self addIViewRow:view];
-	}
-#endif
-
-#if 0
-	{
-		NSString *xml = @"<div><div id=\"pan\" style=\"background: url(coupon_ic_up.png); width: 100%; margin: 10; height: 100;\"><span style=\"float: center; valign: middle;\">Drag me</span></div></div>";
-		IView *view = [IView viewFromXml:xml];
-		IView *pan = [view getViewById:@"pan"];
-		[self addIViewRow:view];
-		[view addEvent:IEventHighlight|IEventUnhighlight|IEventClick handler:^(IEventType event, IView *view) {
-			log_debug(@"%d", event);
-			if(event == IEventHighlight){
-				[pan setNeedsDisplay];
-				[pan.style set:@"padding: 8; background: #ffe url(coupon_ic_down.png)"];
-			}
-			if(event == IEventUnhighlight){
-				[pan.style set:@"padding: 8; background: #0fff url(coupon_ic_up.png)"];
-			}
-		}];
-		return;
-	}
-#endif
-	
-	/*
-	{
-		http_get_raw(@"http://www.cocoaui.com/", nil, ^(NSData *data) {
-			NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			log_debug(@"%@", str);
-			IView *view = [IView viewFromXml:str];
-			[self addIViewRow:view];
-			[self reload];
-		});
-	}
-	*/
-	
-	[self add_btn:@"Login"];
-	[self add_btn:@"ITableFixedHeaderDemo"];
-	[self add_btn:@"ITablePullRefreshDemo"];
-	[self add_btn:@"ITableClickToRefresh"];
-	[self add_btn:@"Test"];
-	[self add_btn:@"IPopoverDemo"];
-	[self add_btn:@"ITableInUIView"];
-
-	[self addSeparator:@"height: 8;"];
-	[self add_btn:@"Detect memory leak"];
-	
-	[self addSeparator:@"height: 8;"];
-	
-	// 测试内存泄露
-	//[self autoload];
-}
-
-- (void)autoload{
-	[self performSelector:@selector(autoload) withObject:nil afterDelay:0.1];
-	[self load];
-}
-
-- (void)load{
-	IView *view = [IView new];
-	for(int i=0; i<1000; i++){
-		ILabel *label = [ILabel labelWithText:@"aaaaaaa"];
-		[view addSubview:label style:@"background: #f33;"];
 	}
 }
 
@@ -169,28 +89,17 @@
 - (void)click:(UIButton *)btn{
 	NSString *text = btn.titleLabel.text;
 	log_debug(@"click %@", text);
+	
 	UIViewController *controller;
-	if([text isEqualToString:@"Login"]){
-		controller = [[LoginController alloc] init];
+	for(NSArray *item in _config){
+		NSString *key = item[0];
+		if([key isEqualToString:text]){
+			Class clz = item[1];
+			controller = [[clz alloc] init];
+			break;
+		}
 	}
-	if([text isEqualToString:@"ITableFixedHeaderDemo"]){
-		controller = [[ITableFixedHeaderDemo alloc] init];
-	}
-	if([text isEqualToString:@"ITablePullRefreshDemo"]){
-		controller = [[ITablePullRefreshDemo alloc] init];
-	}
-	if([text isEqualToString:@"ITableClickToRefresh"]){
-		controller = [[ITableClickToRefresh alloc] init];
-	}
-	if([text isEqualToString:@"Test"]){
-		controller = [[TestController alloc] init];
-	}
-	if([text isEqualToString:@"IPopoverDemo"]){
-		controller = [[IPopoverDemo alloc] init];
-	}
-	if([text isEqualToString:@"ITableInUIView"]){
-		controller = [[ITableInUIView alloc] init];
-	}
+
 	if([text isEqualToString:@"Detect memory leak"]){
 		NSString *xml = @"<html><head><title>404 Not Found</title></head><body bgcolor=\"white\"><center><h1>404 Not Found</h1></center><hr/><center>nginx/1.6.2</center><span>a<a>b</a>c</span></body></html>";
 		log_debug(@"start");

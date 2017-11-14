@@ -14,7 +14,6 @@
 @interface IPullRefresh (){
 	//BOOL isDragging;
 	UIScrollView *_scrollView;
-	IView *_headerView, *_footerView;
 	IRefreshState headerRefreshState, footerRefreshState;
 	UIEdgeInsets inset;
 	BOOL allowRefresh;
@@ -28,8 +27,6 @@
 	_scrollView = scrollView;
 	_headerVisibleRateToRefresh = 1;
 	_footerVisibleRateToRefresh = 1;
-	_headerTriggerMode = IRefreshTriggerPull;
-	_footerTriggerMode = IRefreshTriggerScroll;
 	allowRefresh = YES;
 	return self;
 }
@@ -37,6 +34,10 @@
 - (CGFloat)headerVisibleRate{
 	if(_headerView && _headerView.frame.size.height > 0){
 		CGFloat visibleHeight = - (_scrollView.contentInset.top + _scrollView.contentOffset.y);
+		//fix IOS 11 adjustedContentInset by xusion
+		if (@available(iOS 11.0, *)) {
+			visibleHeight = - (_scrollView.adjustedContentInset.top + _scrollView.contentOffset.y);
+		}
 		//log_trace(@"header: visibleHeight=%f height=%f", visibleHeight, _headerView.frame.size.height);
 		CGFloat rate = visibleHeight / _headerView.frame.size.height;
 		return rate;
@@ -47,11 +48,22 @@
 - (CGFloat)footerVisibleRate{
 	if(_footerView && _footerView.frame.size.height > 0){
 		CGFloat visibleHeight;
-		if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
-			visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+		if (@available(iOS 11.0, *)) {
+			CGFloat homeHeight = _scrollView.adjustedContentInset.bottom - _scrollView.contentInset.bottom;
+			if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + homeHeight > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+				visibleHeight -= homeHeight;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.adjustedContentInset.top;
+			}
 		}else{
-			visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			if(_scrollView.contentSize.height + _scrollView.contentInset.top > _scrollView.frame.size.height){
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.frame.size.height - _scrollView.contentSize.height;
+			}else{
+				visibleHeight = _scrollView.contentOffset.y + _scrollView.contentInset.top;
+			}
 		}
+		
 		//log_trace(@"footer: visibleHeight=%f height=%f", visibleHeight, _footerView.frame.size.height);
 		//log_trace(@"footer.frame: %@, content: %f, offset: %f", NSStringFromCGRect(_footerView.frame), _scrollView.contentSize.height, _scrollView.contentOffset.y);
 		CGFloat rate = visibleHeight / _footerView.frame.size.height;
@@ -84,7 +96,7 @@
 	//log_trace(@"scroll.offset.y = %f", scrollView.contentOffset.y);
 
 	if(_headerView){
-		if(scrollView.tracking || _headerTriggerMode == IRefreshTriggerScroll){
+		if(scrollView.tracking || _headerView.triggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self headerVisibleRate];
 			//log_debug(@"header = %f", rate);
 			if(rate > _headerVisibleRateToRefresh){
@@ -106,7 +118,7 @@
 	}
 	
 	if(_footerView){
-		if(scrollView.tracking || _footerTriggerMode == IRefreshTriggerScroll){
+		if(scrollView.tracking || _footerView.triggerMode == IRefreshTriggerScroll){
 			CGFloat rate = [self footerVisibleRate];
 			//log_debug(@"footer = %f", rate);
 			if(rate > _footerVisibleRateToRefresh){
@@ -125,20 +137,6 @@
 				}
 			}
 		}
-	}
-}
-
-- (void)beginHeaderRefresh{
-	if(_headerView){
-		[self setView: _headerView state: IRefreshBegin];
-		allowRefresh = YES;
-	}
-}
-
-- (void)beginFooterRefresh{
-	if(_footerView){
-		[self setView: _footerView state: IRefreshBegin];
-		allowRefresh = YES;
 	}
 }
 
@@ -197,11 +195,21 @@
 		}else{
 			tmp_inset.bottom = _footerView.frame.size.height * _footerVisibleRateToRefresh;
 			
-			if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
-				offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+			//fix IOS 11 adjustedContentInset by xusion
+			if (@available(iOS 11.0, *)) {
+				if(_scrollView.contentSize.height + _scrollView.adjustedContentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
 			}else{
-				offset.y = 0;
+				if(_scrollView.contentSize.height + _scrollView.contentInset.top + _footerView.frame.size.height > _scrollView.frame.size.height){
+					offset.y = _footerView.frame.origin.y + _footerView.frame.size.height * _footerVisibleRateToRefresh - _scrollView.frame.size.height;
+				}else{
+					offset.y = 0;
+				}
 			}
+			
 		}
 		//log_debug(@"header.h: %.1f, footer.h: %.1f", _headerView.frame.size.height, _footerView.frame.size.height);
 		//log_debug(@"inset.top: %.1f, frame.h: %.1f", _scrollView.contentInset.top, _scrollView.frame.size.height);
@@ -223,7 +231,12 @@
 	}
 }
 
-- (void)endRefresh:(IView *)view{
+- (void)beginRefreshControll:(IView *)view{
+	[self setView:view state: IRefreshBegin];
+	allowRefresh = YES;
+}
+
+- (void)endRefreshControll:(IView *)view{
 	//log_trace(@"%s", __func__);
 	if(view == _headerView && headerRefreshState != IRefreshNone){
 		[self setView:view state:IRefreshNone];
@@ -232,11 +245,8 @@
 	}else{
 		return;
 	}
-	//if(_triggerMode == IRefreshTriggerPull){
-		[UIView animateWithDuration:0.2 animations:^(){
-			_scrollView.contentInset = inset;
-		}];
-	//}
+	[UIView animateWithDuration:0.2 animations:^(){
+		_scrollView.contentInset = inset;
+	}];
 }
-
 @end

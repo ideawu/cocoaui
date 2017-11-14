@@ -49,15 +49,15 @@
 	[super show];
 	[self layout];
 	
-	CGRect frame1 = _contentView.frame;
-	CGRect frame0 = frame1;
+	CGRect frame = _contentView.frame;
+	CGRect frame0 = frame;
 	frame0.origin.y -= frame0.size.height;
-	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(frame0), NSStringFromCGRect(frame1));
 
 	_contentView.frame = frame0;
+	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(_contentView.frame), NSStringFromCGRect(frame));
 	self.layer.opacity = 0;
 	[UIView animateWithDuration:0.3 animations:^(){
-		_contentView.frame = frame1;
+		_contentView.frame = frame;
 		self.layer.opacity = 1;
 	} completion:^(BOOL finished) {
 		//log_debug(@"%f", _contentView.frame.size.width);
@@ -67,12 +67,13 @@
 - (void)hide{
 	CGRect frame = _contentView.frame;
 	frame.origin.y -= frame.size.height;
-	[UIView animateWithDuration:0.3 animations:^(){
+	//log_debug(@"frame: %@=>%@", NSStringFromCGRect(_contentView.frame), NSStringFromCGRect(frame));
+	if(_onWillHide){
+		_onWillHide(self);
+	}
+	[UIView animateWithDuration:.3 animations:^(){
 		_contentView.frame = frame;
 		self.layer.opacity = 0;
-		if(_onWillHide){
-			_onWillHide(self);
-		}
 	} completion:^(BOOL finished) {
 		[self setContentView:nil];
 		[self removeFromSuperview];
@@ -94,7 +95,7 @@
 - (void)my_presentView:(UIView *)view onView:(UIView *)containerView{
 	[self removeFromSuperview];
 	[containerView addSubview:self];
-	
+
 	self.frame = containerView.bounds;
 	[self setContentView:view];
 	[self show];
@@ -106,8 +107,15 @@
 
 - (void)presentView:(UIView *)view onViewController:(UIViewController *)controller{
 	if([controller isKindOfClass:[UINavigationController class]]){
-		CGRect frame = [(UINavigationController *)controller navigationBar].frame;
-		CGFloat offset = frame.origin.y + frame.size.height;
+		UIApplication *app = [UIApplication sharedApplication];
+		UINavigationController *nav = (UINavigationController *)controller;
+		CGFloat offset = 0;
+		if(!app.statusBarHidden){
+			offset += app.statusBarFrame.size.height;
+		}
+		if(!nav.isNavigationBarHidden){
+			offset += nav.navigationBar.frame.size.height;
+		}
 		[_wrapperView.style set:[NSString stringWithFormat:@"margin-top: %f", offset]];
 	}
 	[self my_presentView:view onView:controller.view];

@@ -7,15 +7,15 @@
  @website: http://www.cocoaui.com/
  */
 
-#import "ICell.h"
+#import "ITableCell.h"
 #import "ITableInternal.h"
 
-@interface ICell (){
+@interface ITableCell (){
 	CGFloat _height;
 }
 @end;
 
-@implementation ICell
+@implementation ITableCell
 
 - (CGFloat)height{
 	return _height;

@@ -12,11 +12,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class ICell;
+@class ITableCell;
 
-@interface ICellView : UIView
+@interface ITableCellView : UIView
 
-@property (nonatomic, weak) ICell *cell;
+@property (nonatomic, weak) ITableCell *cell;
 
 @end
 

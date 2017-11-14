@@ -23,7 +23,6 @@
 #import "ISwitch.h"
 #import "ISelect.h"
 #import "IImage.h"
-#import "IPullRefresh.h"
 #import "IRefreshControl.h"
 
 #endif

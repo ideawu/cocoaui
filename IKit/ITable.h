@@ -13,9 +13,24 @@
 #import <UIKit/UIKit.h>
 #import "IView.h"
 
-@class IPullRefresh;
 @class IRefreshControl;
 @class ITable;
+
+/*
+ ITable
+	 _tableView
+		 _scrollView
+			 _headerRefreshWrapper
+				_headerRefreshControl
+			 ------------------visible top------------------
+			 _headerView(position: auto-docked)
+			 _contentView(_contentFrame)
+				cells
+			 _footerView
+			 _footerRefreshControl
+		 _bottomBar(position: fixed)
+
+ */
 
 
 @protocol ITableDelegate <NSObject>
@@ -23,7 +38,6 @@
 - (void)table:(ITable *)table onHighlight:(IView *)view atIndex:(NSUInteger)index;
 - (void)table:(ITable *)table onUnhighlight:(IView *)view atIndex:(NSUInteger)index;
 - (void)table:(ITable *)table onClick:(IView *)view atIndex:(NSUInteger)index;
-
 /**
  * Must call ITable.endRefresh() when state is IRefreshBegin
  */
@@ -33,14 +47,22 @@
 
 @interface ITable : UIViewController
 
-@property (nonatomic, readonly) UIScrollView *scrollView;
-
-@property (nonatomic, readonly) IPullRefresh *pullRefresh;
 @property (nonatomic) IRefreshControl *headerRefreshControl;
 @property (nonatomic) IRefreshControl *footerRefreshControl;
 
+/**
+ * At the top of contents(cells), and only follow pull down to refresh.
+ */
 @property (nonatomic) IView *headerView;
+/**
+ * At the bottom of contents(cells) and follow scroll.
+ */
 @property (nonatomic) IView *footerView;
+
+/**
+ * Will dock at the bottom and will not scroll.
+ */
+@property (nonatomic) IView *bottomBar;
 
 - (void)clear;
 - (void)reload;
@@ -87,9 +109,13 @@
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index;
 
 /**
- Must call endRefresh() when state is IRefreshBegin
+ Implement this method to accept Pull Refresh events, no need to call [super xxx].
+ Must call refreshControl.endRefresh() when state is IRefreshBegin.
  */
 - (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state;
+/// @deprecated: Use IRefreshControl.beginRefresh instead
+- (void)beginRefresh:(IRefreshControl *)refreshControl;
+/// @deprecated: Use IRefreshControl.endRefresh instead
 - (void)endRefresh:(IRefreshControl *)refreshControl;
 
 /**
@@ -98,8 +124,6 @@
 @property (nonatomic, weak) id<ITableDelegate> delegate;
 
 ////////////////////////////////////////////////////////
-
-
 
 
 

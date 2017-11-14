@@ -33,10 +33,14 @@
 		self.headerView = headerRow;
 	}
 	{
-		self.pullRefresh.footerTriggerMode = IRefreshTriggerPull;
 		ILabel *label = [ILabel labelWithText:@"footer"];
 		[label.style set:@"padding: 10; width: 100%; background: #cc6; text-align: center;"];
 		self.footerView = label;
+	}
+	{
+		ILabel *label = [ILabel labelWithText:@"BottomBar"];
+		[label.style set:@"padding: 10; height: 70; width: 100%; background: #6cf; text-align: center;"];
+		self.bottomBar = label;
 	}
 	[self initHeaderFooter];
 
@@ -44,7 +48,7 @@
 
 	//self.pullRefresh.footerVisibleRateToRefresh = -1;
 
-	[self loadData:1];
+	[self loadData:10];
 	
 	return self;
 }
@@ -72,15 +76,18 @@
 							  begin:@"loading..."];
 		[footer.style set:@"top: -40;"];
 		self.footerRefreshControl = footer;
+		self.footerRefreshControl.triggerMode = IRefreshTriggerPull;
 	}
 }
 
-- (void)onRefresh:(IRefreshControl *)view state:(IRefreshState)state{
+- (void)onRefresh:(IRefreshControl *)refreshControl state:(IRefreshState)state{
 	if(state == IRefreshBegin){
 		// refresh
-		if(view == self.headerRefreshControl){
+		if(refreshControl == self.headerRefreshControl){
 			// 模拟网络请求
-			dispatch_after(0.2, dispatch_get_main_queue(), ^(void){
+			log_debug(@"");
+			dispatch_after(dispatch_time(0, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				log_debug(@"");
 				static int seq = 1000;
 				for(int i=0; i<5; i++){
 					NSString *s = [NSString stringWithFormat:@"%d", seq];
@@ -89,16 +96,22 @@
 					seq ++;
 				}
 				[self reload];
-				[self endRefresh:view];
+				//[refreshControl endRefresh];
+				[self endRefresh:refreshControl];
 			});
 		}
 		// load more
-		if(view == self.footerRefreshControl){
-			[self loadData:5];
-			[self reload];
-			[self endRefresh:view];
+		if(refreshControl == self.footerRefreshControl){
+			dispatch_after(dispatch_time(0, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				[self loadData:5];
+				[self reload];
+				[refreshControl endRefresh];
+			});
 		}
 	}
+}
+
+- (void)prependData{
 }
 
 - (void)onClick:(IView *)view atIndex:(NSUInteger)index{
