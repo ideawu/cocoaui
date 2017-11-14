@@ -10,7 +10,7 @@
 #ifndef IKit_PrefixHeader_pch
 #define IKit_PrefixHeader_pch
 
-#define VER_NUM  "1.2.8"
+#define VER_NUM  "1.2.7"
 
 #define L_MYLOG(level, fmt, args...) \
 	my_log((level @" %@(%d): " fmt), [@(__FILE__) lastPathComponent],  __LINE__, ##args)
