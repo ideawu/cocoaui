@@ -13,6 +13,11 @@
 #import "ITableFixedHeaderDemo.h"
 
 @implementation ITableFixedHeaderDemo
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[self.navigationController setNavigationBarHidden:YES animated:animated];
+}
 
 - (id)init{
 	self = [super init];
@@ -30,7 +35,7 @@
 	}
 	
 	[self initHeaderFooter];
-	[self loadData:20];
+	[self loadData:15];
 	[self reload];
 	
 	return self;
@@ -70,9 +75,9 @@
 		[footer setStateTextForNone:@"Pull up to load more"
 							  maybe:@"Release to load more"
 							  begin:@"loading..."];
-		[footer.style set:@"top: -40;"];
+		[footer.style set:@"top: -100; height: 100; background: #000"];
 		self.footerRefreshControl = footer;
-		self.footerRefreshControl.triggerMode = IRefreshTriggerScroll;
+		//self.footerRefreshControl.triggerMode = IRefreshTriggerScroll;
 	}
 }
 
