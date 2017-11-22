@@ -31,6 +31,10 @@
 	_scrollView.bounces = YES;
 	_scrollView.alwaysBounceVertical = YES;
 	//_scrollView.alwaysBounceHorizontal = YES;
+//	if (@available(iOS 11.0, *)) {
+//		// cause bug if [self.navigationController setNavigationBarHidden:YES animated:animated];
+//		_scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+//	}
 
 	[self addSubview:_scrollView];
 
