@@ -271,6 +271,7 @@
 
 - (void)insertIViewRow:(IView *)view atIndex:(NSUInteger)index defaultHeight:(CGFloat)height{
 	ITableCell *cell = [[ITableCell alloc] init];
+	cell.data = view.data;
 	cell.contentView = view;
 	[self insertCell:cell atIndex:index defaultHeight:height];
 }

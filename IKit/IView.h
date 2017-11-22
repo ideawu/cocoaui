@@ -50,7 +50,8 @@ typedef enum{
 
 - (id)data;
 /**
- * override this method when IView is used as ITable row(MUST call [super setData])
+ * Called when this IView is used as ITable row being shown.
+ * Override this method when IView is used as ITable row(MUST call [super setData])
  */
 - (void)setData:(id)data;
 
