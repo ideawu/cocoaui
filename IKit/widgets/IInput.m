@@ -150,19 +150,22 @@ typedef enum{
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-	UITextPosition *begin = textField.beginningOfDocument;
-	UITextPosition *cursor = [textField positionFromPosition:begin offset:(range.location + string.length)];
-
-	NSString *newStr = [textField.text stringByReplacingCharactersInRange:range withString:string];
-	//log_debug(@"old=%@, replace=%@, new=%@ range=%@", self.value, string, newStr, NSStringFromRange(range));
-	textField.text = newStr;
-	
-	if(cursor){
-		[textField setSelectedTextRange:[textField textRangeFromPosition:cursor toPosition:cursor]];
-	}
-	
 	[self fireEvent:IEventChange];
-	return NO;
+	return YES;
+	// 不支持中文
+//	UITextPosition *begin = textField.beginningOfDocument;
+//	UITextPosition *cursor = [textField positionFromPosition:begin offset:(range.location + string.length)];
+//
+//	NSString *newStr = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//	log_debug(@"old=%@, replace=%@, new=%@ range=%@", self.value, string, newStr, NSStringFromRange(range));
+//	textField.text = newStr;
+//
+//	if(cursor){
+//		[textField setSelectedTextRange:[textField textRangeFromPosition:cursor toPosition:cursor]];
+//	}
+//
+//	[self fireEvent:IEventChange];
+//	return NO;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
