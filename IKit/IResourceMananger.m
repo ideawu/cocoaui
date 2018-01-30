@@ -179,7 +179,7 @@ static IResourceMananger *_sharedMananger;
 		if(callback){
 			callback(img);
 		}
-	}else{
+	}else if(![src isEqual:@""]){
 		if([src characterAtIndex:0] != '/'){
 			img = [UIImage imageNamed:src]; // imageNamed 内部有 cache
 		}else if([src rangeOfString:[NSBundle mainBundle].resourcePath].length > 0){
