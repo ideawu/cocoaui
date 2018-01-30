@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface UIView : NSView
+@interface NSView(T)
 
 @property NSColor *backgroundColor;
 @property BOOL userInteractionEnabled;
@@ -16,7 +16,7 @@
 
 - (void)setNeedsLayout;
 - (void)setNeedsDisplay;
-- (void)sendSubviewToBack:(UIView *)subView;
-- (void)bringSubviewToFront:(UIView *)subView;
+- (void)sendSubviewToBack:(NSView *)subView;
+- (void)bringSubviewToFront:(NSView *)subView;
 
 @end

@@ -6,10 +6,10 @@
 //  Copyright © 2018 ideawu. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-@interface UIImage : NSImage
+@interface NSImage(T)
 
-+ (UIImage *)imageWithData:(NSData *)data;
++ (NSImage *)imageWithData:(NSData *)data;
 
 @end

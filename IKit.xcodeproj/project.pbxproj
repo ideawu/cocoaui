@@ -107,22 +107,22 @@
 		3196DA52202069D400DDEFE6 /* IView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A34A871A53F80B00C1B7F8 /* IView.m */; };
 		3196DA5420206C1200DDEFE6 /* IStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 312F65171B81DEB700174F85 /* IStyle.h */; };
 		3196DA5620206C2C00DDEFE6 /* IView.h in Headers */ = {isa = PBXBuildFile; fileRef = 08A34A781A53F47800C1B7F8 /* IView.h */; };
-		3196DA5920206DBA00DDEFE6 /* UIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA5720206DBA00DDEFE6 /* UIView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		3196DA5A20206DBA00DDEFE6 /* UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA5820206DBA00DDEFE6 /* UIView.m */; };
+		3196DA5920206DBA00DDEFE6 /* NSView+.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA5720206DBA00DDEFE6 /* NSView+.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		3196DA5A20206DBA00DDEFE6 /* NSView+.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA5820206DBA00DDEFE6 /* NSView+.m */; };
 		3196DA5B20206EBE00DDEFE6 /* IMaskUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0854925A1A7F79E500F0563C /* IMaskUIView.m */; };
-		3196DA5E20206FA600DDEFE6 /* UIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA5C20206FA600DDEFE6 /* UIImageView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		3196DA5F20206FA600DDEFE6 /* UIImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA5D20206FA600DDEFE6 /* UIImageView.m */; };
+		3196DA5E20206FA600DDEFE6 /* NSImageView+.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA5C20206FA600DDEFE6 /* NSImageView+.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		3196DA5F20206FA600DDEFE6 /* NSImageView+.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA5D20206FA600DDEFE6 /* NSImageView+.m */; };
 		3196DA60202071DA00DDEFE6 /* IKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 083F63981A9C7AA700C5F9A7 /* IKitUtil.m */; };
-		3196DA63202071FB00DDEFE6 /* UIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA61202071FB00DDEFE6 /* UIImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		3196DA64202071FB00DDEFE6 /* UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA62202071FB00DDEFE6 /* UIImage.m */; };
+		3196DA63202071FB00DDEFE6 /* NSImage+.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA61202071FB00DDEFE6 /* NSImage+.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		3196DA64202071FB00DDEFE6 /* NSImage+.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA62202071FB00DDEFE6 /* NSImage+.m */; };
 		3196DA652020725000DDEFE6 /* IStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65181B81DEB700174F85 /* IStyle.m */; };
 		3196DA662020725200DDEFE6 /* IStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65151B81DE8F00174F85 /* IStyleSheet.m */; };
 		3196DA672020725500DDEFE6 /* ICssRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 312F65421B81E30600174F85 /* ICssRule.m */; };
 		3196DA682020725900DDEFE6 /* ICssBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69CB61BF70C1200EC1908 /* ICssBlock.m */; };
 		3196DA692020725900DDEFE6 /* ICssDecl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C491BF1E6BB00EC1908 /* ICssDecl.m */; };
 		3196DA6A2020725900DDEFE6 /* IFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B69C541BF4717200EC1908 /* IFlowLayout.m */; };
-		3196DA6D202072AB00DDEFE6 /* NSValue_.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA6B202072AA00DDEFE6 /* NSValue_.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		3196DA6E202072AB00DDEFE6 /* NSValue_.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA6C202072AB00DDEFE6 /* NSValue_.m */; };
+		3196DA6D202072AB00DDEFE6 /* NSValue+.h in Headers */ = {isa = PBXBuildFile; fileRef = 3196DA6B202072AA00DDEFE6 /* NSValue+.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		3196DA6E202072AB00DDEFE6 /* NSValue+.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196DA6C202072AB00DDEFE6 /* NSValue+.m */; };
 		31A3A97C1E8542F300922107 /* ITableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3A97B1E8542F300922107 /* ITableView.m */; };
 		31A3A97F1E85547800922107 /* IRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3A97E1E85547800922107 /* IRefreshControl.m */; };
 		31A3A9801E85557100922107 /* IRefreshControl.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 31A3A97D1E85547800922107 /* IRefreshControl.h */; };
@@ -325,14 +325,14 @@
 		3194B65E1B2068C600CAD469 /* ITableClickToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableClickToRefresh.h; sourceTree = "<group>"; };
 		3194B65F1B2068C600CAD469 /* ITableClickToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableClickToRefresh.m; sourceTree = "<group>"; };
 		3196DA49202068F600DDEFE6 /* libMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMac.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3196DA5720206DBA00DDEFE6 /* UIView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView.h; sourceTree = "<group>"; };
-		3196DA5820206DBA00DDEFE6 /* UIView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView.m; sourceTree = "<group>"; };
-		3196DA5C20206FA600DDEFE6 /* UIImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIImageView.h; sourceTree = "<group>"; };
-		3196DA5D20206FA600DDEFE6 /* UIImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIImageView.m; sourceTree = "<group>"; };
-		3196DA61202071FB00DDEFE6 /* UIImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIImage.h; sourceTree = "<group>"; };
-		3196DA62202071FB00DDEFE6 /* UIImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIImage.m; sourceTree = "<group>"; };
-		3196DA6B202072AA00DDEFE6 /* NSValue_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSValue_.h; sourceTree = "<group>"; };
-		3196DA6C202072AB00DDEFE6 /* NSValue_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSValue_.m; sourceTree = "<group>"; };
+		3196DA5720206DBA00DDEFE6 /* NSView+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+.h"; sourceTree = "<group>"; };
+		3196DA5820206DBA00DDEFE6 /* NSView+.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+.m"; sourceTree = "<group>"; };
+		3196DA5C20206FA600DDEFE6 /* NSImageView+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSImageView+.h"; sourceTree = "<group>"; };
+		3196DA5D20206FA600DDEFE6 /* NSImageView+.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSImageView+.m"; sourceTree = "<group>"; };
+		3196DA61202071FB00DDEFE6 /* NSImage+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSImage+.h"; sourceTree = "<group>"; };
+		3196DA62202071FB00DDEFE6 /* NSImage+.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSImage+.m"; sourceTree = "<group>"; };
+		3196DA6B202072AA00DDEFE6 /* NSValue+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSValue+.h"; sourceTree = "<group>"; };
+		3196DA6C202072AB00DDEFE6 /* NSValue+.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+.m"; sourceTree = "<group>"; };
 		31A3A97A1E8542F300922107 /* ITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITableView.h; sourceTree = "<group>"; };
 		31A3A97B1E8542F300922107 /* ITableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITableView.m; sourceTree = "<group>"; };
 		31A3A97D1E85547800922107 /* IRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRefreshControl.h; sourceTree = "<group>"; };
@@ -625,14 +625,14 @@
 		3196DA4A202068F600DDEFE6 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				3196DA5720206DBA00DDEFE6 /* UIView.h */,
-				3196DA5820206DBA00DDEFE6 /* UIView.m */,
-				3196DA5C20206FA600DDEFE6 /* UIImageView.h */,
-				3196DA5D20206FA600DDEFE6 /* UIImageView.m */,
-				3196DA61202071FB00DDEFE6 /* UIImage.h */,
-				3196DA62202071FB00DDEFE6 /* UIImage.m */,
-				3196DA6B202072AA00DDEFE6 /* NSValue_.h */,
-				3196DA6C202072AB00DDEFE6 /* NSValue_.m */,
+				3196DA5720206DBA00DDEFE6 /* NSView+.h */,
+				3196DA5820206DBA00DDEFE6 /* NSView+.m */,
+				3196DA5C20206FA600DDEFE6 /* NSImageView+.h */,
+				3196DA5D20206FA600DDEFE6 /* NSImageView+.m */,
+				3196DA61202071FB00DDEFE6 /* NSImage+.h */,
+				3196DA62202071FB00DDEFE6 /* NSImage+.m */,
+				3196DA6B202072AA00DDEFE6 /* NSValue+.h */,
+				3196DA6C202072AB00DDEFE6 /* NSValue+.m */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -690,11 +690,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3196DA5420206C1200DDEFE6 /* IStyle.h in Headers */,
-				3196DA5920206DBA00DDEFE6 /* UIView.h in Headers */,
-				3196DA63202071FB00DDEFE6 /* UIImage.h in Headers */,
-				3196DA6D202072AB00DDEFE6 /* NSValue_.h in Headers */,
+				3196DA5920206DBA00DDEFE6 /* NSView+.h in Headers */,
+				3196DA63202071FB00DDEFE6 /* NSImage+.h in Headers */,
+				3196DA6D202072AB00DDEFE6 /* NSValue+.h in Headers */,
 				3196DA5620206C2C00DDEFE6 /* IView.h in Headers */,
-				3196DA5E20206FA600DDEFE6 /* UIImageView.h in Headers */,
+				3196DA5E20206FA600DDEFE6 /* NSImageView+.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,16 +1019,16 @@
 			files = (
 				3196DA672020725500DDEFE6 /* ICssRule.m in Sources */,
 				3196DA682020725900DDEFE6 /* ICssBlock.m in Sources */,
-				3196DA5F20206FA600DDEFE6 /* UIImageView.m in Sources */,
+				3196DA5F20206FA600DDEFE6 /* NSImageView+.m in Sources */,
 				3196DA60202071DA00DDEFE6 /* IKitUtil.m in Sources */,
 				3196DA692020725900DDEFE6 /* ICssDecl.m in Sources */,
-				3196DA5A20206DBA00DDEFE6 /* UIView.m in Sources */,
+				3196DA5A20206DBA00DDEFE6 /* NSView+.m in Sources */,
 				3196DA662020725200DDEFE6 /* IStyleSheet.m in Sources */,
 				3196DA52202069D400DDEFE6 /* IView.m in Sources */,
 				3196DA5B20206EBE00DDEFE6 /* IMaskUIView.m in Sources */,
-				3196DA6E202072AB00DDEFE6 /* NSValue_.m in Sources */,
+				3196DA6E202072AB00DDEFE6 /* NSValue+.m in Sources */,
 				3196DA652020725000DDEFE6 /* IStyle.m in Sources */,
-				3196DA64202071FB00DDEFE6 /* UIImage.m in Sources */,
+				3196DA64202071FB00DDEFE6 /* NSImage+.m in Sources */,
 				3196DA6A2020725900DDEFE6 /* IFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -18,10 +18,13 @@
 #import <UIKit/UIKit.h>
 #else
 #	import <AppKit/AppKit.h>
-#	import "UIView.h"
-#	import "UIImageView.h"
-#	import "UIImage.h"
-#	import "NSValue_.h"
+#	import "NSImageView+.h"
+#	import "NSImage+.h"
+#	import "NSView+.h"
+#	import "NSValue+.h"
+#	define UIView NSView
+#	define UIImageView NSImageView
+#	define UIImage NSImage
 #	define UIEdgeInsets NSEdgeInsets
 #	define UIEdgeInsetsZero NSEdgeInsetsZero
 #	define UIColor NSColor

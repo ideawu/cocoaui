@@ -6,11 +6,10 @@
 //  Copyright © 2018 ideawu. All rights reserved.
 //
 
-#import "UIView.h"
-#import "UIImage.h"
+#import <Cocoa/Cocoa.h>
 
-@interface UIImageView : UIView
+@interface NSImageView(T)
 
-- (id)initWithImage:(UIImage *)image;
+- (NSImageView *)initWithImage:(NSImage *)image;
 
 @end
