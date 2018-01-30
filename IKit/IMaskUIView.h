@@ -7,8 +7,6 @@
  @website: http://www.cocoaui.com/
  */
 
-#import <UIKit/UIKit.h>
-
 /**
  * 用于实现 border.
  */

@@ -10,7 +10,6 @@
 #ifndef IKit_ICell_h
 #define IKit_ICell_h
 
-#import <UIKit/UIKit.h>
 #import "ITableCellView.h"
 
 @class IView;

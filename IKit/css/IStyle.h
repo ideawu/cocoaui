@@ -10,8 +10,6 @@
 #ifndef IKit_IStyle_h
 #define IKit_IStyle_h
 
-#import <UIKit/UIKit.h>
-
 // groupTableViewBackgroundColor: #efeff4
 
 // outerBox: 包含 margin, border, padding, content

@@ -11,7 +11,6 @@
 #define IKit_IKitUtil_h
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 @interface IKitUtil : NSObject
 

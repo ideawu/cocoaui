@@ -10,7 +10,6 @@
 #ifndef IKit_IView_h
 #define IKit_IView_h
 
-#import <UIKit/UIKit.h>
 #import "IStyle.h"
 
 typedef enum{

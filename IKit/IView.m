@@ -413,6 +413,8 @@
 	[self fireEvent:IEventClick];
 }
 
+#if TARGET_OS_IPHONE
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 	//log_trace(@"%s %@", __func__, self.name);
 	[self fireEvent:IEventHighlight];
@@ -438,6 +440,8 @@
 	[self fireEvent:IEventUnhighlight];
 	[super touchesCancelled:touches withEvent:event];
 }
+
+#endif
 
 @end
 

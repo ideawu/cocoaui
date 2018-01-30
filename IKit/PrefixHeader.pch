@@ -12,6 +12,29 @@
 
 #define VER_NUM  "1.2.7"
 
+#import "TargetConditionals.h"
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#else
+#	import <AppKit/AppKit.h>
+#	import "UIView.h"
+#	import "UIImageView.h"
+#	import "UIImage.h"
+#	import "NSValue_.h"
+#	define UIEdgeInsets NSEdgeInsets
+#	define UIEdgeInsetsZero NSEdgeInsetsZero
+#	define UIColor NSColor
+#	define UIViewController NSViewController
+#	define UIFont NSFont
+#	define UIResponder NSResponder
+inline static CGContextRef UIGraphicsGetCurrentContext(){
+	return NSGraphicsContext.currentContext.CGContext;
+}
+#endif
+
+
+
 #define L_MYLOG(level, fmt, args...) \
 	my_log((level @" %@(%d): " fmt), [@(__FILE__) lastPathComponent],  __LINE__, ##args)
 
